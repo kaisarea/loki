@@ -15,7 +15,7 @@ p {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 <h1>Write a Letter to {{=title}}</h1>
 <p style="margin-bottom: 1em;">This jobs
 pays <b class="orange">{{=request.price_string}}</b> per
-letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>This is how they remain randomized.<br>You will receive payment within 15 minutes of submitting your result." class="bonus underline">bonus</span>).</p>
+letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment of {{=request.price_string}} within 30 minutes of submitting. <br><br>You can find bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance and transaction history</i>" class="bonus underline">bonus</span>).</p>
 
 {{ org = 'sex offender inmates' if sexy else 'inmates' }}
 
@@ -31,7 +31,8 @@ letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>This is how they
 <h2>{{=prisoner.name}}'s profile</h2>
 <p>{{=XML(prisoner.bio)}}</p>
 
-<h2>Offense</h2> <p class="crime underline" title="{{=prisoner.crime.long}}">{{=prisoner.crime.short}}</p>
+<h2>Offense</h2>
+<p><span class="crime underline" title="{{=prisoner.crime.long}}">{{=prisoner.crime.short}}</span></p>
 <h2>Submit your Response</h2>
 <form action method="POST">
 <label for="minWord">
@@ -92,5 +93,5 @@ params = {
 $('.bonus').tooltip(params);
 delete params.left
 delete params.top
-$('p.crime').tooltip(params);
+$('.crime').tooltip(params);
 </script>
