@@ -1,0 +1,62 @@
+{{ extend 'layout.html' }}
+<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/static/prisoner/word-count.js"></script>    
+<style>
+.bonus {text-decoration: underline;}
+h1, .orange {color: #CC6600;}
+p {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
+
+</style>
+
+{{ title = "a Sex Offender Inmate" if sex else "an Inmate" }}
+
+<h1>Write a Letter to {{=title}}</h1>
+<p style="margin-bottom: 1em;">This jobs
+pays <b class="orange">{{=request.price_string}}</b> per
+letter (via <span class="bonus">bonus</span>).</p>
+
+{{ org = 'sex offender inmates' if sex else 'inmates' }}
+
+   <p>Work for an organization that provides {{=org}} with letters
+   from the free world. Inmates need moral support outside of prison
+   walls. Research shows that inmates with positive contacts outside
+   of prison are less likely to return to prison, crime, and substance
+   abuse, and more likely to find a job upon release.</p>
+
+   <p>Read the following prisoner's bio, and adhere to the
+   requirements below when writing a letter.</p>
+
+<h2>{{=prisoner.prisoner_name}}'s profile</h2>
+<p>{{=prisoner.prisoner_message}}</p>
+
+<h2>Offense</h2> <p>{{=prisoner.prisoner_crime}}</p>
+<h2>Submit your Response</h2>
+<form action="/prisoner/finish" method="POST">
+<input type="hidden" name="prisoner_name" value="{{=prisoner.prisoner_name}}">
+<input type="hidden" name="prisoner_crime" value="{{=prisoner.prisoner_crime}}">
+<input type="hidden" name="prisoner_photo" value="{{=prisoner.prisoner_photo}}">
+<input type="hidden" name="prisoner_treatment" value="{{=prisoner.treatment}}">
+<input type="hidden" name="prisoner_message" value="{{=prisoner.prisoner_message}}">
+<input type="hidden" name="price" value="{{=request.price}}">
+<input type="hidden" name="workerid" value="{{=request.workerid}}">
+<label for="minWord">
+    <p>Write a positive and supportive letter to the prisoner.  Your
+    response should be no less than {{=min_words}} words. Your letter
+    will be evaluated by a supervisor before payment is
+    authorized. Only responses that are positive and supportive will
+    be approved.</p>
+
+Do:
+<ul><li>Speak to the letter
+</ul>
+Don't:
+<ul><li>Do not judge the person by the crime they committed
+</ul>
+
+Your response must be graded at least 7/10 by the supervisor.
+
+
+</p></label><br>
+<textarea name="worker_message" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+<input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
+</form>

@@ -1,0 +1,13 @@
+{{ extend 'layout.html' }}
+<h2>Interface for the database with prisoners' profiles</h2><br>
+<form action="/myhit/finish" method="POST">
+Prisoner ID: <input type="text" name="id" /><br>
+Prisoner Name: <input type="text" name="name" /><br>
+Prisoner Photo: <input type="file" name="photo" /><br>
+Treatment: <input type="radio" name="treatment" value="1">Treatment<br>
+Control: <input type="radio" name="treatment" value="0">Control<br>
+Crime: <input type="text" name="crime" /><br>
+Prisoner profile: <br>
+<textarea rows="20" cols="80" name="message"></textarea><br>
+<input type="submit" />
+</form>
