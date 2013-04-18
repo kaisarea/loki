@@ -1,8 +1,7 @@
 options.prisoner = {'price' : [.01, .02, .03],
-                    'experimental_treatment' : [1, 0],
+                    'sexy' : [True, False],
                     'mystery_task': True,
                     'work_limit' : 20}
-
 
 db.define_table('worker_response',
                 Field('message', 'text'),

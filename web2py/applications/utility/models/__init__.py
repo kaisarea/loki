@@ -386,7 +386,7 @@ def check_daemon2(task_name, period=None):
         db.commit()
 
 def check_daemon(task_name):
-    if sqlitep: return False
+    if sqlitep: log('Scheduler is disabled in sqlite mode'); return False
     period = 4
     task = db.scheduler_task(uuid=task_name)
     #print ('task is %s' % (not (not task)))
@@ -637,7 +637,8 @@ def die_and_explode():
             log('###### GRRRRR we could not expire this hit %s!  Fix!!' % request.vars.hitId)
     redirect(URL(r=request, f='error'))
 
-def hits_done(workerid, study):
+def hits_done(workerid=None, study=None):
+    workerid = workerid or request.workerid; study = study or request.study
     return db((db.actions.workerid == workerid)
           & (db.actions.study == study)
           & (db.actions.action == 'finished')).count()
