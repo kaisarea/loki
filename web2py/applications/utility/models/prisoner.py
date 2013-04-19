@@ -1,4 +1,4 @@
-options.prisoner = {'price' : [.01, .02, .03],
+options.prisoner = {'price' : [.10, .20],
                     'sexy' : [True, False],
                     'mystery_task': True,
                     'work_limit' : 20}

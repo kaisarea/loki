@@ -31,16 +31,23 @@ def index():
 
 
 def results():
-    study = request.args[0] if len(request.args) > 0 else 1
-    workers = db(db.actions.action=='submit', db.actions.study==study) \
+    if len(request.args) > 0:
+        studies = (request.args[0],)
+    else:
+        studies = db(db.studies.task=='prisoner').select(db.studies.id)
+
+    workers = db(db.actions.action=='submit', db.actions.study.belongs(studies)) \
         .select(db.actions.workerid, distinct=True)
     workers = [w.workerid for w in workers]
 
     def worker_results(workerid):
-        rows = db(db.actions.action=='submit', db.actions.workerid==workerid) \
-            .select(db.actions.other, db.actions.time, orderby=~db.actions.time)
+        rows = db((db.actions.action=='submit')
+                  &(db.actions.workerid==workerid)) \
+            .select(db.actions.other, db.actions.time, db.actions.condition,
+                    orderby=~db.actions.time)
         return Storage(worker=workerid,
                        latest=rows[0].time,               
+                       condition=db.conditions(rows[0].condition).json,
                        letters=[sj.loads(row.other)['letter'] for row in rows])
 
     # Copied this code from djangosnippets
@@ -73,6 +80,9 @@ def results():
                 return '%s<a href="%s">%s</a>%s' % (prefix, url, url, last)
         return re.sub(re_string, do_sub, text)
 
-    return dict(study=study,
-                results=[worker_results(w) for w in workers],
+
+
+    return dict(studies=studies,
+                results=sorted([worker_results(w) for w in workers],
+                               key=lambda w: now-w.latest),
                 format=plaintext2html)
