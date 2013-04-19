@@ -32,25 +32,22 @@ letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive
 <p>{{=XML(prisoner.bio)}}</p>
 
 <h2>Offense</h2>
-<p><span class="crime underline" title="{{=prisoner.crime.long}}">{{=prisoner.crime.short}}</span></p>
+<p><span class="crime {{if prisoner.crime.long:}} underline" title="{{=prisoner.crime.long}}{{pass}}"
+>{{=prisoner.crime.short}}</span></p>
 <h2>Submit your Response</h2>
 <form action method="POST">
 <label for="minWord">
-    <p>Write a positive and supportive letter to the prisoner.  Your
-    response should be no less than {{=min_words}} words. Your letter
-    will be evaluated by a supervisor before payment is
-    authorized. Only responses that are positive and supportive will
-    be approved.</p>
 
-Do:
-<ul><li>Speak to the letter
-</ul>
-Don't:
-<ul><li>Do not judge the person by the crime they committed
+    <p>Write a positive and supportive letter to the prisoner.  Your letter
+    will be evaluated by a supervisor.  To be approved, your letter must:</p>
+
+<ul>
+  <li>Speak to the inmate's profile above
+  <li>Be positive and supportive
+  <li>Have a <i>writing effort</i> graded at least 3/5 by the supervisor
 </ul>
 
-Your response must be graded at least 7/10 by the supervisor.
-
+Your work will be approved within {{=int(bonus_delay/60)}} minutes.  Thank you!
 
 </p></label><br>
 <textarea name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>

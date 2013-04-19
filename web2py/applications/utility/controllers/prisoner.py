@@ -20,68 +20,59 @@ def index():
     prisoner = Storage(prisoners[prisoner_num])
 
     # Choose a crime
-    random.seed(hit_num)
+    random.seed(str(hit_num) + request.workerid)
     choose_from = sex_crimes if request.sexy else crimes
     prisoner.crime = Storage(random.choice(choose_from))
+    random.seed(now)
 
     return dict(min_words=100,
                 prisoner=prisoner,
                 sexy=request.sexy)
 
 
-def index_old():
-    # First -- if this is a hit submission, then let's finish!
-    if request.vars.prisoner_name:
-        wordcount = len(request.vars.worker_message.split())
-        q = ((db.worker_response.worker_id==request.vars.workerid)
-             & (db.worker_response.prisoner_name==request.vars.prisoner_name))
-        db(q).update(message=request.vars.worker_message,
-                     price=request.vars.price,
-                     response_length=wordcount)
-        #log('when finishing, live is %s %s' % (request.live, request.vars.live))
-        hit_finished()
-        return # Technically not necessary after hit_finished()
+def results():
+    study = request.args[0] if len(request.args) > 0 else 1
+    workers = db(db.actions.action=='submit', db.actions.study==study) \
+        .select(db.actions.workerid, distinct=True)
+    workers = [w.workerid for w in workers]
 
-    # Ok, then we are just displaying the HIT
-    min_words = 100
+    def worker_results(workerid):
+        rows = db(db.actions.action=='submit', db.actions.workerid==workerid) \
+            .select(db.actions.other, db.actions.time, orderby=~db.actions.time)
+        return Storage(worker=workerid,
+                       latest=rows[0].time,               
+                       letters=[sj.loads(row.other)['letter'] for row in rows])
 
-    if not db.worker_response(worker_id=request.workerid):
-        # If we haven't constructed the responses rows for this worker
-        # yet, let's make them
-        for row in db().select(db.venice.ALL):
-            crime = row.crime if request.experimental_treatment==1 else row.crime_control
-            db.worker_response.insert(worker_id=request.workerid,
-                                      prisoner_name=row.name,
-                                      prisoner_crime=crime,
-                                      prisoner_photo=row.photo,
-                                      prisoner_message=row.message,
-                                      treatment=request.experimental_treatment)
-  
-    # Choose a random prisoner for this worker to work on
-    prisoner = db((db.worker_response.worker_id==request.workerid)
-                  & (db.worker_response.message == None)
-                  & (db.worker_response.displayed==1)) \
-                  .select(db.worker_response.ALL,
-                          orderby='<random>',
-                          limitby=(0,1)).first()
-  
-    if prisoner == None:
-        prisoner = db((db.worker_response.worker_id==request.workerid)
-                      & (db.worker_response.message == None)).select(db.worker_response.ALL,
-                                                                     orderby='<random>',
-                                                                     limitby=(0,1)).first()
-  
-    # Abbreviate last name
-    prisoner.prisoner_name = prisoner.prisoner_name.split()[0] \
-        + ' ' + prisoner.prisoner_name.split()[1][0] + '.'
+    # Copied this code from djangosnippets
+    import re
+    import cgi
+    re_string = re.compile(r'(?P<htmlchars>[<&>])|(?P<space>^[ \t]+)|(?P<lineend>\r\n|\r|\n)|(?P<protocal>(^|\s)((http|ftp)://.*?))(\s|$)', re.S|re.M|re.I)
+    def plaintext2html(text, tabstop=4):
+        def do_sub(m):
+            c = m.groupdict()
+            if c['htmlchars']:
+                return cgi.escape(c['htmlchars'])
+            if c['lineend']:
+                return '<br>'
+            elif c['space']:
+                t = m.group().replace('\t', '&nbsp;'*tabstop)
+                t = t.replace(' ', '&nbsp;')
+                return t
+            elif c['space'] == '\t':
+                return ' '*tabstop;
+            else:
+                url = m.group('protocal')
+                if url.startswith(' '):
+                    prefix = ' '
+                    url = url[1:]
+                else:
+                    prefix = ''
+                last = m.groups()[-1]
+                if last in ['\n', '\r', '\r\n']:
+                    last = '<br>'
+                return '%s<a href="%s">%s</a>%s' % (prefix, url, url, last)
+        return re.sub(re_string, do_sub, text)
 
-    prisoner.update_record(displayed=1)
-    return dict(min_words=min_words,
-                prisoner=prisoner,
-                sex=request.experimental_treatment==1)
-
-
-
-
-def tempo():
-  return u'<html><body>%s</body></html>' % prisoners[19]
+    return dict(study=study,
+                results=[worker_results(w) for w in workers],
+                format=plaintext2html)
