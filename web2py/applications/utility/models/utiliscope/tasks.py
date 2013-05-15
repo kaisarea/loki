@@ -54,6 +54,12 @@ def send_email(to, subject, message):
     debug_t('Sent!')
 
 
+# Initial Setup, Periodic Maintenance
+@log_scheduler_errors
+def periodic_maintenance():
+    setup_db()
+
+
 @log_scheduler_errors
 def refresh_hit_status():
     hits = db(db.hits.status.belongs(('open', 'getting done'))).select()
@@ -92,6 +98,7 @@ def refresh_hit_status():
     if failed_refreshes:
         debug_t('MTurk API went bogus for refreshing %s/%s hits',
                 len(failed_refreshes), len(hits))
+
 
 # ============== Approving Hits and Paying People Bonus =============
 @log_scheduler_errors
@@ -259,7 +266,8 @@ def launch_hit(hit):
                                  params.lifetime,
                                  params.assignments,
                                  params.reward,
-                                 params.tag)
+                                 params.tag,
+                                 params.block_india)
 
         hitid = turk.get(result, 'HITId')
         if not hitid: raise TurkAPIError('LOST A HIT! This shouldn\'t happen! check this out.')
@@ -288,7 +296,8 @@ mystery_task_params = Storage(
          'lifetime' : hit_lifetime,
          'assignments' : 1,
          'reward' : 0.0,
-         'tag' : None})
+         'tag' : None,
+         'block_india' : True})
 
 
 # ============== Junk Code (will delete soon) =============

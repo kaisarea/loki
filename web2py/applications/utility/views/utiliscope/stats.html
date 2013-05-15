@@ -1,0 +1,8 @@
+<b>Stats for {{=study.name}}:</b> <i>{{=study.description}}</i><br>
+{{=stats.num_hits_total}}/{{=num_workers}} hits completed in {{=stats.time_length}}. Median {{=stats.median_hit_time}} per completion.<br>
+
+{{for var in work_rates:}}
+{{for val in var[1]:}}
+{{= var[0] }}={{= val[0] }} had <b>{{= '%.2f' % val[1]}}</b> completion rate<br>
+{{pass}}
+{{pass}}

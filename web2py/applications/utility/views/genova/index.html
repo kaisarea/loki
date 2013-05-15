@@ -1,13 +1,190 @@
 {{ extend 'layout.html' }}
-<h2>Interface for the database with prisoners' profiles</h2><br>
-<form action="/myhit/finish" method="POST">
-Prisoner ID: <input type="text" name="id" /><br>
-Prisoner Name: <input type="text" name="name" /><br>
-Prisoner Photo: <input type="file" name="photo" /><br>
-Treatment: <input type="radio" name="treatment" value="1">Treatment<br>
-Control: <input type="radio" name="treatment" value="0">Control<br>
-Crime: <input type="text" name="crime" /><br>
-Prisoner profile: <br>
-<textarea rows="20" cols="80" name="message"></textarea><br>
-<input type="submit" />
+<!--<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>-->
+<script type="text/javascript" src="/static/prisoner/word-count.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+{{ bonus_time = 30 }}
+{{ min_words = 100 }}
+
+<style>
+.underline {text-decoration: underline;}
+h1, .orange {color: #CC6600;}
+p {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
+
+</style>
+
+<h1>Image Tagging</h1>
+<p style="margin-bottom: 1em;">This job pays <b class="orange">{{=request.price}}</b> per
+item (via <span title="<b>This HIT pays in bonus.</b> <br>You will receive a bonus payment 
+of {{=request.price}} within {{=bonus_time}} minutes of submitting. <br><br>
+You can find bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your 
+account balance and transaction history</i>" class="bonus underline">bonus</span>).</p>
+    
+<div id="shadow" style="display: none;">
+    <h2>Training</h2>
+    <p>
+        Before you embark on this assignment we want you to learn and practice
+        how it is done. We need you to pick keywords not by writing down just
+        anything that comes to mind but words that are the most apt, accurate
+        and succint words to capture the content of the picture. We will provide
+        you with a short training in learning to summarize content:
+    
+    <ul>
+        <li><p>"The Wall Street Journal reported yesterday that ESPN (DIS) has talked with at least one 
+                wireless carrier about subsidizing customer data plans for their consumption of the company’s 
+                sports content. Think of it as lettuce growers paying the Olive Garden (DRI) to keep the bottomless 
+                salads coming. ESPN doesn’t want its 45 million (and counting) digital users to stop watching on their 
+                iPads because they’re afraid of overage charges now that most major carriers are moving to capped data 
+                plans. “It makes it a worry-free, guilty pleasure,” says Roger Entner, an analyst at Recon 
+                Analytics. (ESPN declined to comment.)"
+            </p>
+        <li><p>"Federal money for Hurricane Sandy relief is starting to flow to New York City. This week, the U.S. Department 
+                of Housing and Urban Development approved the city’s plan to spend $1.77 billion—the first disbursement of a $51 
+                billion storm aid package Congress passed in January."
+            </p>
+        <li>
+            <p>"News Corp. (NWS) threats to make Fox a cable network make a lot more sense in light of the company’s recent earnings report.
+                Compared with the year-earlier period, the media giant almost doubled retransmission revenue—money it collects from cable 
+                and satellite TV providers that include the Fox network. That is precisely the chunk of money that will disappear if startups 
+                like Aereo are allowed to continue grabbing Fox shows on tiny antennae and digitally routing them to subscribers on computers 
+                and smartphones—an anachronistic end run around News Corp. toll takers."
+            </p>
+    </ul>       
+  
+    <h3>Choose one keyword that accurately describes the articles?</h3>
+    <form>
+    <p>
+    <ul>
+        <li>Paragraph 1: <input type="text" id="par1" name="article1">
+        <li>Paragraph 2: <input type="text" id="par2" name="article2">
+        <li>Paragraph 3: <input type="text" id="par3" name="article3">
+    </ul>
+    <button id="butt" style="padding: 5px;">Answer</button>
+    </p>
+    </form>
+</div>
+
+
+<h2>Details of the Task</h2>
+<p>
+{{ task = """These pictures may contain illicit, disagreeable content (explicit sexual
+    content, violence, racism etc.) """ if treatment1 else ""}} 
+
+You will be presented with a series of pictures. Provide 5 keywords most
+appropriately describing the content of these pictures.
+    {{ = task }} 
+
+<br><br>
+    
+    This assignment has been presented
+	to other interested Turkers and your reward is conditional
+	on your contribution to be the best available. Your eligibility
+	to continue working for us is conditional on your response ranking
+	among the top 10 percent among other responses.
+</p>
+
+<h2>Image</h2>
+<img src={{ = pic.url }}>
+
+<h2>Submit your Review</h2>
+<form action id="response" method="POST">
+<p>
+Your keywords should be the most relevant words describing the picture.
+Your work will be evaluated by a supervisor. Your work will be approved 
+within {{=bonus_time}} minutes.  Thank you!
+</p>
+<p>
+Keyword 1: <input type="text" id="keyword1"><br>
+Keyword 2: <input type="text" id="keyword2"><br>
+Keyword 3: <input type="text" id="keyword3"><br>
+Keyword 4: <input type="text" id="keyword4"><br>
+Keyword 5: <input type="text" id="keyword5"><br>
+</p>
+<input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </form>
+
+
+<style>
+#tooltip {
+    position: absolute;
+	z-index: 3000;
+	border: 1px solid #111;
+	background-color: #eee;
+	padding: 13px;
+	opacity: 1;
+	max-width: 500px;
+}
+#tooltip h3, #tooltip div {
+	margin: 0;
+	color: #555;
+	letter-spacing: 0;
+	font-size: 18px;
+	font-family: calibri, helvetica;
+	line-height: 1.3em;
+}
+</style>
+<script>
+params = {
+    track: true,
+    delay: 0, 
+    showURL: false, 
+    showBody: " - ", 
+    fade: 150,
+    fixPNG: true, 
+    opacity: 1, 
+    left: -120,
+     top: 9
+};
+$('.bonus').tooltip(params);
+delete params.left
+delete params.top
+$('.crime').tooltip(params);
+</script>
+<script>
+    re1 = $('input[id=keyword1]').val();
+    re2 = $('input[id=keyword2]').val();
+    re3 = $('input[id=keyword3]').val();
+    re4 = $('input[id=keyword4]').val();
+    re5 = $('input[id=keyword5]').val();
+    
+    if(re1 != '' & re2 != '' & re3 != '' & re4 != '' & re5 != '')
+    {
+            $("input[type=submit]").attr("disabled", "enabled");
+    }
+    
+    $('input[id=keyword1]').change(function(){
+            //Validate your form here, example:
+            var validated1 = true;
+            if($('#keyword1').val().length === 0) validated = false;
+ 
+            //If form is validated enable form
+            if(validated) $("input[type=submit]").removeAttr("disabled");                             
+      });
+    
+    jQuery('#shadow').css("background", "#000")
+                     .css("position", "absolute")
+                     .css("z-index", "9999")
+                     .css("opacity", "0")
+                     .css("color", "#999")
+                     .toggle(function(){
+        $('#shadow').animate({
+            opacity: ".95"
+        })
+    }).css("box-shadow", "20px 20px 50px 50px #000000")
+      .css("padding", "5px").find('h2').css("color", "#999")
+      .end().find('h3').css("color", "#999").end().find('p').css("color", "#999").end().find('button')
+      .click(function(e) {
+            e.preventDefault();
+          value1 = $('input[id=par1]').val();
+          value2 = $('input[id=par2]').val();
+          value3 = $('input[id=par3]').val();
+
+        if(value1 == 'money' & value2 == 'money' & value3 == 'money')
+        {
+            //alert(value1, value2);
+            $('#shadow').fadeOut(2000);
+        }
+});
+
+
+
+</script>

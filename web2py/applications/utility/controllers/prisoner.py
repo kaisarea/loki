@@ -1,16 +1,6 @@
 def index():
     min_words = 100
 
-    # First -- if this is a hit submission, then let's finish!
-    letter = request.vars.letter_to_prisoner
-    if letter:
-	log_action('submit', {'letter' : letter})
-        wordcount = (letter.split())
-	if wordcount < min_words:
-	    send_me_mail('Someone is trying to trick us! %s %s'
-			 % (request.workerid, request.assignmentid))
-        hit_finished() # Automatically exits this function
-  
     # Choose a random prisoner ordering for this worker
     import random
     hit_num = hits_done()
@@ -20,21 +10,40 @@ def index():
     prisoner = Storage(prisoners[prisoner_num])
 
     # Choose a crime
-    random.seed(str(hit_num) + request.workerid)
-    choose_from = sex_crimes if request.sexy else crimes
+    random.seed(str(hit_num) + str(request.workerid))
+    choose_from = sex_crimes if request.dimension1_treatment else crimes
     prisoner.crime = Storage(random.choice(choose_from))
     random.seed(now)
 
+    othervars = {'hit_num' : hit_num,
+                 'prisoner' : prisoner}
+
+    # If this is a hit submission, then let's finish!
+    letter = request.vars.letter_to_prisoner
+    if letter:
+        othervars['letter'] = letter
+        log_action('submit', othervars)
+        wordcount = (letter.split())
+	if wordcount < min_words:
+	    send_me_mail('Someone is trying to trick us! %s %s'
+			 % (request.workerid, request.assignmentid))
+        hit_finished() # Automatically exits this function
+  
+    # Otherwise, display the form
+    log_action('with prisoner', othervars)
     return dict(min_words=100,
                 prisoner=prisoner,
-                sexy=request.sexy)
+                treatment1=request.dimension1_treatment,
+                treatment2=request.dimension2_treatment,
+                treatment3=request.dimension3_treatment,
+                treatment4=request.dimension4_treatment)
 
 
 def results():
     if len(request.args) > 0:
-        studies = (request.args[0],)
+        studies = (db.studies(request.args[0]),)
     else:
-        studies = db(db.studies.task=='prisoner').select(db.studies.id)
+        studies = db(db.studies.task=='prisoner').select()
 
     workers = db(db.actions.action=='submit', db.actions.study.belongs(studies)) \
         .select(db.actions.workerid, distinct=True)
@@ -79,8 +88,6 @@ def results():
                     last = '<br>'
                 return '%s<a href="%s">%s</a>%s' % (prefix, url, url, last)
         return re.sub(re_string, do_sub, text)
-
-
 
     return dict(studies=studies,
                 results=sorted([worker_results(w) for w in workers],

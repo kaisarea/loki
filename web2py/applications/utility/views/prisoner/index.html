@@ -3,37 +3,224 @@
 <script type="text/javascript" src="/static/prisoner/word-count.js"></script>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
 
+
 <style>
 .underline {text-decoration: underline;}
 h1, .orange {color: #CC6600;}
-p {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
+p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 
 </style>
 
-{{ title = "a Sex Offender Inmate" if sexy else "an Inmate" }}
+{{ title = "a Sex Offender Inmate" if treatment1 and False else "an Inmate" }}
+{{ org = 'sex offender inmates' if treatment1 and False else 'inmates' }}
+{{ bonus_time = 20 }}
 
-<h1>Write a Letter to {{=title}}</h1>
-<p style="margin-bottom: 1em;">This jobs
-pays <b class="orange">{{=request.price_string}}</b> per
-letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment of {{=request.price_string}} within 30 minutes of submitting. <br><br>You can find bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance and transaction history</i>" class="bonus underline">bonus</span>).</p>
+<div id="shadow" style="display: none;">
+    <h2>Guidelines for Writing to a Prisoner</h2>
+    <p>
+        Before you embark on this assignment we want you to learn and verify 
+        your understanding of the basic guidelines involved in this task.
+        Incoming mail shall be disapproved if any part of it:
+    </p>
+    <ol>
+        <li>Depicts or describes procedures for the construction of or use of 
+            weapons, ammunitions, bombs, chemical agents, or incendiary devices;
+        <li>Depicts, encourages, or describes methods of escape from correctional 
+            facilities or contains blueprints, drawings or similar descriptions of 
+            department of corrections facilities or institutions, or includes road 
+            maps that can facilitate escape from correctional facilities;
+        <li>Connotes the idea that the prisoner would suffer more punishment
+            in the afterlife or that the punishment he is suffering is
+            insufficient;
+        <li>Depicts or describes procedures for the brewing of alcoholic 
+            beverages, or the manufacture of drugs or other intoxicants;
+        <li>Is written in code;
+        <li>Depicts, describes or encourages activities which may lead to the 
+            use of physical violence or group disruption;
+        <li>Encourages or instructs in the commission of criminal activity;
+        <li>Is dangerously inflammatory in that it advocates or encourages 
+            riot, insurrection, disruption of the institution, violation of 
+            department or institution rules, the violation of which would 
+            present a serious threat to the security, order or rehabilitative 
+            objectives of the institution or the safety of any person;
+        <li>Threatens physical harm, blackmail or extortion;
+        <li>Be rude or disrespectful;
+        <li>Attacks people. Disagree with someone’s idea? That’s fine. Attack the person? No way;
+        <li>Write racial, ethnic, gender or obscene comments. Hopefully that 
+            needs no further explanation;
+        <li>Post anything you don’t have the right to post. That includes 
+            trademarked or private information, or personal information 
+            belonging to someone else;
+        <li>Discourages the prisoner from successfully continuing in his civil
+            life upon release;
+        <li>Lacks enthusiasm and positive outlook;
+        <li>Describes an illegal activity in a positive way leading to distortion
+            in role model creating process on the side of the prisoner;
+        <li>Undermines the correctionary process the prisoner is undergoing
+            in the correction facility;
+        <li>Undermines the belief on the part of the prisoner that after paying
+            his debt to the society he will not be able to become an equal 
+            member of the society;
+        <li>Contains criminal history, offender registration, or other personal 
+            information about another inmate or offender which, in the hands of 
+            an inmate, presents a threat to the security, order or rehabilitative 
+            objectives of the correctional system or to the safety of any person;
+        <li>It contains an advertisement promoting any of the following 
+            where the advertisement is the focus of, rather than being 
+            incidental to, the publication or the advertising is prominent 
+            or prevalent throughout the publication.
+            <ul>
+                <li>Three-way calling services;
+                <li>Pen-pal services;
+                <li>The purchase of products or services with postage stamps; or
+                <li>Conducting a business or profession while incarcerated 
+            </ul>
+    </ol>
+    <p>On the other hand, the letter will receive better evaluation grade if
+        it attempts to:
+    </p>
+    <ol>
+        <li>persuade, or convince the prisoners, to take action to improve;
+        <li>convince the prisoner that increased effort and energy will lead 
+            to improved performance;
+        <li>provide an outline of the problem and the benefits of change which 
+            will require elements of conviction, direction, intensity and 
+            persistence from the speaker in their efforts to persuade the 
+            prisoner to take a pro-active approach;
+        <li>establish credibility by demonstrating expertise, evidence and 
+            knowledge of the prisoner's situtation - presenting facts, 
+            statistics or quotes together with any personal experiences;
+        <li>make the audience believe that there is a problem which requires 
+            solving;
+        <li>provide ideas and direction to solve the problem;
+        <li>convey the subject with enthusiasm, passion and intensity to appeal 
+            to the emotions of the prisoner;
+        <li>comes across as truthful and sincere. Insincere and artificial 
+            sounding talk will be obvious to the prisoner and not achieve 
+            the desired results;
+        <li>Humor truly is the best medicine. People love to laugh. Chances are, 
+            the letter-writers who are most memorable to you are those who conveyed 
+            their message and were able to do it with humor. Letters should 
+            contain a good bit of humor. After all, motivation is all about 
+            uplifting the prisoner, and what better way than with humor?
+        <li>Include practical anecdotes from your own life. The prisoners will 
+            be able to relate to you as a regular person who has been through 
+            and overcome tough times. This will help you develop an instant 
+            rapport with the prisoner. Prisoner has to be able to identify 
+            with you if you are going to create a genuine connection with them. 
+            There is nothing more inspiring for the prisoners, than to realize 
+            that the person who is writing them has actually made it through 
+            and become successful. They will get the feeling that if you can 
+            go through what you did and came out on the other side successfully 
+            they will believe they can too.
+    </ol>
+    
+    <h2>Testing Your Understanding of the Guidelines</h2>
+    <p>
+        You will be presented a series of letters from fictitious
+        workers to prisoners and are asked to evaluate them.
+    </p>
+    <form>
+    <ul>
+        <li><p>"Dear Carlos,<br>
+                I cannot possibly comprehend how a human being might be 
+                capable of doing what you did. However, you were justly
+                convicted and you are paying your debt to society.
+                So I guess it would be wrongful of me to deny you 
+                my friendship. On the other hand, it is not quite
+                clear whether you have been praying to God to ask 
+                you forgiveness and whether it will be granted to you.
+                I guess it all depends on the entirety of your life,
+                personality and actions. Anyway, I find difficult to relate to you
+                as a person. Neverthless, I would like to say that I hope
+                that you won't deviate from the righteous path again
+                and pray for God's forgiveness. Dabit deus his quoque 
+                finem.<br>
+                <br>
+                Yours Truly,<br>
+                Jacob"
+            </p>
+            <em>List all the don'ts that this letter violates, in order from the first to the last, separate the 
+                numbers by kommas (e. g. if you think it violates the first and second item on the don't list, write
+                "1,2" in the text field below).</em><br><br>
+                Items Violated: <input type="text" id="letter1" name="letter1"><br>
+                <br>
+        <li><p>"Dear Tom,<br>
+                Your only crime is that you got caught! There is a lot of white-collar
+                folks steeling megabucks from people in investment banks 
+                and other garbage corporations. Politicians fool people all
+                the time and cash in on it. Your only crime was that you didn't
+                think big and you didn't have the right friends in the right places!
+                They put you in that position, man! It ain't your fault!
+                Next time you just gotta be smarter, don't steal pennies, steal
+                big! Don't lie just in the court room, lie all the time!
+                That's how the white people do it!<br>
+                <br>
+                Sincerely Yours,<br>
+                Margret"
+            </p>
+              <em>List all the don'ts that this letter violates, in order from the first to the last, separate the 
+                numbers by kommas (e. g. if you think it violates the first and second item on the don't list, write
+                "1,2" in the text field below).</em><br><br>
+                Items Violated: <input type="text" id="letter2" name="letter2"><br>
+                <br>
+        <li>
+            <p>"Hello there,<br>
+                looks like your life has been a big bummer. Don't worry about 
+                it pal! Life can be crazy sometime. Things just happen. Shit happens, man!
+                We're only human, ain't we? You screw up here and there. But hey, 
+                keep it real, man! Don't let them bring you down. Get up 
+                and live it up! But first you gotta get out of that sh*thole,
+                man! Can't wait for the man to let you go! Gotta grab things
+                into your own hand. Live is too short! Don't let the white man
+                take it away from you! When you get outta there I can figure 
+                out a job for you if you know what I mean;) Need folks with
+                experience!;)<br>
+                <br>
+                Take it easy bro!<br>
+                Jim"</p>
+                <em>List all the don'ts that this letter violates, in order from the first to the last, separate the 
+                numbers by kommas (e. g. if you think it violates the first and second item on the don't list, write
+                "1,2" in the text field below).</em><br><br>
+                Items Violated: <input type="text" id="letter3" name="letter3"><br>
+                <br>
+    </ul>       
+      
+    
+    <button id="butt" style="padding: 5px;">Answer</button>
+    </form>
+</div>
 
-{{ org = 'sex offender inmates' if sexy else 'inmates' }}
 
-   <p>Work for an organization that provides {{=org}} with letters
-   from the free world. Inmates need moral support outside of prison
-   walls. Research shows that inmates with positive contacts outside
-   of prison are less likely to return to prison, crime, and substance
-   abuse, and more likely to find a job upon release.</p>
+<h1>Write a Short Letter to {{=title}}</h1>
+<p style="margin-bottom: 1em;">This job pays <b class="orange">{{=request.price_string}}</b> per
+letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment of {{=request.price_string}} within {{=bonus_time}} minutes of submitting. <br><br>You can find bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance and transaction history</i>" class="bonus underline">bonus</span>).</p>
+
+   <p>
+    Inmates need moral support outside of prison
+    walls. Research shows that inmates with positive contacts outside
+    of prison are less likely to return to prison, crime, and substance
+    abuse, and more likely to find a job upon release.
+   </p>
 
    <p>Read the following prisoner's bio, and adhere to the
    requirements below when writing a letter.</p>
 
 <h2>{{=prisoner.name}}'s profile</h2>
-<p>{{=XML(prisoner.bio)}}</p>
-
-<h2>Offense</h2>
+<h3>Offense</h3>
 <p><span class="crime {{if prisoner.crime.long:}} underline" title="{{=prisoner.crime.long}}{{pass}}"
 >{{=prisoner.crime.short}}</span></p>
+
+<h3>Bio</h3>
+<p>{{=XML(prisoner.bio)}}</p>
+
+<h2>Training</h2>
+<p>
+    Writing to a prisoner involves certain idiosyncracies you need to learn
+    about before taking on the task. Follow <a href="#" id="training">this link</a> 
+    to complete our training on how to write an effective letter to a prisoner.
+</p>
+
 <h2>Submit your Letter</h2>
 <form action method="POST">
 <label for="minWord">
@@ -47,10 +234,15 @@ letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive
   <li>Receive a <i>writing effort</i> grade of 3 out of 5 as determined by a supervisor
 </ul>
 
-Your work will be approved within {{=int(bonus_delay/60)}} minutes.  Thank you!
+<h3>Probability or Improbability of Success</h3>
+<p>In our past experience 10 percent of the workers have been able to satisfy the
+above requisites for successfully completing the task.</p>
+<br>
+
+Your work will be approved within {{=bonus_time}} minutes.  Thank you!
 
 </p></label><br>
-<textarea name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+<textarea disabled="disabled" name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
 <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </form>
 
@@ -91,4 +283,39 @@ $('.bonus').tooltip(params);
 delete params.left
 delete params.top
 $('.crime').tooltip(params);
+</script>
+<script>
+    jQuery('#shadow').css("background", "#000")
+                     .css("position", "absolute")
+                     .css("z-index", "9999")
+                     .css("opacity", "0");
+                     //.css("height", ($('body').height()+50))
+                     //.css("widht", ($('body').width()));
+                     
+    $("a#training").bind('click', function () {
+        jQuery('#shadow').toggle(function(){
+        $('#shadow').animate({
+            opacity: ".95"
+        })
+        }).css("box-shadow", "20px 20px 50px 50px #000000")
+      .css("padding", "5px").find('h2').css("color", "white")
+      .end().find('p').css("color", "#ddd").end().find('ul')
+      .css("color", "#ddd").end().find('ol').css("color", "#ddd")
+      .end().find('h3').css("color", "#bbb").end().find('button').click(function(e) {
+            e.preventDefault();
+            var myText1 = $('input[name=letter1]').val();
+            var myText2 = $('input[name=letter2]').val();
+            var myText3 = $('input[name=letter3]').val();
+
+        if(myText1 == '1' & myText2 == '1' & myText3 == '1')
+        {
+            //alert(value1, value2);
+            $('#shadow').fadeOut(2000);
+            $('#minWord').prop("disabled", false);
+            window.scroll(0,0);
+        }
+    });
+    });
+                     
+    
 </script>

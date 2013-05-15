@@ -1,13 +1,112 @@
 {{ extend 'layout.html' }}
-<h2>Interface for the database with prisoners' profiles</h2><br>
-<form action="/myhit/finish" method="POST">
-Prisoner ID: <input type="text" name="id" /><br>
-Prisoner Name: <input type="text" name="name" /><br>
-Prisoner Photo: <input type="file" name="photo" /><br>
-Treatment: <input type="radio" name="treatment" value="1">Treatment<br>
-Control: <input type="radio" name="treatment" value="0">Control<br>
-Crime: <input type="text" name="crime" /><br>
-Prisoner profile: <br>
-<textarea rows="20" cols="80" name="message"></textarea><br>
-<input type="submit" />
+<!--<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>-->
+<script type="text/javascript" src="/static/prisoner/word-count.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+{{ bonus_time = 30 }}
+{{ min_words = 100 }}
+
+<style>
+.underline {text-decoration: underline;}
+h1, .orange {color: #CC6600;}
+p {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
+
+</style>
+
+
+<h1>Work as an Advertising Content Creator</h1>
+<p style="margin-bottom: 1em;">This job pays <b class="orange">{{=request.price}}</b> per
+item (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment 
+of {{=request.price}} within {{=bonus_time}} minutes of submitting. <br><br>
+You can find bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your 
+account balance and transaction history</i>" class="bonus underline">bonus</span>).</p>
+
+<p>
+	Our client is an Advertising Agency. 
+</p>
+<p>    
+    Our client would like to start outsourcing content creation for its 
+    media campaigns to Mechanical Turk but is worried about
+    quality. Hence are client is giving out test assignments to see what is
+    the quality of the responses.
+</p>    
+
+    
+<h2>Details of the Task</h2>
+<p>
+{{ task = """You will be presented with a product and a target customer segment group.
+    The sales strategy our client is pursuing is aggressive. The main idea behind the 
+    strategy is to induce anxiety, insecurity, dissatisfaction and feeling of unfulfillment that
+    could be remedied by purchasing our product. The goal is to convice the client
+    that they are missing something important in their life and our product will 
+    furnish it.""" if treatment else \
+    """You will be presented with a product and a target customer group.""" }} 
+    
+    {{ = task }} 
+
+    As previously mentioned, this a test
+    of the response quality. This assignment has been presented
+	to other interested Turkers and your reward is conditional
+	on your contribution to be the best available. Your eligibility
+	to continue working for us is conditional on your response ranking
+	among the top 10 percent among other responses.
+</p>
+
+<h2>Product: {{ = product.name }}, Target group: {{ = product.target }}</h2>
+<h2>Submit your Sales pitch</h2>
+<form action method="POST">
+<label for="minWord">
+
+    <p>Make your case for this product to this customer segment. Your piece will 
+	be evaluated by a supervisor.  
+    To be approved, your letter must:</p>
+
+<ul>
+  <li>be persuasive
+  <li>follow the above instructions
+  <li>Receive a <i>writing effort</i> grade of 3 out of 5 as determined by a supervisor
+</ul>
+
+Your work will be approved within {{=bonus_time}} minutes.  Thank you!
+
+</p></label><br>
+<textarea name="ad" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+<input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </form>
+
+
+<style>
+#tooltip {
+    position: absolute;
+	z-index: 3000;
+	border: 1px solid #111;
+	background-color: #eee;
+	padding: 13px;
+	opacity: 1;
+	max-width: 500px;
+}
+#tooltip h3, #tooltip div {
+	margin: 0;
+	color: #555;
+	letter-spacing: 0;
+	font-size: 18px;
+	font-family: calibri, helvetica;
+	line-height: 1.3em;
+}
+</style>
+<script>
+params = {
+    track: true,
+    delay: 0, 
+    showURL: false, 
+    showBody: " - ", 
+    fade: 150,
+    fixPNG: true, 
+    opacity: 1, 
+    left: -120,
+     top: 9
+};
+$('.bonus').tooltip(params);
+delete params.left
+delete params.top
+$('.crime').tooltip(params);
+</script>
