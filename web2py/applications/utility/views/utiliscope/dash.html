@@ -4,7 +4,8 @@
 <h1 style="margin-left: 60px; margin-top: 0px;">Dashboard</h1>
 <br>
 
-Currently serving {{=num_open_hits()}} hits. Amazon health: <span id="amazon_health"></span>/10.<br><br>
+Currently serving {{=num_open_hits()}} hits. Amazon health: <span id="amazon_health"></span>/10.
+Background tasks: {{=XML(worker_stats.status)}}<br><br>
 
 <table>
 <tr><td style="width: 450px">
@@ -78,4 +79,9 @@ iframe {
    background-color: #ddd;
    color: #eee;
 }
+.bigred, .red {
+	font-weight:bold;
+	color: #f00;
+}
+.bigred { font-size: 300px; }
 </style>
