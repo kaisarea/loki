@@ -8,7 +8,9 @@
 .underline {text-decoration: underline;}
 h1, .orange {color: #CC6600;}
 p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
-
+#shadow h2 {
+   margin-bottom: 15px;
+}
 </style>
 
 {{ title = "a Sex Offender Inmate" if treatment1 and False else "an Inmate" }}
@@ -16,41 +18,21 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 {{ bonus_time = 20 }}
 
 <div id="shadow" style="display: none;">
-    <h2>Guidelines for Writing to a Prisoner</h2>
+    <h2>Training Guidelines for Writing a Prisoner</h2>
     <p>
-        Before you embark on this assignment we want you to learn and verify 
-        your understanding of the basic guidelines involved in this task.
-        Incoming mail shall be disapproved if any part of it:
+        You must learn these rules to write prisoners.
+        Your letter will be rejected if it:
     </p>
     <ol>
-        <li>Depicts or describes procedures for the construction of or use of 
-            weapons, ammunitions, bombs, chemical agents, or incendiary devices;
-        <li>Depicts, encourages, or describes methods of escape from correctional 
-            facilities or contains blueprints, drawings or similar descriptions of 
-            department of corrections facilities or institutions, or includes road 
-            maps that can facilitate escape from correctional facilities;
-        <li>Connotes the idea that the prisoner would suffer more punishment
-            in the afterlife or that the punishment he is suffering is
-            insufficient;
         <li>Depicts or describes procedures for the brewing of alcoholic 
             beverages, or the manufacture of drugs or other intoxicants;
         <li>Is written in code;
         <li>Depicts, describes or encourages activities which may lead to the 
             use of physical violence or group disruption;
         <li>Encourages or instructs in the commission of criminal activity;
-        <li>Is dangerously inflammatory in that it advocates or encourages 
-            riot, insurrection, disruption of the institution, violation of 
-            department or institution rules, the violation of which would 
-            present a serious threat to the security, order or rehabilitative 
-            objectives of the institution or the safety of any person;
-        <li>Threatens physical harm, blackmail or extortion;
         <li>Be rude or disrespectful;
-        <li>Attacks people. Disagree with someone’s idea? That’s fine. Attack the person? No way;
         <li>Write racial, ethnic, gender or obscene comments. Hopefully that 
             needs no further explanation;
-        <li>Post anything you don’t have the right to post. That includes 
-            trademarked or private information, or personal information 
-            belonging to someone else;
         <li>Discourages the prisoner from successfully continuing in his civil
             life upon release;
         <li>Lacks enthusiasm and positive outlook;
@@ -58,28 +40,12 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
             in role model creating process on the side of the prisoner;
         <li>Undermines the correctionary process the prisoner is undergoing
             in the correction facility;
-        <li>Undermines the belief on the part of the prisoner that after paying
-            his debt to the society he will not be able to become an equal 
-            member of the society;
-        <li>Contains criminal history, offender registration, or other personal 
-            information about another inmate or offender which, in the hands of 
-            an inmate, presents a threat to the security, order or rehabilitative 
-            objectives of the correctional system or to the safety of any person;
-        <li>It contains an advertisement promoting any of the following 
-            where the advertisement is the focus of, rather than being 
-            incidental to, the publication or the advertising is prominent 
-            or prevalent throughout the publication.
-            <ul>
-                <li>Three-way calling services;
-                <li>Pen-pal services;
-                <li>The purchase of products or services with postage stamps; or
-                <li>Conducting a business or profession while incarcerated 
-            </ul>
     </ol>
     <p>On the other hand, the letter will receive better evaluation grade if
         it attempts to:
     </p>
     <ol>
+        <!--<li>tells a story about an event from your own life;-->
         <li>persuade, or convince the prisoners, to take action to improve;
         <li>convince the prisoner that increased effort and energy will lead 
             to improved performance;
@@ -90,7 +56,7 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
         <li>establish credibility by demonstrating expertise, evidence and 
             knowledge of the prisoner's situtation - presenting facts, 
             statistics or quotes together with any personal experiences;
-        <li>make the audience believe that there is a problem which requires 
+        <li>make the prisoner believe that there is a problem which requires 
             solving;
         <li>provide ideas and direction to solve the problem;
         <li>convey the subject with enthusiasm, passion and intensity to appeal 
@@ -117,8 +83,8 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
     
     <h2>Testing Your Understanding of the Guidelines</h2>
     <p>
-        You will be presented a series of letters from fictitious
-        workers to prisoners and are asked to evaluate them.
+        Read each of these ficticious letters, and identify the rules
+        they violate.
     </p>
     <form>
     <ul>
@@ -140,8 +106,8 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 Yours Truly,<br>
                 Jacob"
             </p>
-            <em>List all the don'ts that this letter violates, in order from the first to the last, separate the 
-                numbers by kommas (e. g. if you think it violates the first and second item on the don't list, write
+            <em>List <b>all</b> rules that this letter violates, separated 
+                by commas or spaces (e. g. if it violates the first and second items, write
                 "1,2" in the text field below).</em><br><br>
                 Items Violated: <input type="text" id="letter1" name="letter1"><br>
                 <br>
@@ -160,7 +126,7 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 Margret"
             </p>
               <em>List all the don'ts that this letter violates, in order from the first to the last, separate the 
-                numbers by kommas (e. g. if you think it violates the first and second item on the don't list, write
+                numbers by commas (e. g. if you think it violates the first and second item on the don't list, write
                 "1,2" in the text field below).</em><br><br>
                 Items Violated: <input type="text" id="letter2" name="letter2"><br>
                 <br>
@@ -180,7 +146,7 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 Take it easy bro!<br>
                 Jim"</p>
                 <em>List all the don'ts that this letter violates, in order from the first to the last, separate the 
-                numbers by kommas (e. g. if you think it violates the first and second item on the don't list, write
+                numbers by commas (e. g. if you think it violates the first and second item on the don't list, write
                 "1,2" in the text field below).</em><br><br>
                 Items Violated: <input type="text" id="letter3" name="letter3"><br>
                 <br>
@@ -214,36 +180,31 @@ letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive
 <h3>Bio</h3>
 <p>{{=XML(prisoner.bio)}}</p>
 
-<h2>Training</h2>
-<p>
-    Writing to a prisoner involves certain idiosyncracies you need to learn
-    about before taking on the task. Follow <a href="#" id="training">this link</a> 
-    to complete our training on how to write an effective letter to a prisoner.
-</p>
-
 <h2>Submit your Letter</h2>
 <form action method="POST">
 <label for="minWord">
 
-    <p>Write a positive and supportive letter to the prisoner.  Your letter
-    will be evaluated by a supervisor.  To be approved, your letter must:</p>
-
+<p>To ensure quality interactions with prisoners:</p>
 <ul>
-  <li>Speak to the inmate's profile above
-  <li>Be positive and supportive
-  <li>Receive a <i>writing effort</i> grade of 3 out of 5 as determined by a supervisor
+  <li>First, pass the <a class="training" href="#training">writing style training</a>
+  <li>Then, your submitted letter must pass an evaluation.<br>
+(Current approval rate: <b style="color: #000000;">30%</b> of HITs submitted)
 </ul>
 
-<h3>Probability or Improbability of Success</h3>
-<p>In our past experience 10 percent of the workers have been able to satisfy the
-above requisites for successfully completing the task.</p>
-<br>
-
-Your work will be approved within {{=bonus_time}} minutes.  Thank you!
+You will be notified of your letter's approval within {{=bonus_time}}
+minutes.  Thank you!
 
 </p></label><br>
-<textarea disabled="disabled" name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+
+<div style="position: relative;">
+  <div style="position: absolute; z-index: 2; top: 10px; left: 10px;">
+  You have not yet completed the <a class="training" href="#training">required training</a>.
+  </div>
+  <textarea disabled="disabled" name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+</div>
+
 <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
+
 </form>
 
 
@@ -265,6 +226,26 @@ Your work will be approved within {{=bonus_time}} minutes.  Thank you!
 	font-family: calibri, helvetica;
 	line-height: 1.3em;
 }
+
+textarea[disabled] {
+	background-color: #e5e5e5;
+	opacity: .7;
+	border: inset style;
+	
+}
+
+#shadow {
+    background: #eee;
+    position: absolute;
+    z-index: 9999;
+    opacity: 0
+    color: #444;
+    display: none;
+    padding: 30px;
+    box-shadow: 3px 3px 0px 0px #888888;
+    /*margin: 15px;*/
+}
+
 </style>
 
 <script>
@@ -285,23 +266,11 @@ delete params.top
 $('.crime').tooltip(params);
 </script>
 <script>
-    jQuery('#shadow').css("background", "#000")
-                     .css("position", "absolute")
-                     .css("z-index", "9999")
-                     .css("opacity", "0");
-                     //.css("height", ($('body').height()+50))
-                     //.css("widht", ($('body').width()));
-                     
-    $("a#training").bind('click', function () {
-        jQuery('#shadow').toggle(function(){
-        $('#shadow').animate({
-            opacity: ".95"
-        })
-        }).css("box-shadow", "20px 20px 50px 50px #000000")
-      .css("padding", "5px").find('h2').css("color", "white")
-      .end().find('p').css("color", "#ddd").end().find('ul')
-      .css("color", "#ddd").end().find('ol').css("color", "#ddd")
-      .end().find('h3').css("color", "#bbb").end().find('button').click(function(e) {
+
+function show_training() {
+    scrollTo(0,0);
+    jQuery('#shadow').fadeIn()
+      .find('button').click(function(e) {
             e.preventDefault();
             var myText1 = $('input[name=letter1]').val();
             var myText2 = $('input[name=letter2]').val();
@@ -315,7 +284,9 @@ $('.crime').tooltip(params);
             window.scroll(0,0);
         }
     });
-    });
+}
+
+    $(".training").bind('click', show_training);
                      
     
 </script>
