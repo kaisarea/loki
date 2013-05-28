@@ -106,9 +106,10 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 Yours Truly,<br>
                 Jacob"
             </p>
-            <em>List <b>all</b> rules that this letter violates, separated 
-                by commas or spaces (e. g. if it violates the first and second items, write
-                "1,2" in the text field below).</em><br><br>
+            <em>List <b>4 of the above</b> rules that this letter violates in 
+		an ascending order, separated by commas (e. g. if it violates 
+		the first and second items, write "1,2" in the text field below).
+	    </em><br><br>
                 Items Violated: <input type="text" id="letter1" name="letter1"><br>
                 <br>
         <li><p>"Dear Tom,<br>
@@ -125,9 +126,10 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 Sincerely Yours,<br>
                 Margret"
             </p>
-              <em>List all the don'ts that this letter violates, in order from the first to the last, separate the 
-                numbers by commas (e. g. if you think it violates the first and second item on the don't list, write
-                "1,2" in the text field below).</em><br><br>
+              <em>List <b>6 of the above</b> rules that this letter violates, in 
+		an ascending order, separated by commas the (e. g. if you think 
+		it violates the first and fourth items, write "1,4" in the text 
+		field below).</em><br><br>
                 Items Violated: <input type="text" id="letter2" name="letter2"><br>
                 <br>
         <li>
@@ -145,9 +147,10 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 <br>
                 Take it easy bro!<br>
                 Jim"</p>
-                <em>List all the don'ts that this letter violates, in order from the first to the last, separate the 
-                numbers by commas (e. g. if you think it violates the first and second item on the don't list, write
-                "1,2" in the text field below).</em><br><br>
+                <em>List <b>7 of the above</b> rules that this letter violates, 
+		in an ascending order, separated by commas (e. g. if you think 
+		it violates the first, fifth and second item, write
+                "1,2,5" in the text field below).</em><br><br>
                 Items Violated: <input type="text" id="letter3" name="letter3"><br>
                 <br>
     </ul>       
@@ -276,7 +279,7 @@ function show_training() {
             var myText2 = $('input[name=letter2]').val();
             var myText3 = $('input[name=letter3]').val();
 
-        if(myText1 == '5,7,8,10' & myText2 == '1' & myText3 == '1')
+        if(myText1 == '5,7,8,10' & myText2 == '4,6,7,8,9,10' & myText3 == '3,4,6,7,8,9,10')
         {
             //alert(value1, value2);
             $('#shadow').fadeOut(2000);
