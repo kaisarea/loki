@@ -11,6 +11,14 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 #shadow h2 {
    margin-bottom: 15px;
 }
+#err {
+	color: red;
+	float: right;
+	position: relative;
+	font: monospace;
+	font-style: italic;
+	left: -7em;
+}
 </style>
 
 {{ title = "a Sex Offender Inmate" if treatment1 and False else "an Inmate" }}
@@ -106,7 +114,8 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 Yours Truly,<br>
                 Jacob"
             </p>
-            <em>List <b>4 of the above</b> rules that this letter violates in 
+            <em>
+		List <b>4 of the above</b> rules that this letter violates in 
 		an ascending order, separated by commas (e. g. if it violates 
 		the first and second items, write "1,2" in the text field below).
 	    </em><br><br>
@@ -163,7 +172,10 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 
 <h1>Write a Short Letter to {{=title}}</h1>
 <p style="margin-bottom: 1em;">This job pays <b class="orange">{{=request.price_string}}</b> per
-letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment of {{=request.price_string}} within {{=bonus_time}} minutes of submitting. <br><br>You can find bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance and transaction history</i>" class="bonus underline">bonus</span>).</p>
+letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment 
+of {{=request.price_string}} within {{=bonus_time}} minutes of submitting. <br><br>You can find 
+bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance 
+and transaction history</i>" class="bonus underline">bonus</span>).</p>
 
    <p>
     Inmates need moral support outside of prison
@@ -200,7 +212,7 @@ minutes.  Thank you!
 </p></label><br>
 
 <div style="position: relative;">
-  <div style="position: absolute; z-index: 2; top: 10px; left: 10px;">
+  <div id="cover" style="position: absolute; z-index: 2; top: 10px; left: 10px;">
   You have not yet completed the <a class="training" href="#training">required training</a>.
   </div>
   <textarea disabled="disabled" name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
@@ -282,6 +294,7 @@ function show_training() {
         if(myText1 == '5,7,8,10' & myText2 == '4,6,7,8,9,10' & myText3 == '3,4,6,7,8,9,10')
         {
             //alert(value1, value2);
+	    $('#cover').fadeOut(1);
             $('#shadow').fadeOut(2000);
             $('#minWord').prop("disabled", false);
             window.scroll(0,0);
@@ -289,7 +302,38 @@ function show_training() {
     });
 }
 
-    $(".training").bind('click', show_training);
-                     
-    
+$("#letter1").on("change", function() {
+	jQuery('#err').remove();
+	var answers = new Array("5","7","8","10");
+	var pattern = /[0-9]+/g;
+	var matches = this.value.match(pattern);
+	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+	{
+		$('#letter1').after('<div id="err">' + $(matches).not(answers)[0] + ' is not among right answers!</div>');
+	}
+});
+
+$("#letter2").on("change", function() {
+	jQuery('#err').remove();
+	var answers = new Array("4","6", "7","8","9", "10");
+	var pattern = /[0-9]+/g;
+	var matches = this.value.match(pattern);
+	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+	{
+		$('#letter2').after('<div id="err">' + $(matches).not(answers)[0] + ' is not among right answers!</div>');
+	}
+});
+
+$("#letter3").on("change", function() {
+	jQuery('#err').remove();
+	var answers = new Array("3", "4", "6","7","8","9", "10");
+	var pattern = /[0-9]+/g;
+	var matches = this.value.match(pattern);
+	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+	{
+		$('#letter3').after('<div id="err">' + $(matches).not(answers)[0] + ' is not among right answers!</div>');
+	}
+});
+
+    $(".training").bind('click', show_training);    
 </script>
