@@ -13,6 +13,7 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 }
 #err {
 	color: red;
+	margin: 15px;
 	float: right;
 	position: relative;
 	font: monospace;
@@ -165,7 +166,7 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
     </ul>       
       
     
-    <button id="butt" style="padding: 5px;">Answer</button>
+    <button id="butt" style="left: 20em; position: relative; padding: 7px; padding-left: 20px; padding-right: 20px; margin-top: 20px;">Answer</button>
     </form>
 </div>
 
@@ -322,9 +323,12 @@ $("#letter1").on("change", function() {
 	var answers = new Array("5","7","8","10");
 	var pattern = /[0-9]+/g;
 	var matches = this.value.match(pattern);
+	matches = $.grep(matches, function(v, k){
+    		return $.inArray(v, matches) === k;
+		});
 	if(matches.length!=4)
 	{
-		$('#letter1').after('<div id="err">You have to enter 4 items violated in the letter!</div>')
+		$('#letter1').after('<div id="err">You have to enter 4 distinctive items violated in the letter! See the instructions to this quiz above.</div>')
 	}
 	else
 	{
@@ -346,9 +350,19 @@ $("#letter2").on("change", function() {
 	var answers = new Array("4","6", "7","8","9", "10");
 	var pattern = /[0-9]+/g;
 	var matches = this.value.match(pattern);
-	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+	matches = $.grep(matches, function(v, k){
+    		return $.inArray(v, matches) === k;
+		});
+	if(matches.length!=6)
 	{
-		$('#letter2').after('<div id="err">At least one of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+		$('#letter2').after('<div id="err">You have to enter 6 items violated in the letter!</div>');
+	}
+	else
+	{
+		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+		{
+			$('#letter2').after('<div id="err">At least one of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+		}
 	}
 });
 
@@ -361,9 +375,19 @@ $("#letter3").on("change", function() {
 	var answers = new Array("3", "4", "6","7","8","9", "10");
 	var pattern = /[0-9]+/g;
 	var matches = this.value.match(pattern);
-	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+	matches = $.grep(matches, function(v, k){
+    		return $.inArray(v, matches) === k;
+		});
+	if(matches.length!=7)
 	{
-		$('#letter3').after('<div id="err">One or possibly more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+		$('#letter3').after('<div id="err">You have to enter 7 items violated in the letter!</div>');
+	}
+	else
+	{
+		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+		{
+			$('#letter3').after('<div id="err">One or possibly more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+		}
 	}
 });
 
