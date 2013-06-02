@@ -314,40 +314,56 @@ $("#letter1").on("change", function() {
 	var explanations = {};
 	explanations[1] = "There is absolutely no mention of drugs or alcohol in the letter. Read the instructions before you answer!";
 	explanations[2] = "While latin is a language that is not commonly spoken in the US, the meaning of the sentence can be easily looked up and is unambiguous";
-	explanations[3] = "";
-	explanations[4] = "";
-	explanations[6] = "";
-	explanations[9] = "";
+	explanations[3] = "The letter certainly does not encourage violence on the part of the prisoner. Read the instructions cafefully!";
+	explanations[4] = "The letter certainly does not encourage criminal activity. Learn the guidelines before you attempt to pass the quiz!";
+	explanations[6] = "No racial, ethnic, gender or obscene comments are present in the letter. Learn the guidelines before you do the test!";
+	explanations[9] = "If you read the instructions carefully you will know that this letter does not describe any illegal activity.";
 	jQuery('#err').remove();
 	var answers = new Array("5","7","8","10");
 	var pattern = /[0-9]+/g;
 	var matches = this.value.match(pattern);
-	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+	if(matches.length!=4)
 	{
-	  //var exp = explanations[$(matches).not(answers)[0]]
-	  $('#letter1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ' is not among right answers.)</div>');
+		$('#letter1').after('<div id="err">You have to enter 4 items violated in the letter!</div>')
+	}
+	else
+	{
+		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+		{
+	  		//var exp = explanations[$(matches).not(answers)[0]]
+	  		$('#letter1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+		}
 	}
 });
 
 $("#letter2").on("change", function() {
+	var explanations = {};
+	explanations[1] = "While the letter certainly does encourage certain non-laudable activities, the abuse of intoxicants is not one of them.";
+	explanations[2] = "While the letter might seem little hazy at times it does not qualify as written in code.";
+	explanations[3] = "While the letter does encourage criminal activity, it actually encourages the prisoner to abandon the low-level violent activites in the pursuit of more sophisticated white-collar crimes.";
+	explanations[5] = "The letter takes the side of the prisoner and is attempting to provide an advise to the prisoner, however, misguided. There is certainly nothing rude or disrespectful in it.";
 	jQuery('#err').remove();
 	var answers = new Array("4","6", "7","8","9", "10");
 	var pattern = /[0-9]+/g;
 	var matches = this.value.match(pattern);
 	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 	{
-		$('#letter2').after('<div id="err">' + $(matches).not(answers)[0] + ' is not among right answers!</div>');
+		$('#letter2').after('<div id="err">At least one of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
 	}
 });
 
 $("#letter3").on("change", function() {
+	var explanations = {};
+	explanations[1] = "While the letter certainly does encourage some serious criminal activity, consumption of intoxicants is not one of them.";
+	explanations[2] = "The letter is quite explicit if ill-advised so it does not qualify as written in code.";
+	explanations[5] = "The letter does not quite provide the correct advise but clearly not out of rudeness or disrespect but rather because of the person providing it is probably committing those same very mistakes.";
 	jQuery('#err').remove();
 	var answers = new Array("3", "4", "6","7","8","9", "10");
 	var pattern = /[0-9]+/g;
 	var matches = this.value.match(pattern);
 	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 	{
-		$('#letter3').after('<div id="err">' + $(matches).not(answers)[0] + ' is not among right answers!</div>');
+		$('#letter3').after('<div id="err">One or possibly more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
 	}
 });
 
