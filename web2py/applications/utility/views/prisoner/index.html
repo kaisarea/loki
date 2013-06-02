@@ -120,8 +120,7 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 		separated by commas (e. g. if it violates 
 		the first and second items, write "1,2" in the text field below).
 	    </em><br><br>
-                Items Violated: <input type="text" id="letter1" name="letter1"><br>
-                <br>
+                Items Violated: <input type="text" id="letter1" name="letter1">
         <li><p>"Dear Tom,<br>
                 Your only crime is that you got caught! There is a lot of white-collar
                 folks steeling megabucks from people in investment banks 
@@ -334,8 +333,15 @@ $("#letter1").on("change", function() {
 	{
 		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 		{
-	  		//var exp = explanations[$(matches).not(answers)[0]]
-	  		$('#letter1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			var feasible_answers = new Array("1", "2", "3", "4", "6", "9");
+			if($(feasible_answers).not(matches).length == 0 && $(matches).not(feasible_answers).length == 0)
+			{
+	  			$('#letter1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			}
+			else
+			{
+				$('#letter1').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
+			}
 		}
 	}
 });
@@ -355,13 +361,21 @@ $("#letter2").on("change", function() {
 		});
 	if(matches.length!=6)
 	{
-		$('#letter2').after('<div id="err">You have to enter 6 items violated in the letter!</div>');
+		$('#letter2').after('<div id="err">You have to enter 6 items violated in the letter! Read the above quiz instructions more carefully.</div>');
 	}
 	else
 	{
 		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 		{
-			$('#letter2').after('<div id="err">At least one of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			var feasible_answers = new Array("1", "2", "3", "5");
+			if($(feasible_answers).not(matches).length == 0 && $(matches).not(feasible_answers).length == 0)
+			{
+	  			$('#letter2').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			}
+			else
+			{
+				$('#letter2').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
+			}
 		}
 	}
 });
@@ -380,13 +394,21 @@ $("#letter3").on("change", function() {
 		});
 	if(matches.length!=7)
 	{
-		$('#letter3').after('<div id="err">You have to enter 7 items violated in the letter!</div>');
+		$('#letter3').after('<br><div id="err">You have to enter 7 items violated in the letter! Go back to the quiz instructions and read them carefully.</div>');
 	}
 	else
 	{
 		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 		{
-			$('#letter3').after('<div id="err">One or possibly more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			var feasible_answers = new Array("1", "2", "5");
+			if($(feasible_answers).not(matches).length == 0 && $(matches).not(feasible_answers).length == 0)
+			{
+	  			$('#letter3').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			}
+			else
+			{
+				$('#letter3').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
+			}
 		}
 	}
 });
