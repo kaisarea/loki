@@ -17,7 +17,7 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 	position: relative;
 	font: monospace;
 	font-style: italic;
-	left: -7em;
+	left: 1em;
 }
 </style>
 
@@ -115,8 +115,8 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 Jacob"
             </p>
             <em>
-		List <b>4 of the above</b> rules that this letter violates in 
-		an ascending order, separated by commas (e. g. if it violates 
+		List <b>4 of the above</b> rules that this letter violates 
+		separated by commas (e. g. if it violates 
 		the first and second items, write "1,2" in the text field below).
 	    </em><br><br>
                 Items Violated: <input type="text" id="letter1" name="letter1"><br>
@@ -135,8 +135,8 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 Sincerely Yours,<br>
                 Margret"
             </p>
-              <em>List <b>6 of the above</b> rules that this letter violates, in 
-		an ascending order, separated by commas the (e. g. if you think 
+              <em>List <b>6 of the above</b> rules that this letter violates
+		separated by commas (e. g. if you think 
 		it violates the first and fourth items, write "1,4" in the text 
 		field below).</em><br><br>
                 Items Violated: <input type="text" id="letter2" name="letter2"><br>
@@ -156,8 +156,8 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
                 <br>
                 Take it easy bro!<br>
                 Jim"</p>
-                <em>List <b>7 of the above</b> rules that this letter violates, 
-		in an ascending order, separated by commas (e. g. if you think 
+                <em>List <b>7 of the above</b> rules that this letter violates
+		separated by commas (e. g. if you think 
 		it violates the first, fifth and second item, write
                 "1,2,5" in the text field below).</em><br><br>
                 Items Violated: <input type="text" id="letter3" name="letter3"><br>
@@ -287,13 +287,21 @@ function show_training() {
     jQuery('#shadow').fadeIn()
       .find('button').click(function(e) {
             e.preventDefault();
-            var myText1 = $('input[name=letter1]').val();
-            var myText2 = $('input[name=letter2]').val();
-            var myText3 = $('input[name=letter3]').val();
-
-        if(myText1 == '5,7,8,10' & myText2 == '4,6,7,8,9,10' & myText3 == '3,4,6,7,8,9,10')
+	    var pattern = /[0-9]+/g;
+            var myText1 = $('input[name=letter1]').val().match(pattern);
+            var answers1 = new Array("5", "7", "8", "10");
+            var myText2 = $('input[name=letter2]').val().match(pattern);
+	    var answers2 = new Array("4", "6", "7", "8", "9", "10");
+            var myText3 = $('input[name=letter3]').val().match(pattern);
+	    var answers3 = new Array("3", "4", "6", "7", "8", "9", "10");
+	   
+	    var misses1 = $(answers1).not(myText1).length + $(myText1).not(answers1).length;
+	    var misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
+	    var misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
+	    var overall = misses1 + misses2 + misses3
+	     
+        if(overall == 0)
         {
-            //alert(value1, value2);
 	    $('#cover').fadeOut(1);
             $('#shadow').fadeOut(2000);
             $('#minWord').prop("disabled", false);
@@ -303,13 +311,21 @@ function show_training() {
 }
 
 $("#letter1").on("change", function() {
+	var explanations = {};
+	explanations[1] = "There is absolutely no mention of drugs or alcohol in the letter. Read the instructions before you answer!";
+	explanations[2] = "While latin is a language that is not commonly spoken in the US, the meaning of the sentence can be easily looked up and is unambiguous";
+	explanations[3] = "";
+	explanations[4] = "";
+	explanations[6] = "";
+	explanations[9] = "";
 	jQuery('#err').remove();
 	var answers = new Array("5","7","8","10");
 	var pattern = /[0-9]+/g;
 	var matches = this.value.match(pattern);
 	if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 	{
-		$('#letter1').after('<div id="err">' + $(matches).not(answers)[0] + ' is not among right answers!</div>');
+	  //var exp = explanations[$(matches).not(answers)[0]]
+	  $('#letter1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ' is not among right answers.)</div>');
 	}
 });
 
