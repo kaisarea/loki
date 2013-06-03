@@ -20,6 +20,15 @@ p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
 	font-style: italic;
 	left: 1em;
 }
+#cor {
+color: black;
+margin-top: 15px;
+margin-bottom: 15px;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+width: 15%;
+}
 </style>
 
 {{ title = "a Sex Offender Inmate" if treatment1 and False else "an Inmate" }}
@@ -333,8 +342,8 @@ $("#letter1").on("change", function() {
 	{
 		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 		{
-			var feasible_answers = new Array("1", "2", "3", "4", "6", "9");
-			if($(feasible_answers).not(matches).length == 0 && $(matches).not(feasible_answers).length == 0)
+			var feasible_answers = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+			if($(matches).not(feasible_answers).length == 0)
 			{
 	  			$('#letter1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
 			}
@@ -342,6 +351,10 @@ $("#letter1").on("change", function() {
 			{
 				$('#letter1').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
 			}
+		}
+		else
+		{
+			$('#letter1').after('<div id="cor">Well done!</div>');
 		}
 	}
 });
@@ -367,8 +380,8 @@ $("#letter2").on("change", function() {
 	{
 		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 		{
-			var feasible_answers = new Array("1", "2", "3", "5");
-			if($(feasible_answers).not(matches).length == 0 && $(matches).not(feasible_answers).length == 0)
+			var feasible_answers = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+			if($(matches).not(feasible_answers).length == 0)
 			{
 	  			$('#letter2').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
 			}
@@ -376,6 +389,10 @@ $("#letter2").on("change", function() {
 			{
 				$('#letter2').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
 			}
+		}
+		else
+		{
+			$('#letter2').after('<div id="cor">Well done!</div>');
 		}
 	}
 });
@@ -400,8 +417,8 @@ $("#letter3").on("change", function() {
 	{
 		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
 		{
-			var feasible_answers = new Array("1", "2", "5");
-			if($(feasible_answers).not(matches).length == 0 && $(matches).not(feasible_answers).length == 0)
+			var feasible_answers = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+			if($(matches).not(feasible_answers).length == 0)
 			{
 	  			$('#letter3').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
 			}
@@ -409,6 +426,10 @@ $("#letter3").on("change", function() {
 			{
 				$('#letter3').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
 			}
+		}
+		else
+		{
+			$('#letter3').after('<div id="cor">Well done!</div>');
 		}
 	}
 });
