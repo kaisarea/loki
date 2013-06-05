@@ -29,6 +29,17 @@ margin-left: auto;
 margin-right: auto;
 width: 15%;
 }
+#constancy
+{
+    position: absolute;
+    left: 30em;
+    color: rgb(68, 60, 40);
+    background-color: rgb(194, 148, 67);
+    padding: 15px;
+    width: 25%;
+    float: right;
+    z-index: 100;
+}
 </style>
 
 {{ title = "a Sex Offender Inmate" if treatment1 and False else "an Inmate" }}
@@ -169,8 +180,7 @@ width: 15%;
 		separated by commas (e. g. if you think 
 		it violates the first, fifth and second item, write
                 "1,2,5" in the text field below).</em><br><br>
-                Items Violated: <input type="text" id="letter3" name="letter3"><br>
-                <br>
+                Items Violated: <input type="text" id="letter3" name="letter3">
     </ul>       
       
     
@@ -204,10 +214,12 @@ and transaction history</i>" class="bonus underline">bonus</span>).</p>
 <h3>Bio</h3>
 <p>{{=XML(prisoner.bio)}}</p>
 
-<h2>Submit your Letter</h2>
-<form action method="POST">
-<label for="minWord">
 
+
+<div style="position: relative;">
+<div style="width: 60%; float: left; position: absolute; z-index: 100;">
+<h2>Submit your Letter</h2>
+<label for="minWord">
 <p>To ensure quality interactions with prisoners:</p>
 <ul>
   <li>First, pass the <a class="training" href="#training">writing style training</a>
@@ -219,15 +231,28 @@ You will be notified of your letter's approval within {{=bonus_time}}
 minutes.  Thank you!
 
 </p></label><br>
+</div>
+<div id="constancy">
+<strong>
+We have 70 HITs available for you every day.<br><br><center>vs</center><br> 
+We have 8 HITs available for you today. We are not able to guarantee
+the availability or the number of HITs every day. However, on average
+usually around 10 are available.
+</strong>
+</div>
+</div>
 
-<div style="position: relative;">
+
+
+<div style="position: relative; top: 18em;">
+<form action method="POST">
   <div id="cover" style="position: absolute; z-index: 2; top: 10px; left: 10px;">
   You have not yet completed the <a class="training" href="#training">required training</a>.
   </div>
   <textarea disabled="disabled" name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+  <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </div>
 
-<input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 
 </form>
 
