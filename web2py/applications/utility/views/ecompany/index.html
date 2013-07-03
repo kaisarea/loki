@@ -1,0 +1,95 @@
+{{ extend 'layout.html' }}
+<!--<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>-->
+<script type="text/javascript" src="/static/prisoner/word-count.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+
+<style>
+.underline {text-decoration: underline;}
+h1, .orange {color: #CC6600;}
+p {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
+
+</style>
+
+{{ title = "a Sex Offender Inmate" if sexy and False else "an Inmate" }}
+{{ org = 'sex offender inmates' if sexy and False else 'inmates' }}
+{{ bonus_time = 20 }}
+
+<h1>Write a Short Letter to {{=title}}</h1>
+<p style="margin-bottom: 1em;">This job pays <b class="orange">{{=request.price_string}}</b> per
+letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment of {{=request.price_string}} within {{=bonus_time}} minutes of submitting. <br><br>You can find bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance and transaction history</i>" class="bonus underline">bonus</span>).</p>
+
+   <p>Work for an organization that provides {{=org}} with letters
+   from the free world. Inmates need moral support outside of prison
+   walls. Research shows that inmates with positive contacts outside
+   of prison are less likely to return to prison, crime, and substance
+   abuse, and more likely to find a job upon release.</p>
+
+   <p>Read the following prisoner's bio, and adhere to the
+   requirements below when writing a letter.</p>
+
+<h2>{{=prisoner.name}}'s profile</h2>
+<h3>Offense</h3>
+<p><span class="crime {{if prisoner.crime.long:}} underline" title="{{=prisoner.crime.long}}{{pass}}"
+>{{=prisoner.crime.short}}</span></p>
+
+<h3>Bio</h3>
+<p>{{=XML(prisoner.bio)}}</p>
+
+<h2>Submit your Letter</h2>
+<form action method="POST">
+<label for="minWord">
+
+    <p>Write a positive and supportive letter to the prisoner.  Your letter
+    will be evaluated by a supervisor.  To be approved, your letter must:</p>
+
+<ul>
+  <li>Speak to the inmate's profile above
+  <li>Be positive and supportive
+  <li>Receive a <i>writing effort</i> grade of 3 out of 5 as determined by a supervisor
+</ul>
+
+Your work will be approved within {{=bonus_time}} minutes.  Thank you!
+
+</p></label><br>
+<textarea name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+<input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
+</form>
+
+
+<style>
+#tooltip {
+    position: absolute;
+    z-index: 3000;
+	border: 1px solid #111;
+	background-color: #eee;
+	padding: 13px;
+	opacity: 1;
+	max-width: 500px;
+}
+#tooltip h3, #tooltip div {
+	margin: 0;
+	color: #555;
+	letter-spacing: 0;
+	font-size: 18px;
+	font-family: calibri, helvetica;
+	line-height: 1.3em;
+}
+</style>
+
+<script>
+params = {
+    track: true,
+    delay: 0, 
+    showURL: false, 
+    showBody: " - ", 
+    fade: 150,
+    fixPNG: true, 
+    opacity: 1, 
+    left: -120,
+	 top: 9
+};
+$('.bonus').tooltip(params);
+delete params.left
+delete params.top
+$('.crime').tooltip(params);
+</script>

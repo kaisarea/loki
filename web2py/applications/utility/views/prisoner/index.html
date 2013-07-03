@@ -1,5 +1,4 @@
 {{ extend 'layout.html' }}
-<!--<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>-->
 <script type="text/javascript" src="/static/prisoner/word-count.js"></script>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
 
@@ -31,21 +30,28 @@ width: 15%;
 }
 #constancy
 {
-    position: absolute;
-    left: 30em;
-    color: rgb(68, 60, 40);
-    background-color: rgb(194, 148, 67);
     padding: 15px;
-    width: 25%;
-    float: right;
     z-index: 100;
+    background: #eee;
+    color: #444;
+    box-shadow: 3px 3px 0px 0px #888888;
+    position: relative;
+    margin-bottom: 20px;
+    margin-top: 15px;
+    left: 2em;
+    width: 34%;
 }
 </style>
 
-{{ title = "a Sex Offender Inmate" if treatment1 and False else "an Inmate" }}
-{{ org = 'sex offender inmates' if treatment1 and False else 'inmates' }}
+{{ title = "a Sex Offender Inmate" if disagreeable and False else "an Inmate" }}
+{{ org = 'sex offender inmates' if disagreeable and False else 'inmates' }}
 {{ bonus_time = 20 }}
-
+{{ availability_message = """We have 8 HITs available for you today. We are not able to guarantee
+        the availability or the number of HITs every day. However, on average
+        usually around 10 are available.""" if inconstancy else "We have 70 HITs available for you every day." }}
+{{ limit_message = LI('The amount of hits is limited to ', work_limit, '.') if limit else "" }}
+{{ training_message = LI('To ensure quality interactions with prisoners we would like to ask you to first in our ', A('writing style training', _class='training', _href='#training')) if training else "" }}
+{{ improbability_message = LI('Finally, your submitted letter must pass an evaluation. You will be notified of your letter\'s approval within ', bonus_time, ' minutes.', BR(), '(Current approval rate: ', B(improbability_rate, '%', _style='color: #000000;'), ' of HITs submitted)') if improbability else "" }}
 <div id="shadow" style="display: none;">
     <h2>Training Guidelines for Writing a Prisoner</h2>
     <p>
@@ -69,45 +75,6 @@ width: 15%;
             in role model creating process on the side of the prisoner;
         <li>Undermines the correctionary process the prisoner is undergoing
             in the correction facility;
-    </ol>
-    <p>On the other hand, the letter will receive better evaluation grade if
-        it attempts to:
-    </p>
-    <ol>
-        <!--<li>tells a story about an event from your own life;-->
-        <li>persuade, or convince the prisoners, to take action to improve;
-        <li>convince the prisoner that increased effort and energy will lead 
-            to improved performance;
-        <li>provide an outline of the problem and the benefits of change which 
-            will require elements of conviction, direction, intensity and 
-            persistence from the speaker in their efforts to persuade the 
-            prisoner to take a pro-active approach;
-        <li>establish credibility by demonstrating expertise, evidence and 
-            knowledge of the prisoner's situtation - presenting facts, 
-            statistics or quotes together with any personal experiences;
-        <li>make the prisoner believe that there is a problem which requires 
-            solving;
-        <li>provide ideas and direction to solve the problem;
-        <li>convey the subject with enthusiasm, passion and intensity to appeal 
-            to the emotions of the prisoner;
-        <li>comes across as truthful and sincere. Insincere and artificial 
-            sounding talk will be obvious to the prisoner and not achieve 
-            the desired results;
-        <li>Humor truly is the best medicine. People love to laugh. Chances are, 
-            the letter-writers who are most memorable to you are those who conveyed 
-            their message and were able to do it with humor. Letters should 
-            contain a good bit of humor. After all, motivation is all about 
-            uplifting the prisoner, and what better way than with humor?
-        <li>Include practical anecdotes from your own life. The prisoners will 
-            be able to relate to you as a regular person who has been through 
-            and overcome tough times. This will help you develop an instant 
-            rapport with the prisoner. Prisoner has to be able to identify 
-            with you if you are going to create a genuine connection with them. 
-            There is nothing more inspiring for the prisoners, than to realize 
-            that the person who is writing them has actually made it through 
-            and become successful. They will get the feeling that if you can 
-            go through what you did and came out on the other side successfully 
-            they will believe they can too.
     </ol>
     
     <h2>Testing Your Understanding of the Guidelines</h2>
@@ -190,12 +157,24 @@ width: 15%;
 
 
 <h1>Write a Short Letter to {{=title}}</h1>
-<p style="margin-bottom: 1em;">This job pays <b class="orange">{{=request.price_string}}</b> per
+<div style="position: relative;">
+<div id="constancy">
+<h3>Terms of Contract</h3>
+<ul>
+<li>This job pays <b class="orange">{{=request.price_string}}</b> per
 letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment 
 of {{=request.price_string}} within {{=bonus_time}} minutes of submitting. <br><br>You can find 
 bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance 
-and transaction history</i>" class="bonus underline">bonus</span>).</p>
+and transaction history</i>" class="bonus underline">bonus</span>).
+<li>{{=availability_message}}
+{{=limit_message }}
+{{=training_message}}
+{{=improbability_message}}
+</ul>
+</div>
+</div>
 
+<h2>Details of the Task</h2>
    <p>
     Inmates need moral support outside of prison
     walls. Research shows that inmates with positive contacts outside
@@ -203,8 +182,8 @@ and transaction history</i>" class="bonus underline">bonus</span>).</p>
     abuse, and more likely to find a job upon release.
    </p>
 
-   <p>Read the following prisoner's bio, and adhere to the
-   requirements below when writing a letter.</p>
+   <p>Read the following prisoner's bio, and write a positive, encouraging letter.</p>
+
 
 <h2>{{=prisoner.name}}'s profile</h2>
 <h3>Offense</h3>
@@ -217,34 +196,16 @@ and transaction history</i>" class="bonus underline">bonus</span>).</p>
 
 
 <div style="position: relative;">
-<div style="width: 60%; float: left; position: absolute; z-index: 100;">
+<div style="width: 55%; float: left; position: absolute; z-index: 100;">
 <h2>Submit your Letter</h2>
 <label for="minWord">
-<p>To ensure quality interactions with prisoners:</p>
-<ul>
-  <li>First, pass the <a class="training" href="#training">writing style training</a>
-  <li>Then, your submitted letter must pass an evaluation.<br>
-(Current approval rate: <b style="color: #000000;">30%</b> of HITs submitted)
-</ul>
-
-You will be notified of your letter's approval within {{=bonus_time}}
-minutes.  Thank you!
-
-</p></label><br>
-</div>
-<div id="constancy">
-<strong>
-We have 70 HITs available for you every day.<br><br><center>vs</center><br> 
-We have 8 HITs available for you today. We are not able to guarantee
-the availability or the number of HITs every day. However, on average
-usually around 10 are available.
-</strong>
+</label><br>
 </div>
 </div>
 
 
 
-<div style="position: relative; top: 18em;">
+<div style="position: relative; top: 30px;">
 <form action method="POST">
   <div id="cover" style="position: absolute; z-index: 2; top: 10px; left: 10px;">
   You have not yet completed the <a class="training" href="#training">required training</a>.
