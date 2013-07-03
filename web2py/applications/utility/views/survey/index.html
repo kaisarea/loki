@@ -1,0 +1,13 @@
+{{ extend 'layout.html' }}
+
+Hi!  Please complete this survey.  We will pay you {{=request.price_string}}.
+<p>
+
+<form action method="POST">
+Question 1: <input type="text" id="q1" name="q1"/>
+
+<p>
+Question 2: <input type="text" id="q2" name="q2"/>
+
+<input type="submit"/>
+</form>

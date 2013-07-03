@@ -1,135 +1,134 @@
 {{ extend 'layout.html' }}
-<h1>Welcome Turker {{=current_workerid}}!</h1>
+<!--<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>-->
+<script type="text/javascript" src="/static/prisoner/word-count.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+{{ bonus_time = 30 }}
+{{ min_words = 100 }}
+
+<style>
+.underline {text-decoration: underline;}
+h1, .orange {color: #CC6600;}
+p {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
+
+</style>
+
+{{ title = "Public Relations Content Creator" if treatment else "Corporate Abuse Watch NGO Content Creator" }}
+
+<h1>{{ = treatment }} Work as a {{ = title }}</h1>
+<p style="margin-bottom: 1em;">This job pays <b class="orange">{{=request.price}}</b> per
+item (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment 
+of {{=request.price}} within {{=bonus_time}} minutes of submitting. <br><br>
+You can find bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your 
+account balance and transaction history</i>" class="bonus underline">bonus</span>).</p>
+
+{{ comp = """Our client is a Public Relations Consultancy. Its clients turn to it for help
+    when a public relations disaster happens to them. Our client then makes
+    effort in the area of damage management as much as humanly possible to make
+    sure that the main mission of our clients to create value for their shareholders
+    is preserved.""" if treatment else \
+    """Our client is a Human Rights organization. It monitors corporate abuse
+    and publishes it trough social media.""" }} 
+
 <p>
-	In this assignment you will be doing work for the Monsanto
-	company. Monsanto has always embraced innovation and always focused 
-	on helping to make a better world. You can see it in its groundbreaking 
-	products. Monsanto knows that every day, new ideas can come from anyone, 
-	anywhere. Working for Monsanto means you'll be respected, you'll contribute 
-	to the bottom line and you'll help farmers feed the world.</p>
-<br><br>
-<h2>Non-disclosure agreement</h2>
-<p>
-	This part will enable us to study the fourth aspect of Smithian
-	classification of compensating differentials.
+	{{ = comp }}
 </p>
-<br><br>
+<p>    
+    Our client would like to start outsourcing content creation for these
+    media campaigns to Mechanical Turk but is worried about
+    quality. Hence are client is giving out test assignments to see what is
+    the quality of the responses.
+</p>    
+
+    
 <h2>Details of the Task</h2>
 <p>
-	Some elements in the society do not appreciate Monsanto's contribution
-	to the society of feeding the ever-growing population of this planet.
-	These people out of spite or jealousy continue to picture the company
-	in extremely biased way. We want to hear your ideas about
-	what our employees, shareholders and community might or should
-	say to set the record straight by untarnishing the company's
-	reputation. We are also planning on a public relations campaign
-	in which we are going to send workers to talk to people
-	and explaining them our mission, principles and contribution.
-	You will help us determine what these workers will be 
-	trained to say to the people.
-</p>
-<br><br>
-<p>
-	You will be presented with a series of defamation cases against our
-	company and in each case present a powerful rebuttal to silence
-	the elements in our society that continue to press their case
-	against progress and development. This assignment has been presented
+{{ task = """You will be presented with a historical case of a Public Relations disaster
+    in which our client was not involved.""" if treatment else \
+    """You will be presented with a historical case of corporate abuse in which 
+    our client was not involved.""" }} 
+    
+    {{ = task }} 
+
+    As previously mentioned, this a test
+    of the response quality. 
+
+{{ exp = """You are asked to write a short rebuttal possibly researching the 
+	internet for the necessary information.""" if treatment else \
+    	"""Our client undestands that knowing the mindset and arguments of your opponent
+    	allows one to defeat them. Consequently, you are asked to take the position
+    	of the company participating in this corporate abuse and write a short
+    	rebuttal on behalf of that corporate entity possibly researching the internet
+    	for the necessary information.""" }} 
+
+{{ = exp }}<br><br>
+    
+    This assignment has been presented
 	to other interested Turkers and your reward is conditional
 	on your contribution to be the best available. Your eligibility
 	to continue working for us is conditional on your response ranking
 	among the top 10 percent among other responses.
 </p>
-<br><br>
-<h2>Training</h2>
+
+<h2>Case: {{ = case.name }}</h2>
 <p>
-	To make sure that your response will take account
-	of the company's mission, values and philosophy
-	you will be asked to study <a href="http://www.google.com/url?q=http://www.monsanto.com/SiteCollectionDocuments/Code-of-Business-Conduct-PDFs/code_of_conduct_english.pdf&sa=U&ei=rNsjUemoE8XZigL3ooCQBw&ved=0CB0QFjAC&usg=AFQjCNG-eHDu3xC_cYQmPx4CmVLKonjKWA">the company's Code of Business Conduct</a>
-	and the <a href=http://www.monsanto.com/whoweare/Documents/Monsanto_Corporate_Brochure.pdf>
-	Corporate Brochure</a>. After you are done studying these
-	documents you will be quizzed on the knowledge so obtained.
-	Only passing this quiz will render you eligible to undertake
-	this task.
+{{ = case.description }} 
 </p>
-<br><br>
-<h2>Quiz</h2>
-There should be a test bank in database table
-<br><br>
-<h2>Issue in Question: PCBs</h2>
-There should be a bank of issues in a database table.
-<p>
-	This passage is taken from ''The World According to Monsanto''
-	by Marie-Monique Robin.
-</p>
-<br><br>
-<p>
-Bottom line of this issue is that the company is accused
-of responsible for the deaths and health problems of 
-certain people through a failure to inform about the
-health risks posed by the PCBs. More details follow.
-</p>
-<br><br>
-<p>
-	''PCBs, or polychlorinated byphenyls, are chlorinated chemical
-	compounds that embody the great industrial adventure of the
-	late nineteenth century. While working to improve the techniques
-	for refining crude oil to extract the gasoline needed for the 
-	infant automobile industry, chemists identified the characteristics
-	of benzene, an aromatic hydrocarbon that would later be widely
-	used as a chemical solvent in the manufacture of medicines, plastics,
-	and coloring agents. In the laboratory, the sorcerer's apprentices
-	mixed it with chlorine and obtained a new product that turned
-	out to be thermally stable and to possess remarkable heat resistance.
-	Thus PCBs were born, and for half a century they colonized the planet:
-	they were used as coolants in electric transformers and industrial
-	hydraulic machines, but also as lubricants in applications as
-	varied as plastics, paint, ink, and paper.''
-	<br>
-	..
-	<br>
-	''In the course of the  next few days, 18,233 inhabitants of Anniston,
-	including 450 children with neurological defects, filed through the
-	small office of the Community against Pollution organization,
-	set up by Baker in 1997 to bring legal action against the chemical
-	company. They joind 3,516 other plaintiffs, including Baker himself,
-	who were already engaged in a class action suit that had been filed
-	four years earlier. After a half century of silent suffering, almost
-	the entire black population of the town was challenging a company with
-	a decades-long history as a major world polluter, and would soon
-	receive the largest known settlement paid by an industrial company
-	in U. S. history: $700 million.''
-	<br>
-	..
-	<br>
-	''According to a declassified report, secretly prepared in March 2005
-	by the Environmental Protection Agency (EPA), 680 million pounds of PCBs
-	were produced in Anniston from 1929 to 1971. Sixty thousand pounds of PCBs
-	were emitted into the atmosphere, 1.8 million pounds were dumped in streams
-	such as Snow Creek, and 68 million pounds of contaminated wastes were 
-	deposited in an open pit located on the site, in other words, in the 
-	heart of the city's black community.''
-	<br>
-	..
-	<br>
-	''What is absolutely breathtaking is that Monsanto knew that PCBs presented
-	 a serious health risk as early as 1937. But the company carried on regardless
-	until the products were finally banned in 1977..''
-</p>
-<br><br>
-<h2>Submit your Response</h2>
-Given the issue above, submit a response that you think our Public
-Relations field workers should present to the general public during
-seminars and promotional discussions. Frame your response
-as a possible answer to the question: How could Monsanto allow
-people to die or contract fatal disease in the course of their
-work for the company? How could Monsanto keep secret vital 
-information on health risks of the products it was producing?
-Why has Monsanto never apologized for those actions?
-<form action="/myhit/finish" method="POST">
-<textarea rows="30" cols=80>
-This response should be stored in a database along with the worker id, 
-the issue in question and the test result.
-</textarea>
-<br>
-<input type="submit" />
+
+<h2>Submit your Rebuttal</h2>
+<form action method="POST">
+<label for="minWord">
+
+    <p>Write a position paper to defend the actions taken by the company in the
+    incident. Your letter will be evaluated by a supervisor.  
+    To be approved, your letter must:</p>
+
+<ul>
+  <li>be well researched
+  <li>persuasive
+  <li>Receive a <i>writing effort</i> grade of 3 out of 5 as determined by a supervisor
+</ul>
+
+Your work will be approved within {{=bonus_time}} minutes.  Thank you!
+
+</p></label><br>
+<textarea name="response_to_charge" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+<input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </form>
+
+
+<style>
+#tooltip {
+    position: absolute;
+	z-index: 3000;
+	border: 1px solid #111;
+	background-color: #eee;
+	padding: 13px;
+	opacity: 1;
+	max-width: 500px;
+}
+#tooltip h3, #tooltip div {
+	margin: 0;
+	color: #555;
+	letter-spacing: 0;
+	font-size: 18px;
+	font-family: calibri, helvetica;
+	line-height: 1.3em;
+}
+</style>
+<script>
+params = {
+    track: true,
+    delay: 0, 
+    showURL: false, 
+    showBody: " - ", 
+    fade: 150,
+    fixPNG: true, 
+    opacity: 1, 
+    left: -120,
+     top: 9
+};
+$('.bonus').tooltip(params);
+delete params.left
+delete params.top
+$('.crime').tooltip(params);
+</script>
