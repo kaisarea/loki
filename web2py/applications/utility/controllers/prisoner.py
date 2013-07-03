@@ -11,7 +11,7 @@ def index():
 
     # Choose a crime
     random.seed(str(hit_num) + str(request.workerid))
-    choose_from = sex_crimes if request.dimension1_treatment else crimes
+    choose_from = sex_crimes if request.disagreeable else crimes
     prisoner.crime = Storage(random.choice(choose_from))
     random.seed(now)
 
@@ -33,10 +33,13 @@ def index():
     log_action('with prisoner', othervars)
     return dict(min_words=100,
                 prisoner=prisoner,
-                treatment1=request.dimension1_treatment,
-                treatment2=request.dimension2_treatment,
-                treatment3=request.dimension3_treatment,
-                treatment4=request.dimension4_treatment)
+                disagreeable=request.disagreeable,
+                training=request.training,
+                improbability=request.improbability,
+                improbability_rate=request.improbability_rate,
+                inconstancy=request.inconstancy,
+                limit=request.limit,
+                work_limit=request.work_limit)
 
 
 def results():
