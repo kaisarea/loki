@@ -210,11 +210,11 @@ appropriately describing the content of these pictures.
 <h2>Submit your Keywords</h2>
 <form action id="response" method="POST">
 <p>
-Keyword 1: <input type="text" id="keyword1"><br>
-Keyword 2: <input type="text" id="keyword2"><br>
-Keyword 3: <input type="text" id="keyword3"><br>
-Keyword 4: <input type="text" id="keyword4"><br>
-Keyword 5: <input type="text" id="keyword5"><br>
+Keyword 1: <input {{ = "disabled=disabled" if training else "" }} type="text" id="keyword1"><br>
+Keyword 2: <input {{ = "disabled=disabled" if training else "" }} type="text" id="keyword2"><br>
+Keyword 3: <input {{ = "disabled=disabled" if training else "" }} type="text" id="keyword3"><br>
+Keyword 4: <input {{ = "disabled=disabled" if training else "" }} type="text" id="keyword4"><br>
+Keyword 5: <input {{ = "disabled=disabled" if training else "" }} type="text" id="keyword5"><br>
 </p>
 <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </form>
@@ -256,7 +256,8 @@ $('.crime').tooltip(params);
             //If form is validated enable form
             if(validated) $("input[type=submit]").removeAttr("disabled");                             
       });
-      
+     
+ 
 function show_training() {
     scrollTo(0,0);
     jQuery('#shadow').fadeIn()
@@ -268,6 +269,7 @@ function show_training() {
 
         if(value1 == 'close-up' & value2 == 'water' & value3 == 'danger')
         {
+            $('form input:text').prop("disabled", false);
             $('#shadow').fadeOut(2000);
             window.scroll(0,0);
         }
