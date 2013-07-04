@@ -17,10 +17,12 @@ pics_treatment = [
         ]
 
 pics_control = [
-    {"url" : "http://i.telegraph.co.uk/multimedia/archive/02384/squirrel-michelang_2384189k.jpg"},
-    {"url" : "http://ichef.bbci.co.uk/wwhomepage-3.5/ic/news/432-259/67525000/jpg/_67525937_david_moyes_getty.jpg"},
-    {"url" : "http://ichef.bbci.co.uk/wwhomepage-3.5/ic/custom-promo/432-259/promo_ball_1005.jpg"},
-	{"url" : "http://ichef.bbci.co.uk/wwhomepage-3.5/ic/custom-promo/432-259/promo_dogs_1005.jpg"},
-    {"url" : "http://ichef.bbci.co.uk/wwhomepage-3.5/ic/custom-promo/432-259/promo_censor_1005.jpg"},
-    {"url" : "http://ichef.bbci.co.uk/wwhomepage-3.5/ic/custom-promo/432-259/promo_hobart_1005.jpg"}
+    {"url" : "/static/genova/iowa-state-capitol.jpg"},
+    {"url" : "/static/genova/sao-paulo.jpg"},
+    {"url" : "/static/genova/beverly-hills.jpg"},
+    {"url" : "/static/genova/granite.jpg"},
+    {"url" : "/static/genova/watermelon.jpg"},
+    {"url" : "/static/genova/jesus.jpg"},
+    {"url" : "/static/genova/figs.jpg"},
+    {"url" : "/static/genova/bike.jpg"}
         ]
