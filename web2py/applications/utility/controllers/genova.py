@@ -1,6 +1,6 @@
 def index():
     min_words = 100
-    if request.dimension1_treatment:
+    if request.disagreeable:
         pics = pics_treatment
     else:
         pics = pics_control
@@ -30,10 +30,13 @@ def index():
     log_action('with pic', othervars)
     return dict(min_words=100,
                 pic=pic,
-                treatment1=request.dimension1_treatment,
-                treatment2=request.dimension2_treatment,
-                treatment3=request.dimension3_treatment,
-                treatment4=request.dimension4_treatment)
+		disagreeable=request.disagreeable,
+                training=request.training,
+                improbability=request.improbability,
+                improbability_rate=request.improbability_rate,
+                inconstancy=request.inconstancy,
+                limit=request.limit,
+                work_limit=request.work_limit)
 
 
 def results():
