@@ -45,6 +45,10 @@ width: 25%;
 	font-family: calibri, helvetica;
 	line-height: 1.3em;
 }
+.bonus
+{
+	display: none;
+}
 #constancy
 {
     padding: 15px;
@@ -79,9 +83,8 @@ width: 25%;
         the availability or the number of HITs every day. However, on average
         usually around 10 are available.""" if inconstancy else "We have 70 HITs available for you every day." }}
 {{ limit_message = LI('The amount of hits is limited to ', work_limit, '.') if limit else "" }}
-{{ training_message = LI('To ensure high quality standard of the submitted task we would like to ask you to complete a ', A('tagging training', _class='training', _href='#training')) if training else "" }}
+{{ training_message = LI('To ensure high quality standard of the submitted task we would like to ask you to complete a ', A('tagging training', _class='training', _href='#training')) }}
 {{ improbability_message = LI('Finally, your submitted letter must pass an evaluation. You will be notified of your letter\'s approval within ', bonus_time, ' minutes.', BR(), '(Current approval rate: ', B(improbability_rate, '%', _style='color: #000000;'), ' of HITs submitted)') if improbability else "" }}
-
 
 <div id="shadow" style="display: none;">
  <h2>Training Guidelines for Image Tagging</h2>
@@ -132,8 +135,8 @@ width: 25%;
     <h2>Testing Your Understanding of the Guidelines</h2>
    <div style="width: 45%; float: left;  max-width: 350px; margin: 0 10px;" class="column1">  
     <img style="margin-bottom: 60px; margin-top: 25px;" src="http://www.stockfreeimages.com/Geese-thumb29687.jpg" width="275" height="200" border="0">
-    <img style="margin-bottom: 60px; margin-top: 10px;" src="http://www.dreamstime.com/water-splash-from-bottle-thumb21576605.jpg" width="275" height="200">
-    <img style="margin-bottom: 60px; margin-top: 0px;" src="http://www.dreamstime.com/cat-thumb9142291.jpg" width="275" height="200">
+    <div {{ = "class=bonus" if not training else "" }}><img style="margin-bottom: 60px; margin-top: 10px;" src="http://www.dreamstime.com/water-splash-from-bottle-thumb21576605.jpg" width="275" height="200">
+    <img style="margin-bottom: 60px; margin-top: 0px;" src="http://www.dreamstime.com/cat-thumb9142291.jpg" width="275" height="200"></div>
     </div>
     
     <div style="width: 45%; float: left; max-width: 350px; margin: 0 10px;" class="column2">
@@ -149,7 +152,8 @@ width: 25%;
               <li>highdef</li>
             </ul>
             Your answer: <input style="position: relative; left: 25px;" type="text" id="par1" name="article1">
-    </p>   
+    </p>  
+    <div {{ = "class=bonus" if not training else "" }}>
     <p>Assume there are already the following tags describing the picture to the 
 	left: "bottle", "blue", "spill", and "highdef". Which one of the following
 	tags is the most redundant?</p>
@@ -160,7 +164,7 @@ width: 25%;
               <li>portrait
               <li>water
             </ul>
-            Your answer: <input style="position: relative; left: 25px;" type="text" id="par2" name="article2">
+            Your answer: <input style="position: relative; left: 25px;" {{ = "value=water" if not training else "" }} type="text" id="par2" name="article2">
     </p>   
     <p>Which one of the following tags describes a story rather than some
 	other dimension about the image?</p>
@@ -171,8 +175,9 @@ width: 25%;
               <li>danger
               <li>bizarre
             </ul>
-            Your answer: <input style="position: relative; left: 25px;" type="text" id="par3" name="article3">
-    </p>   
+            Your answer: <input style="position: relative; left: 25px;" {{ = "value=danger" if not training else "" }} type="text" id="par3" name="article3">
+    </p>
+    </div>   
     <button id="butt" style="padding: 5px;">Answer</button>
     </form>
     </div>
@@ -221,6 +226,7 @@ Keyword 5: <input {{ = "disabled=disabled" if training else "" }} type="text" id
 
 
 <script>
+
 params = {
     track: true,
     delay: 0, 
