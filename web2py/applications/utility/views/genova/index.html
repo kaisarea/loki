@@ -237,24 +237,22 @@ delete params.left
 delete params.top
 $('.crime').tooltip(params);
 
-    re1 = $('input[id=keyword1]').val();
-    re2 = $('input[id=keyword2]').val();
-    re3 = $('input[id=keyword3]').val();
-    re4 = $('input[id=keyword4]').val();
-    re5 = $('input[id=keyword5]').val();
+//######## Keywords for the actual task and the behavior of the Submit button of the 
+//######## actual task
+
     
-    if(re1 != '' & re2 != '' & re3 != '' & re4 != '' & re5 != '')
-    {
-            $("input[type=submit]").attr("disabled", "enabled");
-    }
     
-    $('input[id=keyword1]').change(function(){
-            //Validate your form here, example:
-            var validated1 = true;
-            if($('#keyword1').val().length === 0) validated = false;
- 
-            //If form is validated enable form
-            if(validated) $("input[type=submit]").removeAttr("disabled");                             
+$('form input:text').change(function(){
+	re1 = $('input[id=keyword1]').val();
+	re2 = $('input[id=keyword2]').val();
+	re3 = $('input[id=keyword3]').val();
+	re4 = $('input[id=keyword4]').val();
+	re5 = $('input[id=keyword5]').val();
+
+	if(re1 != '' & re2 != '' & re3 != '' & re4 != '' & re5 != '')
+	{
+		$("input[type=submit]").removeAttr('disabled');
+	}
       });
      
  
