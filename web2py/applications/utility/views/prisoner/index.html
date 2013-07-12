@@ -89,9 +89,14 @@ textarea[disabled] {
 {{ title = "a Sex Offender Inmate" if disagreeable and False else "an Inmate" }}
 {{ org = 'sex offender inmates' if disagreeable and False else 'inmates' }}
 {{ bonus_time = 20 }}
-{{ availability_message = """We have 8 HITs available for you today. We are not able to guarantee
+
+{{ availability_message = A('the following graph', _onClick='window.open("/static/prisoner/var1.png", "WindowC", "width=831, height=576,scrollbars=yes");',_target='_blank', _href='#') if inconstancy else A('the following graph', _onClick='window.open("/static/prisoner/var2.png", "WindowC", "width=831, height=576,scrollbars=yes");',_target='_blank', _href='#')}}
+<!--
+"""We have 8 HITs available for you today. We are not able to guarantee
         the availability or the number of HITs every day. However, on average
-        usually around 10 are available.""" if inconstancy else "We have 70 HITs available for you every day." }}
+        usually around 10 are available.""" if inconstancy else "We have 70 
+	HITs available for you every day." }}
+-->
 {{ limit_message = LI('The amount of hits is limited to ', work_limit, '.') if limit else "" }}
 {{ training_message = LI('To ensure quality interactions with prisoners we would like to ask you to first in our ', A('writing style training', _class='training', _href='#training')) if training else "" }}
 {{ improbability_message = LI('Finally, your submitted letter must pass an evaluation. You will be notified of your letter\'s approval within ', bonus_time, ' minutes.', BR(), '(Current approval rate: ', B(improbability_rate, '%', _style='color: #000000;'), ' of HITs submitted)') if improbability else "" }}
@@ -211,7 +216,10 @@ letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive
 of {{=request.price_string}} within {{=bonus_time}} minutes of submitting. <br><br>You can find 
 bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance 
 and transaction history</i>" class="bonus underline">bonus</span>).
-<li>{{=availability_message}}
+<li>We are currently unable to predict with absolute certainty the amount of 
+	letters available for you to work on. However, 
+	{{=availability_message}} shows the amount of letters from 
+	last week and we expect to see similar pattern. 
 {{=limit_message }}
 {{=training_message}}
 {{=improbability_message}}
