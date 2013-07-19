@@ -86,8 +86,8 @@ textarea[disabled] {
 }
 </style>
 
-{{ title = "a Sex Offender Inmate" if disagreeable and False else "an Inmate" }}
-{{ org = 'sex offender inmates' if disagreeable and False else 'inmates' }}
+{{ title = "an Inmate" }}
+{{ org = 'inmates' }}
 {{ bonus_time = 20 }}
 
 {{ availability_message = A('the following graph', _onClick='window.open("/static/prisoner/var1.png", "WindowC", "width=831, height=576,scrollbars=yes");',_target='_blank', _href='#') if inconstancy else A('the following graph', _onClick='window.open("/static/prisoner/var2.png", "WindowC", "width=831, height=576,scrollbars=yes");',_target='_blank', _href='#')}}
