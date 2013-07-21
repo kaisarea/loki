@@ -2,21 +2,29 @@
 <script type="text/javascript" src="/static/prisoner/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="/static/prisoner/word-count.js"></script>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+<link rel="stylesheet" href="/static/prisoner/css/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+<script type="text/javascript" src="/static/prisoner/jquery.fancybox.pack.js?v=2.1.5"></script>
 <link rel="stylesheet" href="/static/prisoner/css/style-dropdown.css" type="text/css" media="screen"/>
 
 {{ title = "an Inmate" }}
 {{ org = 'inmates' }}
 {{ bonus_time = 20 }}
+{{if inconstancy and work_limit == 70:}}
+{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph1.png') }}
+{{elif not inconstancy and work_limit == 70:}}
+{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph2.png') }}
+{{elif inconstancy and work_limit == 140:}}
+{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph3.png') }}
+{{else:}}
+{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph4.png') }}
+{{pass}}
+ 
 
-{{ availability_message = A('the following graph', _onClick='window.open("/static/prisoner/var1.png", "WindowC", "width=831, height=576,scrollbars=yes");',_target='_blank', _style='margin-left: 0px;', _href='#') if inconstancy else A('the following graph', _onClick='window.open("/static/prisoner/var2.png", "WindowC", "width=831, height=576,scrollbars=yes");',_target='_blank', _href='#')}}
 <!--
-"""We have 8 HITs available for you today. We are not able to guarantee
-        the availability or the number of HITs every day. However, on average
-        usually around 10 are available.""" if inconstancy else "We have 70 
-	HITs available for you every day." }}
+R command used to generate the graphs:
+
+ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="identity") + geom_text(aes(label=hits), vjust=1.5, colour="white") + xlab("") + theme(axis.text.x = element_text(size=14, face="bold", color="black"))
 -->
-
-
 {{ improbability_message = P('Your submitted letter must pass an evaluation. You will be notified of your letter\'s approval within ', bonus_time, ' minutes.', BR(), '(Current approval rate: ', B(improbability_rate, '%', _style='color: #fff;'), ' of HITs submitted)') if improbability else "" }}
 {{ prisoner_textarea = DIV('You have not yet completed the ', A('required training.', _class='training', 
 	_href='#training'), _id='cover') if training else "" }}
@@ -156,13 +164,14 @@
 	</span>
       </a>
       <div class="sdt_box">
-	We are currently unable to predict with absolute certainty the amount of 
-	letters available for you to work on. However, 
-	{{=availability_message}} shows the amount of letters from 
+        This HIT will last for a week and will allow you to work on up to
+	{{=work_limit}}. 
+	This amount will be released over the course of the week.
+	On any given day you will be able to work on around {{=work_limit/7}} tasks.
+	We are currently unable to predict precisely the amount of 
+	letters available for you on each day. However, 
+	{{=availability_message}} shows the amount of letters on any given day from 
 	last week and we expect to see similar pattern. 
-        <BR><BR>
-	{{ limit_message = "The amount of hits is limited to "+ str(work_limit) + '.' if limit else "" }}
-	{{ = limit_message }}
       </div>
     </li>
     <li>
@@ -234,6 +243,10 @@
 </form>
 
 <script type="text/javascript">
+$(document).ready(function() {
+	$(".fancybox").fancybox();
+});
+
 $(function() {
 	/**
 	* for each menu element, on mouseenter, 
