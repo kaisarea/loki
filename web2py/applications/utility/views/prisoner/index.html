@@ -32,8 +32,8 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 <div id="shadow" style="display: none;">
     <h2>Training Guidelines for Writing a Prisoner</h2>
     <p>
-        You must learn these rules to write prisoners.
-        Your letter will be rejected if it:
+        You must learn these rules to write letters to prisoners.
+        Your letter will be <b>rejected</b> if it:
     </p>
     <ol>
         <li>Depicts or describes procedures for the brewing of alcoholic 
@@ -43,17 +43,20 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
             use of physical violence or group disruption;
         <li>Encourages or instructs in the commission of criminal activity;
         <li>Be rude or disrespectful;
-        <li>Write racial, ethnic, gender or obscene comments. Hopefully that 
+        <li>Write racist, chauvinist, sexist or obscene comments. Hopefully that 
             needs no further explanation;
         <li>Discourages the prisoner from successfully continuing in his civil
             life upon release;
         <li>Lacks enthusiasm and positive outlook;
         <li>Describes an illegal activity in a positive way leading to distortion
-            in role model creating process on the side of the prisoner;
+            in role model creating process on the side of the prisoner (e. g. 
+	    describes a criminal as a hero so that the prisoner grows to admire
+	    him and hence starts to perceive criminal activity as attractive
+	    or laudable);
         <li>Undermines the correctionary process the prisoner is undergoing
             in the correction facility;
     </ol>
-    
+   {{ if training: }} 
     <h2>Testing Your Understanding of the Guidelines</h2>
     <p>
         Read each of these ficticious letters, and identify the rules
@@ -85,6 +88,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 		the first and second items, write "1,2" in the text field below).
 	    </em><br><br>
                 Items Violated: <input type="text" id="letter1" name="letter1">
+	     <br><br>
         <li><p>"Dear Tom,<br>
                 Your only crime is that you got caught! There is a lot of white-collar
                 folks steeling megabucks from people in investment banks 
@@ -100,7 +104,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
                 Margret"
             </p>
               <em>List <b>6 of the above</b> rules that this letter violates
-		separated by commas (e. g. if you think 
+		separated by commas or white space (e. g. if you think 
 		it violates the first and fourth items, write "1,4" in the text 
 		field below).</em><br><br>
                 Items Violated: <input type="text" id="letter2" name="letter2"><br>
@@ -121,7 +125,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
                 Take it easy bro!<br>
                 Jim"</p>
                 <em>List <b>7 of the above</b> rules that this letter violates
-		separated by commas (e. g. if you think 
+		separated by commas or white spaces (e. g. if you think 
 		it violates the first, fifth and second item, write
                 "1,2,5" in the text field below).</em><br><br>
                 Items Violated: <input type="text" id="letter3" name="letter3">
@@ -130,8 +134,12 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
     
     <button id="butt" style="left: 20em; position: relative; padding: 7px; padding-left: 20px; padding-right: 20px; margin-top: 20px;">Answer</button>
     </form>
+{{pass}}
+{{ if not training:}}
+<button onClick="hideTrainingBox()" style="margin-left: 33%; margin-right: 33%; width: 33%; padding: 7px; padding-left: 20px; padding-right: 20px; margin-top: 20px;">Back to the task</button>
+{{pass}}
 </div>
-{{ training_message = P('To ensure quality interactions with prisoners we would like to ask you to first in our ', A('writing style training', _class='training', _href='#training')) if training else "" }}
+{{ training_message = P('To ensure that our clients are best served, we require you to go through ', A('writing style training', _class='training', _href='#training'), ' before you can begin work on this task.') }}
 
 <h1>Write a Short Letter to {{=title}}</h1>
 <div class="content">
@@ -174,6 +182,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 	last week and we expect to see similar pattern. 
       </div>
     </li>
+{{ if improbability: }}
     <li>
 	<a href="#">
 	  <img src="/static/prisoner/approval.jpg" alt=""/>
@@ -187,6 +196,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 		{{=improbability_message}}
       </div>
      </li>
+{{ pass }}
     <li>
 	<a href="#">
 	  <img src="/static/prisoner/training.jpg" alt=""/>
@@ -205,16 +215,17 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 <div style="float: none; clear: both;">
 <h2>Details of the Task</h2>
    <p>
-    Inmates need moral support outside of prison
+    Inmates need moral support from outside of the prison
     walls. Research shows that inmates with positive contacts outside
     of prison are less likely to return to prison, crime, and substance
     abuse, and more likely to find a job upon release.
    </p>
 
-   <p>Read the following prisoner's bio, and write a positive, encouraging letter.</p>
-</div.
+   <p>Read the following prisoner's bio, and write a positive, encouraging letter.
+	Please do not include your email address, full name or address in the letter.</p>
+</div>
 
-<h2>{{=prisoner.name}}'s profile</h2>
+<h2 style="margin-bottom: 12px;">{{=prisoner.name}}'s profile</h2>
 <h3>Offense</h3>
 <p><span class="crime {{if prisoner.crime.long:}} underline" title="{{=prisoner.crime.long}}{{pass}}"
 >{{=prisoner.crime.short}}</span></p>
@@ -257,6 +268,7 @@ $(function() {
 	*/
 	$('#sdt_menu > li').bind('mouseenter',function(){
 	var $elem = $(this);
+	$elem.find('img').css('visibility', 'visible');
 	$elem.find('img')
 	 .stop(true)
 	 .animate({
@@ -347,12 +359,17 @@ function show_training() {
 	     
         if(overall == 0)
         {
+	    alert('Congratulations! You have just successfully completed the training!');
 	    $('#cover').fadeOut(1);
             $('#shadow').fadeOut(2000);
             $('#minWord').prop("disabled", false);
             window.scroll(0,0);
         }
     });
+}
+
+function hideTrainingBox(){
+	$('#shadow').fadeOut(1000);
 }
 
 $("#letter1").on("change", function() {
