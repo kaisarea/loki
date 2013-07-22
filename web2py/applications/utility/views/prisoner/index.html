@@ -149,7 +149,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
       <img src="/static/prisoner/dollar.jpg" alt=""/>
       <span class="sdt_active"></span>
       <span class="sdt_wrap">
-        <span class="sdt_link">$.15</span>
+        <span class="sdt_link">{{=request.price_string}}</span>
         <span class="sdt_descr">PER HIT</span>
       </span>
       </a>
