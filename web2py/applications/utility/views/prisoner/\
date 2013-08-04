@@ -153,8 +153,6 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
         <span class="sdt_descr">PER HIT</span>
       </span>
       </a>
-      <div class="collar">
-      </div>
       <div style="display: inline;" class="sdt_box">
 	This job pays {{=request.price_string}} per
 	letter via bonus. <br>You will receive your bonus payment 
@@ -250,7 +248,7 @@ $(function() {
 	*/
 	$('#sdt_menu > li').bind('mouseenter',function(){
 	var $elem = $(this);
-	$elem.find('a').css('background-color', '#e3e3e3').css('height', '70px');
+	$elem.find('a').css('background-color', '#e3e3e3');
 		var $sub_menu = $elem.find('.sdt_box');
 		if($sub_menu.length){
 		  var left = '0px';
@@ -273,23 +271,23 @@ $(function() {
 			var first_prio = $elem.parent().children().first().find('.sdt_box').css('z-index')	
 			var second_prio = $elem.parent().children().first().next().find('.sdt_box').css('z-index')
 			var third_prio = $elem.parent().children().first().next().next().find('.sdt_box').css('z-index')
-			var highest_prio = Math.max(first_prio, second_prio, third_prio)+1
+			var highest_prio = Math.max(first_prio, second_prio, third_prio)
 			var visi = parseInt($sub_menu.css('z-index'))+1;
 			$sub_menu.css('z-index', highest_prio);
-			$sub_menu.show().css('left', left);
+			$sub_menu.css('left', left);
 			
 		}	
 		/*});*/
 	  }).bind('mouseleave',function(){
 		var $elem = $(this);
-		$elem.find('a').css('background-color', '#eee').css('height', '60px');
+		$elem.find('a').css('background-color', '#eee');
 		$elem.find('.sdt_link').css('color', '#444');
 		$elem.find('.sdt_wrap').show()
 		var $sub_menu = $elem.find('.sdt_box');
 		if($sub_menu.length){
 			
 			var visi = parseInt($sub_menu.css('z-index'))-2;
-			//$sub_menu.css('z-index', visi.toString());
+			$sub_menu.css('z-index', visi.toString());
 				
 		}	
 		$elem.find('.sdt_active')

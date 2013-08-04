@@ -79,14 +79,18 @@ textarea[disabled] {
     padding: 30px;
     box-shadow: 3px 3px 0px 0px #888888;
 }
-
-div.content{
-float: right;
+div.menutop{
+	position: relative;
+}
+div.treatment_box{
+	position: absolute;
+	left: 400px;
+/*float: right;
 position: relative;
 left: -120px;
 margin-top: 10px;
 margin-bottom: 220px;
-/*	clear: both;
+	clear: both;
 	float: none;*/
 }
 div.taskdetails p{
@@ -180,13 +184,16 @@ ul.sdt_menu li div.sdt_box{
 	width:280px;
 	overflow:hidden;
 	height:180px;
-	top:60px;
+	top:70px;
 	left:0px;
 	display:none;
 	background:#e3e3e3;
 	color: #444;
 	padding: 15px;
 	z-index: 20;
+}
+ul.sdt_menu li div.collar{
+	background:#e3e3e3;
 }
 div.sdt_box a{
 	color: #FF5C21;
