@@ -1,4 +1,5 @@
 {{ extend 'layout.html' }}
+<link rel="stylesheet" href="/static/prisoner/css/styles.css" type="text/css" media="screen"/>
 <script type="text/javascript" src="/static/prisoner/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="/static/prisoner/word-count.js"></script>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
@@ -144,55 +145,57 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 </div>
 
 <h1>Write a Short Letter to {{=title}}</h1>
-<div class="stats">
-	<div class="tab selected">
-		<div class="stat">{{=request.price_string}}</div> Per HIT
-		<span class="details">
+<div style="position: absolute; left: 410px;">
+	<h2 style="margin-bottom: 3px;">Payment Details</h2>
+	<div class="stats">
 
-			This job pays {{=request.price_string}} per letter via
-			bonus. <br>You will receive your bonus payment within
-			{{=bonus_time}} minutes of submitting. <br><br>You can find
-			bonus payments in <i>Your Account-&gt;Account
-			Settings-&gt;<br>-&gt;View your account balance and
-			transaction history</i>.
+		 <div class="tab selected">
+			 <div class="stat">{{=request.price_string}}</div> Per HIT
+			 <span class="details">
 
-      </span>
-	</div>
+				 This job pays {{=request.price_string}} per letter via
+				 bonus. <br>You will receive your bonus payment within
+				 {{=bonus_time}} minutes of submitting. <br><br>You can find
+				 bonus payments in <i>Your Account-&gt;Account
+				 Settings-&gt;<br>-&gt;View your account balance and
+				 transaction history</i>.
 
-	<div class="tab">
-		<div class="stat">{{=work_limit}}</div> Available
-		<span class="details">
+			 </span>
+		 </div>
 
-        Today we have {{=work_limit}} HITs available for you.  This
-        will change tomorrow.
+		 <div class="tab">
+			 <div class="stat">{{=work_limit}}</div> Available
+			 <span class="details">
 
-      </span>
-	</div>
+				Today we have {{=work_limit}} HITs available for you.  This
+				will change tomorrow.
 
-	{{ if improbability: }}
-	<div class="tab">
-		<div class="stat">{{= improbability_rate }}%</div> Approval
-		<span class="details">
+			 </span>
+		 </div>
 
-			<p>Your submitted letter must pass an evaluation. You will be
-			notified of your letter's approval within {{=bonus_time}}
-			minutes.</p>
+		 {{ if improbability: }}
+		 <div class="tab">
+			 <div class="stat">{{= improbability_rate }}%</div> Approval
+			 <span class="details">
 
-			<p>To ensure that our clients are best served, we require you
-			to go through <a class="training" href="#training">writing
-			style training</a> before you can begin work on this
-			task.</p>
+				 <p>Your submitted letter must pass an evaluation. You will be
+				 notified of your letter's approval within {{=bonus_time}}
+				 minutes.</p>
 
-      </span>
-	</div>
-	{{ pass }}
+				 <p>To ensure that our clients are best served, we require you
+				 to go through <a class="training" href="#training">writing
+				 style training</a> before you can begin work on this
+				 task.</p>
 
-	<div id="details_box"></div>
+			 </span>
+		 </div>
+		 {{ pass }}
 
+		 <div id="details_box"></div>
+	 </div>
 </div>
 
-<div style="max-width: 400px;" class="taskdetails">
-	<h2>Details of the Task</h2>
+<div style="max-width: 325px;" class="taskdetails">
    <p>
 	    Inmates need moral support from outside of the prison
 	    walls. Research shows that inmates with positive contacts
