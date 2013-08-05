@@ -6,6 +6,9 @@
 <script type="text/javascript" src="/static/prisoner/jquery.fancybox.pack.js?v=2.1.5"></script>
 <link rel="stylesheet" href="/static/prisoner/css/style-dropdown.css" type="text/css" media="screen"/>
 
+<link rel="stylesheet" href="/static/prisoner/css/stats-box.css" type="text/css" media="screen"/>
+<script type="text/javascript" src="/static/prisoner/stats-box.js"></script>
+
 {{ title = "an Inmate" }}
 {{ org = 'inmates' }}
 {{ bonus_time = 30 }}
@@ -25,7 +28,7 @@ R command used to generate the graphs:
 
 ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="identity") + geom_text(aes(label=hits), vjust=1.5, colour="white") + xlab("") + theme(axis.text.x = element_text(size=14, face="bold", color="black"))
 -->
-{{ improbability_message = P('Your submitted letter must pass an evaluation. You will be notified of your letter\'s approval within ', bonus_time, ' minutes.', BR(), '(Current approval rate: ', B(improbability_rate, '%'), ' of HITs submitted)') if improbability else "" }}
+
 {{ prisoner_textarea = DIV('You have not yet completed the ', A('required training.', _class='training', 
 	_href='#training'), _id='cover') if training else "" }}
 
@@ -124,7 +127,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
                 experience!;)<br>
                 <br>
                 Take it easy bro!<br>
-                Jim"</p>
+                Jim&quot;</p>
                 <em>List <b>7 of the above</b> rules that this letter violates
 		separated by commas or white spaces (e. g. if you think 
 		it violates the first, fifth and second item, write
@@ -139,61 +142,55 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 {{ button_vis = "none" if training else "inline" }}
 <button class="trainbutton" onClick="hideTrainingBox()" style="margin-left: 33%; display: {{=button_vis}}; margin-right: 33%; width: 33%; padding: 7px; padding-left: 20px; padding-right: 20px; margin-top: 20px;">Back to the task</button>
 </div>
-{{ training_message = P('To ensure that our clients are best served, we require you to go through ', A('writing style training', _class='training', _href='#training'), ' before you can begin work on this task.') }}
 
 <h1>Write a Short Letter to {{=title}}</h1>
-<div class="menutop">
-<div class="treatment_box">
-  <ul id="sdt_menu" class="sdt_menu">
-    <li>
-      <a href="#">
-      <span class="sdt_active"></span>
-      <span class="sdt_wrap">
-        <span class="sdt_link">{{=request.price_string}}</span>
-        <span class="sdt_descr">PER HIT</span>
+<div class="stats">
+	<div class="tab selected">
+		<div class="stat">{{=request.price_string}}</div> Per HIT
+		<span class="details">
+
+			This job pays {{=request.price_string}} per letter via
+			bonus. <br>You will receive your bonus payment within
+			{{=bonus_time}} minutes of submitting. <br><br>You can find
+			bonus payments in <i>Your Account-&gt;Account
+			Settings-&gt;<br>-&gt;View your account balance and
+			transaction history</i>.
+
       </span>
-      </a>
-      <div class="collar">
-      </div>
-      <div style="display: inline;" class="sdt_box">
-	This job pays {{=request.price_string}} per
-	letter via bonus. <br>You will receive your bonus payment 
-        within {{=bonus_time}} minutes of submitting. <br><br>You can 
-	find bonus payments in 
-	<i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance 
-	and transaction history</i>.		
-      </div>
-    </li>
-    <li>
-      <a href="#">
-	<span class="sdt_active"></span>
-	<span class="sdt_wrap">
-		<span class="sdt_link">{{=work_limit}} HITs</span>
-		<span class="sdt_descr">Available</span>
-	</span>
-      </a>
-      <div class="sdt_box">
-        This HIT will allow you to work on up to
-	{{=work_limit}}. 
-      </div>
-    </li>
-{{ if improbability: }}
-    <li>
-	<a href="#">
-	  <span class="sdt_active"></span>
-	  <span class="sdt_wrap">
-		<span class="sdt_link">{{ = improbability_rate }}%</span>
-		<span class="sdt_descr">Approval Rate</span>
-	  </span>
-	</a>
-        <div class="sdt_box">
-		{{=improbability_message}}
-		{{=training_message}}
-      </div>
-     </li>
-{{ pass }}
-    </ul>
+	</div>
+
+	<div class="tab">
+		<div class="stat">{{=work_limit}}</div> Available
+		<span class="details">
+
+        Today we have {{=work_limit}} HITs available for you.  This
+        will change tomorrow.
+
+      </span>
+	</div>
+
+	{{ if improbability: }}
+	<div class="tab">
+		<div class="stat">{{= improbability_rate }}%</div> Approval
+		<span class="details">
+
+			<p>Your submitted letter must pass an evaluation. You will be
+			notified of your letter's approval within {{=bonus_time}}
+			minutes.</p>
+
+			<p>To ensure that our clients are best served, we require you
+			to go through <a class="training" href="#training">writing
+			style training</a> before you can begin work on this
+			task.</p>
+
+      </span>
+	</div>
+	{{ pass }}
+
+	<div id="details_box"></div>
+
 </div>
+
 <div class="taskdetails">
 <h2>Details of the Task</h2>
    <p>
@@ -239,74 +236,6 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 $(document).ready(function() {
 	$(".fancybox").fancybox();
 });
-
-$(function() {
-	/**
-	* for each menu element, on mouseenter, 
-	* we enlarge the image, and show both sdt_active span and 
-	* sdt_wrap span. If the element has a sub menu (sdt_box),
-	* then we slide it - if the element is the last one in the menu
-	* we slide it to the left, otherwise to the right
-	*/
-	$('#sdt_menu > li').bind('mouseenter',function(){
-	var $elem = $(this);
-	$elem.find('a').css('background-color', '#e3e3e3').css('height', '70px');
-		var $sub_menu = $elem.find('.sdt_box');
-		if($sub_menu.length){
-		  var left = '0px';
-		  if($elem.index()==0){
-		    left = '0px';
-		  }
-		else if($elem.index()==1){
-		  left = '-105px';
-		}
-		else { left = '-210px'; }
-
-			/*if($elem.parent().children().length == $elem.index()+2)
-				left = '0px';
-			if($elem.parent().children().length == $elem.index()+1){
-				left = '0px';
-				$elem.find('.sdt_wrap').hide()
-				$elem.find('.sdt_active').hide()
-			} */
-		//#alert($elem.index())	
-			var first_prio = $elem.parent().children().first().find('.sdt_box').css('z-index')	
-			var second_prio = $elem.parent().children().first().next().find('.sdt_box').css('z-index')
-			var third_prio = $elem.parent().children().first().next().next().find('.sdt_box').css('z-index')
-			var highest_prio = Math.max(first_prio, second_prio, third_prio)+1
-			var visi = parseInt($sub_menu.css('z-index'))+1;
-			$sub_menu.css('z-index', highest_prio);
-			$sub_menu.show().css('left', left);
-			
-		}	
-		/*});*/
-	  }).bind('mouseleave',function(){
-		var $elem = $(this);
-		$elem.find('a').css('background-color', '#eee').css('height', '60px');
-		$elem.find('.sdt_link').css('color', '#444');
-		$elem.find('.sdt_wrap').show()
-		var $sub_menu = $elem.find('.sdt_box');
-		if($sub_menu.length){
-			
-			var visi = parseInt($sub_menu.css('z-index'))-2;
-			//$sub_menu.css('z-index', visi.toString());
-				
-		}	
-		$elem.find('.sdt_active')
-		 .stop(true)
-		 .animate({'height':'0px'},300)
-		 .andSelf().find('img')
-		 .stop(true)
-		 .animate({
-			'width':'0px',
-			'height':'0px',
-			'left':'85px'},400)
-		 .andSelf()
-		 .find('.sdt_wrap')
-		 .stop(true)
-		 .animate({'top':'15px'},500);
-				});
-            });
 
 params = {
     track: true,
@@ -472,5 +401,5 @@ $("#letter3").on("change", function() {
 	}
 });
 
-    $(".training").bind('click', show_training);    
+    $(document).on('click', 'a.training', show_training);    
 </script>
