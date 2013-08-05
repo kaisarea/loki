@@ -3,9 +3,9 @@ options.prisoner = {'price' : [.15, .30],
                     'training' : [True, False],
                     'inconstancy' : [True, False],
                     'improbability' : [True, False],
-                    'improbability_rate' : [94, 81, 63],
+                    'improbability_rate' : [94, 53],
                     'mystery_task': True,
-                    'work_limit' : [70, 140]}
+                    'work_limit' : [5, 90]}
 
 
     

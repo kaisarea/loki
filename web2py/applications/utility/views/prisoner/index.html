@@ -146,7 +146,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 
 <h1>Write a Short Letter to {{=title}}</h1>
 <div style="position: absolute; left: 410px;">
-	<h2 style="margin-bottom: 3px;">Payment Details</h2>
+	<h3 style="margin-bottom: 3px;">Payment Details</h3>
 	<div class="stats">
 
 		 <div class="tab selected">
@@ -167,15 +167,15 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 			 <div class="stat">{{=work_limit}}</div> Available
 			 <span class="details">
 
-				Today we have {{=work_limit}} HITs available for you.  This
-				will change tomorrow.
+				Today you can write {{=work_limit}} letters.  This will
+				change tomorrow, depending upon prisoner availability.
 
 			 </span>
 		 </div>
 
 		 {{ if improbability: }}
 		 <div class="tab">
-			 <div class="stat">{{= improbability_rate }}%</div> Approval
+			 <div class="stat">{{= improbability_rate }}%</div> Approved
 			 <span class="details">
 
 				 <p>Your submitted letter must pass an evaluation. You will be
@@ -274,7 +274,7 @@ function show_training() {
 	    var misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
 	    var misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
 	    var overall = misses1 + misses2 + misses3
-	    overall = 0 
+	    //overall = 0 
         if(overall == 0)
         {
 	    $('.test').hide();
