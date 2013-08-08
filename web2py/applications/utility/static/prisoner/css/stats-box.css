@@ -1,6 +1,5 @@
 .stats {
-	position: absolute;
-	left: 430px;
+	position: relative;
 }
 
 .stats .tab {
@@ -21,7 +20,7 @@
 }
 
 .stats .tab.selected {
-	height: 120px;
+	height: 100px;
 	background-color: #e3e3e3;
 }
 
@@ -39,7 +38,7 @@
 .stats #details_box {
 	position: absolute;
 	width: 230px;
-	height: 130px;
+	height: 125px;
 	background-color: #e3e3e3;
     box-shadow: 3px 3px 0px 0px #888888;
 	top: 70px;
