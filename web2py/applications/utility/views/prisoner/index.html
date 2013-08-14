@@ -154,21 +154,10 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 			 <span class="details">
 
 				 This job pays {{=request.price_string}} per letter via
-				 bonus. <br>You will receive your bonus payment within
-				 {{=bonus_time}} minutes of submitting. <br><br>You can find
+				 bonus. <br><br>You can find
 				 bonus payments in <i>Your Account-&gt;Account
 				 Settings-&gt;<br>-&gt;View your account balance and
 				 transaction history</i>.
-
-			 </span>
-		 </div>
-
-		 <div class="tab">
-			 <div class="stat">{{=work_limit}}</div> Available
-			 <span class="details">
-
-				Today you can write {{=work_limit}} letters.  This will
-				change tomorrow, depending upon prisoner availability.
 
 			 </span>
 		 </div>
@@ -190,6 +179,16 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 			 </span>
 		 </div>
 		 {{ pass }}
+
+		 <div class="tab">
+			 <div class="stat">{{=work_limit}}</div> Available
+			 <span class="details">
+
+				Today you can write {{=work_limit}} letters.  This will
+				change tomorrow, depending upon the prisoners.
+
+			 </span>
+		 </div>
 
 		 <div id="details_box"></div>
 	 </div>

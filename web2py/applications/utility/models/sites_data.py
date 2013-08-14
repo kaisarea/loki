@@ -17,7 +17,7 @@ pics_treatment = [
         
         ]
 
-list_files = os.listdir("/home/kaisar/loki/web2py/applications/utility/static/genova/control")
+list_files = os.listdir("/home/econ/loki/web2py/applications/utility/static/genova/control")
 pics_control = []
 for single_file in list_files:
   full_path = "/static/genova/control/" + single_file
