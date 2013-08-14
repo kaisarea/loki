@@ -11,7 +11,7 @@
 <script type="text/javascript" src="/static/prisoner/stats-box.js"></script>
 
 {{ bonus_time = 30 }}
-
+<!-- PHOTOS DOWNLOADED FROM OPENPHOTO.NET --> 
 <div id="shadow" style="display: none;">
  <h2>Training Guidelines for Image Tagging</h2>
  <p>
@@ -105,7 +105,8 @@
             Your answer: <input style="position: relative; left: 25px;" {{ = "value=danger" if not training else "" }} type="text" id="par3" name="article3">
     </p>
     </div>   
-    <button id="butt" style="padding: 5px;">Answer</button>
+    <button id="butt" style="margin-left: 20px; padding: 5px;">Submit Answers</button>
+    <button id="leave_training" style="margin-left: 20px; padding: 5px;">Quit Training</button>
     </form>
     </div>
     
@@ -234,9 +235,11 @@ function show_training() {
         }
     });
 }
-
+function hide_training() {
+	$('#shadow').fadeOut();
+}
     $(".training").bind('click', show_training);
-    
+    $('#leave_training').bind('click', hide_training);    
 
 
 $("#par1").on("change", function() {
@@ -301,5 +304,5 @@ $("#par3").on("change", function() {
 	}
 });
 
-
+$(document).on('click', 'a.training', show_training);    
 </script>
