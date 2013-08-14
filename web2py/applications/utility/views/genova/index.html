@@ -1,90 +1,16 @@
 {{ extend 'layout.html' }}
-<script type="text/javascript" src="/static/prisoner/word-count.js"></script>
+<link rel="stylesheet" href="/static/prisoner/css/styles.css" type="text/css" media="screen"/>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+<link rel="stylesheet" href="/static/prisoner/css/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+<script type="text/javascript" src="/static/prisoner/jquery.fancybox.pack.js?v=2.1.5"></script>
+<link rel="stylesheet" href="/static/prisoner/css/training.css" type="text/css" media="screen"/>
+
+<link rel="stylesheet" href="/static/prisoner/css/stats-box.css" type="text/css" media="screen"/>
+<script type="text/javascript" src="/static/prisoner/stats-box.js"></script>
+
 {{ bonus_time = 30 }}
-
-<style>
-.underline {text-decoration: underline;}
-h1, .orange {color: #CC6600;}
-p, ol, ul {line-height: 1.3em; margin-bottom: .9em; max-width: 700px;}
-#shadow h2 {
-   margin-bottom: 15px;
-}
-#err {
-	color: red;
-	margin: 15px;
-	float: right;
-	position: relative;
-	font: monospace;
-	font-style: italic;
-	left: 1em;
-}
-#cor {
-color: black;
-margin-top: 15px;
-margin-bottom: 15px;
-position: relative;
-margin-left: auto;
-margin-right: auto;
-width: 25%;
-}
-#tooltip {
-    position: absolute;
-	z-index: 3000;
-	border: 1px solid #111;
-	background-color: #eee;
-	padding: 13px;
-	opacity: 1;
-	max-width: 500px;
-}
-#tooltip h3, #tooltip div {
-	margin: 0;
-	color: #555;
-	letter-spacing: 0;
-	font-size: 18px;
-	font-family: calibri, helvetica;
-	line-height: 1.3em;
-}
-.bonus
-{
-	display: none;
-}
-#constancy
-{
-    padding: 15px;
-    z-index: 100;
-    background: #eee;
-    color: #444;
-    box-shadow: 3px 3px 0px 0px #888888;
-    max-width: 580px;
-    position: relative;
-    margin-bottom: 20px;
-    margin-top: 15px;
-    margin-left: 40px;
-    width: 80%;
-}
-
-#shadow {
-    background: #eee;
-    position: absolute;
-    z-index: 9999;
-    opacity: 0
-    color: #444;
-    display: none;
-    padding: 30px;
-    box-shadow: 3px 3px 0px 0px #888888;
-}
-</style>
-
-
-{{ task = """These pictures may contain illicit, disagreeable content (explicit sexual
-    content, violence, racism etc.) """ if disagreeable else ""}} 
-{{ availability_message = """We have 8 HITs available for you today. We are not able to guarantee
-        the availability or the number of HITs every day. However, on average
-        usually around 10 are available.""" if inconstancy else "We have 70 HITs available for you every day." }}
-{{ limit_message = LI('The amount of hits is limited to ', work_limit, '.') if limit else "" }}
-{{ training_message = LI('To ensure high quality standard of the submitted task we would like to ask you to complete a ', A('tagging training', _class='training', _href='#training')) }}
-{{ improbability_message = LI('Finally, your submitted letter must pass an evaluation. You will be notified of your letter\'s approval within ', bonus_time, ' minutes.', BR(), '(Current approval rate: ', B(improbability_rate, '%', _style='color: #000000;'), ' of HITs submitted)') if improbability else "" }}
 
 <div id="shadow" style="display: none;">
  <h2>Training Guidelines for Image Tagging</h2>
@@ -185,30 +111,58 @@ width: 25%;
     
 </div>
 <h1>Image Tagging</h1>
-<div style="position: relative;">
-<div id="constancy">
-<h3>Terms of Contract</h3>
-<ul>
-<li>This job pays <b class="orange">{{=request.price_string}}</b> per
-letter (via <span title="<b>Mystery Tasks pay in bonus.</b> <br>You will receive a bonus payment 
-of {{=request.price_string}} within {{=bonus_time}} minutes of submitting. <br><br>You can find 
-bonus payments in <i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance 
-and transaction history</i>" class="bonus underline">bonus</span>).
-<li>{{=availability_message}}
-{{=limit_message }}
-{{=training_message}}
-{{=improbability_message}}
-</ul>
-</div>
+{{ task = """These pictures may contain illicit, disagreeable content (explicit sexual
+    content, violence, racism etc.) """ if disagreeable else ""}} 
+
+<div style="position: absolute; left: 410px;">
+  <h3 style="margin-bottom: 3px;">Payment Details</h3>
+  <div class="stats">
+    <div class="tab selected">
+      <div class="stat">{{=request.price_string}}</div> Per HIT
+        <span class="details">
+		 This job pays {{=request.price_string}} per letter via
+		 bonus. <br><br>You can find
+		 bonus payments in <i>Your Account-&gt;Account
+		 Settings-&gt;<br>-&gt;View your account balance and
+		 transaction history</i>.
+	 </span>
+       </div>
+{{ if improbability: }}
+       <div class="tab">
+         <div class="stat">{{= improbability_rate }}%</div> Approved
+	   <span class="details">
+		 <p>Your submitted keywords must pass an evaluation. You will be
+		 notified of your work's approval within {{=bonus_time}}
+		 minutes.</p>
+		 <p>To ensure that our clients are best served, we require you
+		 to go through <a class="training" href="#training">image tagging training</a> 
+		 before you can begin work on this task.</p>
+           </span>
+	 </div>
+{{ pass }}
+{{if limit:}}
+	<div class="tab">
+	  <div class="stat">{{=work_limit}}</div> Available
+	    <span class="details">
+		Today you can tag {{=work_limit}} images. This will
+		change tomorrow, depending upon our client's needs.
+            </span>
+	  </div>
+{{ pass }}
+          <div id="details_box"></div> 
+	</div>
+  </div>
 </div>
 
-<h2>Details of the Task</h2>
+<div style="max-width: 325px;" class="taskdetails">
 <p>
 
 You will be presented with a series of pictures. Provide 5 keywords most
 appropriately describing the content of these pictures.
     {{ = task }}
 </p>
+</div>
+
 
 <h2>Image</h2>
 <img style="max-width: 275px;" src={{ = pic.url }}>

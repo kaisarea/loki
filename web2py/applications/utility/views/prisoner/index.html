@@ -13,22 +13,6 @@
 {{ title = "an Inmate" }}
 {{ org = 'inmates' }}
 {{ bonus_time = 30 }}
-{{if inconstancy and work_limit == 70:}}
-{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph1.png') }}
-{{elif not inconstancy and work_limit == 70:}}
-{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph2.png') }}
-{{elif inconstancy and work_limit == 140:}}
-{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph3.png') }}
-{{else:}}
-{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph4.png') }}
-{{pass}}
- 
-
-<!--
-R command used to generate the graphs:
-
-ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="identity") + geom_text(aes(label=hits), vjust=1.5, colour="white") + xlab("") + theme(axis.text.x = element_text(size=14, face="bold", color="black"))
--->
 
 {{ prisoner_textarea = DIV('You have not yet completed the ', A('required training.', _class='training', 
 	_href='#training'), _id='cover') if training else "" }}
@@ -206,6 +190,7 @@ ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="
 	<p>Read the following prisoner's bio, and write a positive, encouraging letter.
 		Please do not include your email address, full name or address in the letter.</p>
 </div>
+
 
 <h2 style="margin-bottom: 12px;">{{=prisoner.name}}'s profile</h2>
 <h3>Offense</h3>
