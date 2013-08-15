@@ -1,0 +1,17 @@
+.bonus {
+	display: none;
+}
+
+.congrats {
+	display: none;
+	max-width: 700px;
+	width: 700px;
+	background: #eee;
+	position: absolute;
+	left: 0px;
+	z-index: 500;
+	top: 0px;
+	box-shadow: 3px 3px 0px 0px #888888;
+	padding: 25px;
+	height: 600px;
+}

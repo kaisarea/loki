@@ -35,10 +35,10 @@ def index():
                 prisoner=prisoner,
                 disagreeable=request.disagreeable,
                 training=request.training,
-                improbability=request.improbability,
+                #improbability=request.improbability,
                 improbability_rate=request.improbability_rate,
-                inconstancy=request.inconstancy,
-                limit=request.limit,
+                #inconstancy=request.inconstancy,
+                #limit=request.limit,
                 work_limit=request.work_limit)
 
 
