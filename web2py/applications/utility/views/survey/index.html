@@ -3,7 +3,32 @@
   {{ extend "layout.html" }} 
 
   <style>
-  p {max-width: 700px;}
+  body {
+  	margin: 50px 0px;
+  	padding: 0px;
+  	text-align: center;
+  }
+		
+  #Content {
+	width:800px;
+	margin:0px auto; /* Right and left margin widths set to "auto" */
+	text-align:left; /* Counteract to IE5/Win Hack */
+	padding:15px;
+	border:1px dashed #333;
+	background-color:#eee;
+	}
+
+  <!---
+  p {
+  	max-width: 700px;
+  	margin:0px auto;
+  	text-align: left;
+  	padding: 15px;
+  	border: 1px dashed #333;
+  	background-color: #eeee;
+  }
+  --->
+  #rightAlign {text-align:right}
   .label {
     text-align:right;
     padding-right:8px;
@@ -13,15 +38,11 @@
     padding-left:8px;
     color: rgb(234, 82, 0);
   }
-  <!--
-  #errors {
-    background-color:red;
-    padding:9px;
-    margin:10px;
-    color: white;
-    font-weight: bold;
+  .submit {
+  	font-size: 120%;
+  	background-color:#c60;
+  	padding: 4px 8px;
   }
-  -->
   </style>
   
   <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js" type="text/javascript">
@@ -42,16 +63,15 @@ Means that we have to find a way to way everybody who looks at our tasks.
 {{pass}}
 -->
 
-  <h2>Welcome</h2>
-  
+<div id="Content">
+  <h2 style="color:#c60">Survey for [placeholder for task name] hits</h2>
   <br>
-  <p>In our effort to continuously improve our HITs and to attract the best Turkers, we would very much appreciate if you could fill out this survey. It helps us better understand which Turkers choose to work on our offered HITs and who does not and thereby helps us design better HITs in the future for you to work on.</p>
+  [MAYBE ADD A LINK TO A SCREENSHOT OF THE TASK]
+  <br>
+  
+  <p>In our effort to continuously improve our HITs and to attract the best Turkers, we would very much appreciate if you could fill out this survey. It helps us better understand which Turkers choose to work on our offered HITs and who does not and thereby helps us design better HITs in the future for you to work on. All survey responses are treated in accordance with Amazon Mechanical Turk policies.</p>
 
-  <p>For your time and trouble you will be paid {{=request.price_string}} once the survey has been completed and vetted. We realize that this is a substantial amount of money relative to what is normally paid on Mechanical Turk but this reflects the importance we attach to better understand who accepts and who rejects our HITs.</p>
-
-  <p>All survey responses are, of course, completely anonymous, as in accordance with Amazon Mechanical Turk policy.</p>
-
-  <h3>Survey</h3>
+  <p>For your time and trouble <b>you will be paid {{=request.price_string}}</b> once the survey has been completed and vetted.</p>
 
   <br>
   <form method="post" name="survey" id="survey">
@@ -59,9 +79,11 @@ Means that we have to find a way to way everybody who looks at our tasks.
       <tbody>
         <tr>
           <td class="label">
+          <div id="rightAlign">
             <label for="sex">
             Gender:
             </label>
+          </div>
           </td>
 
           <td><select name="sex" id="sex" required>
@@ -81,10 +103,13 @@ Means that we have to find a way to way everybody who looks at our tasks.
 
         <tr>
           <td class="label">
+          <div id="rightAlign">
             <label for="age">
               Age:
             </label> 
+            </div>
           </td>
+
 
           <td><select name="age" id="age" size="1" required>
             <option value="">
@@ -668,9 +693,14 @@ Means that we have to find a way to way everybody who looks at our tasks.
         </tr>
 
         <tr>
-          <td></td>
+          <td class="label">
+          </td>
+          <td>
+			<div id="rightAlign">
+            <input type="submit" value="Submit" class="submit">
+          </div>
 
-          <td><input type="submit" value="Submit"></td>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -680,7 +710,9 @@ Means that we have to find a way to way everybody who looks at our tasks.
     $("form").validate();
   </script>
   
-  <br><br>
+  <br>
+  
+  </div>
 <!---
 
 Straight HTML form is easier
