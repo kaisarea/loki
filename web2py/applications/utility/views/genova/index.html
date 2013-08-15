@@ -1,5 +1,6 @@
 {{ extend 'layout.html' }}
 <link rel="stylesheet" href="/static/prisoner/css/styles.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="/static/genova/css/style.css" type="text/css" media="screen"/>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
 <script type="text/javascript" src="/static/prisoner/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
@@ -106,14 +107,19 @@
     </p>
     </div>   
     <button id="butt" style="margin-left: 20px; padding: 5px;">Submit Answers</button>
-    <button id="leave_training" style="margin-left: 20px; padding: 5px;">Quit Training</button>
+    <button class="leave_training" style="margin-left: 20px; padding: 5px;">Quit Training</button>
     </form>
     </div>
     
 </div>
+<div class="congrats">
+<h1>Congratulations!</h1>
+<p>You have successfully completed the training</p>
+<button class="leave_training" style="margin-left: 70px; padding: 5px;">Go Back to the Task</button>
+</div>
 <h1>Image Tagging</h1>
 {{ task = """These pictures may contain illicit, disagreeable content (explicit sexual
-    content, violence, racism etc.) """ if disagreeable else ""}} 
+    content, violence, racism etc.) """ }} 
 
 <div style="position: absolute; left: 410px;">
   <h3 style="margin-bottom: 3px;">Payment Details</h3>
@@ -128,7 +134,6 @@
 		 transaction history</i>.
 	 </span>
        </div>
-{{ if improbability: }}
        <div class="tab">
          <div class="stat">{{= improbability_rate }}%</div> Approved
 	   <span class="details">
@@ -140,8 +145,6 @@
 		 before you can begin work on this task.</p>
            </span>
 	 </div>
-{{ pass }}
-{{if limit:}}
 	<div class="tab">
 	  <div class="stat">{{=work_limit}}</div> Available
 	    <span class="details">
@@ -149,7 +152,6 @@
 		change tomorrow, depending upon our client's needs.
             </span>
 	  </div>
-{{ pass }}
           <div id="details_box"></div> 
 	</div>
   </div>
@@ -230,16 +232,18 @@ function show_training() {
         if(value1 == 'close-up' & value2 == 'water' & value3 == 'danger')
         {
             $('form input:text').prop("disabled", false);
-            $('#shadow').fadeOut(2000);
+            $('#shadow').fadeOut();
+   	    $('.congrats').fadeIn();
             window.scroll(0,0);
         }
     });
 }
 function hide_training() {
 	$('#shadow').fadeOut();
+	$('.congrats').fadeOut();
 }
     $(".training").bind('click', show_training);
-    $('#leave_training').bind('click', hide_training);    
+    $('.leave_training').bind('click', hide_training);    
 
 
 $("#par1").on("change", function() {
