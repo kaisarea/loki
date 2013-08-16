@@ -28,4 +28,10 @@ for single_file in list_files:
   full_path = "/static/genova/control/" + single_file
   pics_control.append({"url" : full_path})
 
-pics_treatment = pics_control
+list_files = os.listdir("/home/econ/loki/web2py/applications/utility/static/genova/treatment")
+pics_treatment = []
+for single_file in list_files:
+  full_path = "/static/genova/treatment/" + single_file
+  pics_treatment.append({"url" : full_path})
+
+#pics_treatment = pics_control

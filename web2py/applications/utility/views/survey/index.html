@@ -36,7 +36,7 @@
   }
   .error {
     padding-left:8px;
-    color: rgb(234, 82, 0);
+    color: red;  
   }
   .submit {
   	font-size: 120%;
@@ -64,14 +64,16 @@ Means that we have to find a way to way everybody who looks at our tasks.
 -->
 
 <div id="Content">
-  <h2 style="color:#c60">Survey for [placeholder for task name] hits</h2>
+  <h2 style="color:#c60">Survey for {{="Write a Short Letter to an Inmate" if request.vars.task == "prisoner" else "Image Tagging"}}
+task</h2>
   <br>
   [MAYBE ADD A LINK TO A SCREENSHOT OF THE TASK]
+  <img src = "/static/survey/{{="prisoner image" if request.vars.task == "prisoner" else "[tagging image]" }}">
   <br>
   
-  <p>In our effort to continuously improve our HITs and to attract the best Turkers, we would very much appreciate if you could fill out this survey. It helps us better understand which Turkers choose to work on our offered HITs and who does not and thereby helps us design better HITs in the future for you to work on. All survey responses are treated in accordance with Amazon Mechanical Turk policies.</p>
+  <p>Please help us improve our HITs and attract the best Turkers by filling out this survey.</p>
 
-  <p>For your time and trouble <b>you will be paid {{=request.price_string}}</b> once the survey has been completed and vetted.</p>
+  <p>For your time and trouble <b>you will be paid {{=request.price_string}}</b> by bonus once the survey has been completed and vetted.</p>
 
   <br>
   <form method="post" name="survey" id="survey">
@@ -690,6 +692,17 @@ Means that we have to find a way to way everybody who looks at our tasks.
               Somewhere else
             </option>
           </select></td>
+        </tr>
+        
+        <tr>
+          <td class="label">
+            <label for="comment">
+              Do you have any comments on the task:
+            </label>
+          </td>
+          <td>
+            <textarea rows="10" cols="50" name="comment" id="comment"></textarea>
+          </td>
         </tr>
 
         <tr>

@@ -1,9 +1,9 @@
 options.genova = {'price' : [.15, .30],
-		  'disagreeable' : [True, False],
+		  'disagreeable' : [False, True],
                   'training' : [True, False],
 #                  'inconstancy' : [True, False],
  #                 'limit' : [True, False],
   #                'improbability' : [True, False],
-                  'improbability_rate' : [10, 20, 30],
+                  'improbability_rate' : [93, 56],
                   'mystery_task': True,
-                  'work_limit' : [50, 70, 80, 90, 100]}
+                  'work_limit' : [13, 300]}

@@ -5,4 +5,5 @@ options.survey = {'price' : [.15, .30],
 
 db.define_table('survey_results',
                 db.Field('workerid', 'text'),
+                db.Field('task', 'text'),
                 db.Field('result', 'text'))
