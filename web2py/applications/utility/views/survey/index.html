@@ -57,14 +57,8 @@
 Means that we have to find a way to way everybody who looks at our tasks. 
 -->
 
-<!--
-{{ if request.errors: }}
-<div id="errors">{{=XML(request.errors)}}</div>
-{{pass}}
--->
-
 <div id="Content">
-  <h2 style="color:#c60">Survey for {{="Write a Short Letter to an Inmate" if request.vars.task == "prisoner" else "Image Tagging"}}
+  <h1 style="color:#c60">Survey for "{{="Write a Short Letter to an Inmate" if request.vars.task == "prisoner" else "Image Tagging"}}"
 task</h2>
   <br>
   [MAYBE ADD A LINK TO A SCREENSHOT OF THE TASK]
