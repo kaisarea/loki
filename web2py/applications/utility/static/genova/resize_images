@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for i in control/*.jpg ; do
+   b=`stat -c %s "$i"`
+if [ $b -ge 500000 ] ; then
+  echo "$i will be resized to half of its current size"
+  identify $i
+  convert $i -resize 50% $i
+  identify $i
+fi
+done
