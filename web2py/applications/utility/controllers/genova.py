@@ -1,4 +1,5 @@
 def index():
+## Why do I still have min_words here? What does it serve?
     min_words = 100
     if request.disagreeable:
         pics = pics_treatment
@@ -10,10 +11,22 @@ def index():
     pics_num = hit_num % len(pics)
     random.seed(request.workerid)
     random.shuffle(pics)
-    pic = Storage(pics[pics_num])
-
+# What is the following code doing? Why hit_num % len(pics)? This will be simply hit_num most of the time.
+    pichus = []
+    i = 0 
+# pic_count
+    while i<(request.pic_count):
+    #for i in [1, 2, 3, 4, 5]:
+      pichus.append(Storage(pics[pics_num+i]))
+      i += 1
+#      pic1 = Storage(pics[pics_num])
+#    pic2 = Storage(pics[pics_num+1])
+#    pic3 = Storage(pics[pics_num+2])
+#    pic4 = Storage(pics[pics_num+3])
+#    pic5 = Storage(pics[pics_num+4])
+#    pics = [pic1, pic2, pic3, pic4, pic5]
     othervars = {'hit_num' : hit_num,
-                 'pic' : pic}
+                 'pichus' : pichus}
 
     # If this is a hit submission, then let's finish!
     review = request.vars.review
@@ -29,13 +42,15 @@ def index():
     # Otherwise, display the form
     log_action('with pic', othervars)
     return dict(min_words=100,
-                pic=pic,
+                #pic1=pic1,
+		#pic2=pic2,
+		#pic3=pic3,
+		#pic4=pic4,
+		#pic5=pic5,
+		pics=pichus,
 		disagreeable=request.disagreeable,
                 training=request.training,
-#                improbability=request.improbability,
                 improbability_rate=request.improbability_rate,
- #               inconstancy=request.inconstancy,
-  #              limit=request.limit,
                 work_limit=request.work_limit)
 
 
