@@ -4,6 +4,91 @@ h1, .orange {color: #CC6600;}
 #shadow h2 {
    margin-bottom: 15px;
 }
+
+div.error { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); padding: 3px}
+
+h1 {
+        font-size: 48px;
+        margin-bottom: 15px;
+}
+
+.bonus {
+        display: none;
+}
+
+.congrats {
+        display: none;
+        max-width: 700px;
+        width: 700px;
+        background: #eee;
+        position: absolute;
+        left: 0px;
+        z-index: 500;
+        top: 0px;
+        box-shadow: 3px 3px 0px 0px #888888;
+        padding: 25px;
+        height: 2000px;
+}
+
+.train_info {
+        max-width: 302px;
+        background: #eee;
+        position: relative;
+	z-index: 20;
+        left: 145px;
+        top: 0px;
+        box-shadow: 3px 3px 0px 0px #888888;
+        padding: 20px;
+}
+
+.stats {
+        position: relative;
+}
+
+.stats .tab {
+        float: left;
+        width:80px;
+        margin-left: 5px;
+        height:60px;
+    box-shadow: 3px 3px 0px 0px #888888;
+        background-color: #eeeeee;
+
+        font-size: 14px;
+        text-align: center;
+}
+
+.stats .tab:first-child {
+    /* This ensures that the gaps between tabs are only BETWEEN them */
+        margin-left: 0;
+}
+
+.stats .tab.selected {
+        height: 100px;
+        background-color: #e3e3e3;
+}
+
+.stats .tab .stat {
+        font-size: 22px;
+        font-weight: bold;
+        font-family: georgia;
+        color: #092E66;/*#072C73;*/
+        text-align: center;
+        margin: 10px 0 5px 0;
+}
+
+.stats .details { display: none; }
+
+.stats #details_box {
+        position: absolute;
+        width: 230px;
+        height: 135px;
+        background-color: #e3e3e3;
+    box-shadow: 3px 3px 0px 0px #888888;
+        top: 69px;
+        font-size: 14px;
+        padding: 10px;
+}
+
 #err {
 	color: red;
 	margin: 15px;

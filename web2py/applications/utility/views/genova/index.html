@@ -1,19 +1,15 @@
 {{ extend 'layout.html' }}
-<link rel="stylesheet" href="/static/prisoner/css/styles.css" type="text/css" media="screen"/>
-<link rel="stylesheet" href="/static/genova/css/style.css" type="text/css" media="screen"/>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
 <script type="text/javascript" src="/static/prisoner/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
 <link rel="stylesheet" href="/static/prisoner/css/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 <script type="text/javascript" src="/static/prisoner/jquery.fancybox.pack.js?v=2.1.5"></script>
 <link rel="stylesheet" href="/static/prisoner/css/training.css" type="text/css" media="screen"/>
-
-<link rel="stylesheet" href="/static/prisoner/css/stats-box.css" type="text/css" media="screen"/>
 <script type="text/javascript" src="/static/prisoner/stats-box.js"></script>
 
 {{ bonus_time = 60 }}
 <!-- PHOTOS DOWNLOADED FROM OPENPHOTO.NET --> 
-<div id="shadow" style="display: none;">
+<div id="shadow" style="display: none; height: 2800px;">
  <h2>Training Guidelines for Image Tagging</h2>
  <p>
 	When you tag a photo, you assign it a keyword or phrase for simplified searching and classification. 
@@ -29,8 +25,7 @@
 	in some way 'represent' some larger concept (e.g., in the way that Malevich's _Tumbling Cube_ might 
 	be said to represent 'instability'), but it doesn't represent an object (like, say, the Eiffel Tower). 
     </p>
-    </div>
-    
+    </div>  
     <div style="width: 45%; float: left; max-width: 350px; margin: 0 10px;" class="column2">
     <ul>
       <li>If a photo is in a stockpile of millions of other photos it is important to 
@@ -56,61 +51,139 @@
       <li><strong>Story (activity) - </strong> A picture might have a story. Is there a bear looking out
 	for its prey? Is there a flower being pollinated? These would be usually best described
 	by an action verb.
+      <li><strong>Relevance (conciness) - </strong>There is a number of options of choosing a keyword
+	to describe the same category but not all of them are equally effective. Looking
+	at the picture on the lower left one could pick the word 'sitting' as in 'the bee is sitting
+	on the flower'. While this describes an activity it certainly is not exhaustive description
+	and better words could be chosen to describe the activity in more detail (e. g. 'pollination'
+	in this example).
+      <li><strong>Correctness - </strong>If there is a cow on the picture tags like 'monkey' or 
+	'aeroplane' are obviously incorrect.
     </ul>
-    </div>
+   </div>
+    <div {{ = "class=bonus" if training else "" }}>
+    <button class="leave_training" style="margin-left: 35%; padding-left: 10px; padding-right: 10px; padding: 5px; margin-right: 35%;">Go Back to the Task</button>
+    </div> 
+    
                   <br><br><br>
+    <div {{ = "class=bonus" if not training else "" }}>
     <h2>Testing Your Understanding of the Guidelines</h2>
    <div style="width: 45%; float: left;  max-width: 350px; margin: 0 10px;" class="column1">  
-    <img style="margin-bottom: 60px; margin-top: 25px;" src="/static/genova/geese.jpg" width="275" height="200" border="0">
-    <div {{ = "class=bonus" if not training else "" }}>
-    <img style="margin-bottom: 60px; margin-top: 10px;" src="/static/genova/water.jpg" width="275" height="200">
-    <img style="margin-bottom: 60px; margin-top: 0px;" src="/static/genova/bizarre.jpg" width="275" height="200"></div>
-    </div>
-    
-    <div style="width: 45%; float: left; max-width: 350px; margin: 0 10px;" class="column2">
+    <img style="margin-bottom: 60px; margin-top: 50px;" src="/static/genova/geese.jpg" width="275" height="200" border="0">
+    <img style="margin-bottom: 60px; margin-top: 180px;" src="/static/genova/water.jpg" width="275" height="200">
+    <img style="margin-bottom: 60px; margin-top: 140px;" src="/static/genova/bizarre.jpg" width="275" height="200">
+   </div> 
+    <div style="width: 45%; float: left; max-width: 350px; margin: 0 10px; margin-bottom: 20px;" class="column2">
     <form>
-    <p>Imagine this picture has already the following four tags: "geese", "eating", "highres", "grass". 
-       Which one of the following tags would most worthwhile to add in a sense that the dimension
-       it describes has not been described by the previous tags?</p>
-            <ul>
-              <li>animals</li>
-              <li>meadow</li>
-              <li>close-up</li>
-              <li>couple</li>
-              <li>highdef</li>
-            </ul>
-            Your answer: <input style="position: relative; left: 25px;" type="text" id="par1" name="article1">
+    <p>Look at the picture to the left and from the list below pick up to 5 tags (in case you do not
+	find 5 effective keywords in the list you can choose fewer than 5, even none if you do 
+	not find any of the tags appropriate) so that you 
+       describe up to 5 unique categories (see the Training Guidelines for the list of admissible
+	categories) and that
+       do so in the most effective way (see the Training Guidelines for details). 
+       Tags also need to be correct (see the Training Guidelines for details).
+	Separate the words by commas or white spaces.
+    </p>
+    <div style="position: relative; height: 140px;">
+      <div style="position: absolute; left: 50px; top: 0px;">
+        <ul>
+          <li>animals</li>
+          <li>meadow</li>
+          <li>close-up</li>
+          <li>couple</li>
+          <li>yard</li>
+        </ul>
+      </div>
+      <div style="position: absolute; right: 70px; top: 0px;">
+        <ul>
+          <li>birds</li>
+          <li>geese</li>
+          <li>seven</li>
+          <li>flock</li>
+          <li>beaks</li>
+        </ul>
+      </div>
+</div>
+            Your answer: <input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=close-up" if not training else "" }}>
     </p>  
-    <div {{ = "class=bonus" if not training else "" }}>
-    <p>Assume there are already the following tags describing the picture to the 
-	left: "bottle", "blue", "spill", and "highdef". Which one of the following
-	tags is the most redundant?</p>
-            <ul>
-              <li>modern
-              <li>new
-              <li>close-up
-              <li>portrait
-              <li>water
-            </ul>
+        <p>Look at the picture to the left and from the list below pick up to 5 tags (in case you do not
+        find 5 effective keywords in the list you can choose fewer than 5, even none if you do
+        not find any of the tags appropriate) so that you
+       describe up to 5 unique categories (see the Training Guidelines for the list of admissible
+        categories) and that
+       do so in the most effective way (see the Training Guidelines for details).
+       Tags also need to be correct (see the Training Guidelines for details).
+        Separate the words by commas or white spaces.
+    </p>
+    <div style="position: relative; height: 140px;">
+      <div style="position: absolute; left: 50px; top: 0px;">
+        <ul>
+          <li>water</li>
+          <li>bottle</li>
+          <li>spill</li>
+          <li>clear</li>
+          <li>drops</li>
+        </ul>
+      </div>
+      <div style="position: absolute; right: 70px; top: 0px;">
+        <ul>
+          <li>empty</li>
+          <li>light</li>
+          <li>open</li>
+          <li>blue</li>
+          <li>PET</li>
+        </ul>
+      </div>
+</div>
             Your answer: <input style="position: relative; left: 25px;" {{ = "value=water" if not training else "" }} type="text" id="par2" name="article2">
     </p>   
-    <p>Which one of the following tags describes a story rather than some
-	other dimension about the image?</p>
-            <ul>
-              <li>rain
-              <li>woman
-              <li>cat
-              <li>danger
-              <li>bizarre
-            </ul>
+    <p>Look at the picture to the left and from the list below pick up to 5 tags (in case you do not
+        find 5 effective keywords in the list you can choose fewer than 5, even none if you do
+        not find any of the tags appropriate) so that you
+       describe up to 5 unique categories (see the Training Guidelines for the list of admissible
+        categories) and that
+       do so in the most effective way (see the Training Guidelines for details).
+       Tags also need to be correct (see the Training Guidelines for details).
+        Separate the words by commas or white spaces.
+    </p>
+    <div style="position: relative; height: 140px;">
+      <div style="position: absolute; left: 20px; top: 0px;">
+        <ul>
+          <li>woman</li>
+          <li>cat</li>
+          <li>rat</li>
+          <li>animal</li>
+          <li>mountain</li>
+        </ul>
+      </div>
+      <div style="position: absolute; left: 120px; top: 0px;">
+        <ul>
+          <li>rain</li>
+          <li>tree</li>
+          <li>sit</li>
+          <li>walk</li>
+          <li>meet</li>
+        </ul>
+      </div>
+      <div style="position: absolute; left: 210px; top: 0px;">
+        <ul>
+          <li>clouds</li>
+          <li>person</li>
+          <li>sunset</li>
+          <li>look</li>
+          <li>abyss</li>
+        </ul>
+      </div>
+</div>
             Your answer: <input style="position: relative; left: 25px;" {{ = "value=danger" if not training else "" }} type="text" id="par3" name="article3">
     </p>
     </div>   
-    <button id="butt" style="margin-left: 20px; padding: 5px;">Submit Answers</button>
-    <button class="leave_training" style="margin-left: 20px; padding: 5px;">Quit Training</button>
+    <input id="quiz_given" type="hidden" {{= "value=1" if training else "value=0" }}>
+    <button id="butt" style="margin-left: 200px; padding: 5px;">Submit Answers</button>
+    <button class="leave_training" style="padding: 5px; padding-left: 30px; padding-right: 30px; margin-left: 130px;">Cancel</button>
     </form>
     </div>
-    
+    </div>
 </div>
 <div class="congrats">
 <h1>Congratulations!</h1>
@@ -118,8 +191,6 @@
 <button class="leave_training" style="margin-left: 70px; padding: 5px;">Go Back to the Task</button>
 </div>
 <h1>Image Tagging</h1>
-{{ task = """These pictures may contain illicit, disagreeable content (explicit sexual
-    content, violence, racism, etc.). """ }} 
 
 <div style="position: absolute; left: 410px;">
   <h3 style="margin-bottom: 3px;">Payment Details</h3>
@@ -148,7 +219,8 @@
 	<div class="tab">
 	  <div class="stat">{{=work_limit}}</div> Available
 	    <span class="details">
-		Today you can tag {{=work_limit}} images. This will
+		Today you can tag {{=work_limit}} images (there are {{ = len(pics) }} per HIT
+		so {{=work_limit}} images translates into {{=work_limit/len(pics) if work_limit % len(pics) == 0 else work_limit/len(pics)+1}} HITs). This will
 		change tomorrow, depending upon our client's needs.
             </span>
 	  </div>
@@ -162,10 +234,11 @@
 
 You will be presented with a series of pictures. Provide 5 keywords most
 appropriately describing the content of these pictures.
+{{ task = """These pictures may contain illicit, disagreeable content (explicit sexual
+    content, violence, racism, etc.). """ }} 
     {{ = task }}
 </p>
 </div>
-
 
 <form action id="response" method="POST">
 {{ i = 0 }}
@@ -175,11 +248,20 @@ appropriately describing the content of these pictures.
 <!-- FROM http://www.morguefile.com/archive -->
 <h2>Submit your Keywords</h2>
 <p>
+<div style="position: relative;">
+<div class="train_info">
+<p>To ensure that our clients are best served, we require you
+                 to go through <a class="training" href="#training">image tagging training</a>
+                 before you can begin work on this task.</p>
+</div>
+<div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
 {{ for j in [1, 2, 3, 4, 5]: }}
 {{ id = "keyword" + str(i*5+j) }}
 Keyword {{=j}}: <input disabled="disabled" type="text" id={{=id}}><br>
 {{ pass }}
 {{ i += 1 }}
+</div>
+</div>
 </p>
 {{ pass }}
 <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
@@ -222,8 +304,174 @@ $('form input:text').change(function(){
 	}
       });
      
- 
 function show_training() {
+  scrollTo(0,0);
+  jQuery('#shadow').fadeIn().find('button').click(function(e) {
+    e.preventDefault();
+    pattern = /[a-z-]+/g;
+    myText1 = $('input[id=par1]').val().match(pattern);
+    answers1 = new Array("geese", "yard", "close-up");
+    pattern = /[a-z-]+/g;
+    myText2 = $('input[id=par2]').val().match(pattern);
+    answers2 = new Array("bottle", "blue", "spill");
+    pattern = /[a-z-]+/g;
+    myText3 = $('input[id=par3]').val().match(pattern);
+    answers3 = new Array("meet", "woman", "rain", "sunset");
+           
+    misses1 = $(answers1).not(myText1).length + $(myText1).not(answers1).length;
+    misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
+    misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
+    overall = misses1 + misses2 + misses3
+    if($('input[id=quiz_given]').val()=='0')
+    {
+      overall = 0
+    }
+           overall = 0  //This is for testing purposes only
+    if(overall == 0)
+    {
+            //$('.test').hide();
+      $('form input:text').prop("disabled", false);
+      $('#shadow').fadeOut();
+      $('.train_info').fadeOut();
+      $('.key_inputs').css('position', 'relative');
+      if($('input[id=quiz_given]').val()=='1')
+      {
+        $('.congrats').fadeIn();
+      }
+      $('.trainbutton').fadeIn();
+      window.scroll(0,0);
+    }
+  });
+}
+
+$("#par1").on("change", function() {
+  var explanations = {};
+  explanations["animals"] = "See the Training Guidelines on the importance of tag relevance.";
+  explanations["meadow"] = "See the Training Guidelines on the importance of tag relevance and correctness.";
+  explanations["birds"] = "See the Training Guidelines on the importance of tag relevance.";
+  explanations["seven"] = "Is this the best keyword to capture the dimension of interest?";
+  explanations["flock"] = "Read about Relevance in the Training Guidelines.";
+  explanations["beaks"] = "Can you find another keyword in the list that describes the category better?";
+  jQuery('#err').remove();
+  var answers = new Array("geese","yard","close-up");
+  var pattern = /[a-z-]+/g;
+  var matches = this.value.match(pattern);
+  matches = $.grep(matches, function(v, k){
+    return $.inArray(v, matches) === k;
+  });
+  if(matches.length!=3)
+  {
+    $('#par1').after('<div id="err">You have to enter 3 distinctive keywords! Read the Question above carefully.</div>')
+  }
+  else
+  {
+    if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+    {
+      var feasible_answers = new Array("animals", "meadow", "close-up", "couple", "yard", "birds", "geese", "seven", "flock", "beaks");
+      if($(matches).not(feasible_answers).length == 0)
+      {
+        $('#par1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+      }
+      else
+      {
+        $('#par1').after('<div id="err">Only items preceded by the bullet points above are possible answers! Go back to the Question and read it carefully.</div>');
+      }
+    }
+    else
+    {
+      $('#par1').after('<div id="cor">Well done!</div>');
+    }
+  }
+});
+
+$("#par2").on("change", function() {
+  var explanations = {};
+  explanations["water"] = "See the Training Guidelines on the importance of tag relevance.";
+  explanations["clear"] = "See the Training Guidelines on the importance of tag relevance.";
+  explanations["drops"] = "See the Training Guidelines on the importance of tag relevance and correctness.";
+  explanations["empty"] = "Is this the best keyword to capture the dimension of interest?";
+  explanations["light"] = "Read about Relevance in the Training Guidelines.";
+  explanations["open"] = "Is this the most important keyword in the list to describe the category?";
+  explanations["PET"] = "Relevance is the key -- see Training Guidelines for more details.";
+  jQuery('#err').remove();
+  var answers = new Array("bottle","spill","blue");
+  var pattern = /[a-z-]+/g;
+  var matches = this.value.match(pattern);
+  matches = $.grep(matches, function(v, k){
+    return $.inArray(v, matches) === k;
+  });
+  if(matches.length!=3)
+  {
+    $('#par2').after('<div id="err">You have to enter 3 distinctive keywords! Read the Question above carefully.</div>')
+  }
+  else
+  {
+    if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+    {
+      var feasible_answers = new Array("water", "bottle", "spill", "clear", "drops", "empty", "light", "open", "blue", "PET");
+      if($(matches).not(feasible_answers).length == 0)
+      {
+        $('#par2').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+      }
+      else
+      {
+        $('#par2').after('<div id="err">Only items preceded by the bullet points above are possible answers! Go back to the Question and read it carefully.</div>');
+      }
+    }
+    else
+    {
+      $('#par2').after('<div id="cor">Well done!</div>');
+    }
+  }
+});
+
+$("#par3").on("change", function() {
+  var explanations = {};
+  explanations["cat"] = "See the Training Guidelines on the importance of tag relevance and correctness.";
+  explanations["rat"] = "See the Training Guidelines on the importance of tag relevance and correctness.";
+  explanations["animal"] = "See the Training Guidelines on the importance of tag relevance.";
+  explanations["mountain"] = "Is this the best keyword to capture the dimension of interest?";
+  explanations["person"] = "Read about Relevance in the Training Guidelines.";
+  explanations["tree"] = "Can you find another keyword in the list that describes the category better?";
+  explanations["sit"] = "Can you find another keyword in the list that describes the category better?";
+  explanations["walk"] = "Can you find another keyword in the list that describes the category better?";
+  explanations["clouds"] = "Can you find another keyword in the list that describes the category better?";
+  explanations["look"] = "Can you find another keyword in the list that describes the category better?";
+  explanations["abyss"] = "Can you find another keyword in the list that describes the category better?";
+  jQuery('#err').remove();
+  var answers = new Array("meet","woman","rain", "sunset");
+  var pattern = /[a-z-]+/g;
+  var matches = this.value.match(pattern);
+  matches = $.grep(matches, function(v, k){
+    return $.inArray(v, matches) === k;
+  });
+  if(matches.length!=4)
+  {
+    $('#par3').after('<div id="err">You have to enter 3 distinctive keywords! Read the Question above carefully.</div>')
+  }
+  else
+  {
+    if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+    {
+      var feasible_answers = new Array("woman", "cat", "rat", "animal", "mountain", "rain", "tree", "sit", "walk", "meet", "clouds", "person", "sunset", "look", "abyss");
+      if($(matches).not(feasible_answers).length == 0)
+      {
+        $('#par3').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+      }
+      else
+      {
+        $('#par3').after('<div id="err">Only items preceded by the bullet points above are possible answers! Go back to the Question and read it carefully.</div>');
+      }
+    }
+    else
+    {
+      $('#par3').after('<div id="cor">Well done!</div>');
+    }
+  }
+});
+
+/*
+function show_training_old() {
     scrollTo(0,0);
     jQuery('#shadow').fadeIn()
       .find('button').click(function(e) {
@@ -236,19 +484,25 @@ function show_training() {
         {
             $('form input:text').prop("disabled", false);
             $('#shadow').fadeOut();
-   	    $('.congrats').fadeIn();
+	    if($('input[id=quiz_given]').val()=='1')
+	    {
+   	    	$('.congrats').fadeIn();
+	    }
             window.scroll(0,0);
         }
     });
 }
+*/
+
 function hide_training() {
+        window.scroll(0,0);
 	$('#shadow').fadeOut();
 	$('.congrats').fadeOut();
 }
     $(".training").bind('click', show_training);
     $('.leave_training').bind('click', hide_training);    
 
-
+/*
 $("#par1").on("change", function() {
 	var explanations = {};
 	explanations[0] = "The answer you have entered is not among the possible options."
@@ -268,8 +522,8 @@ $("#par1").on("change", function() {
 		$('#par1').after('<div id="cor">Well done!</div>');
 	}
 });
-
-
+*/
+/*
 $("#par2").on("change", function() {
 	var explanations = {};
 	explanations[0] = "The answer you have entered is not among the possible options."
@@ -310,6 +564,8 @@ $("#par3").on("change", function() {
 		$('#par3').after('<div id="cor">Well done!</div>');
 	}
 });
+*/
+
 
 $(document).on('click', 'a.training', show_training);    
 </script>
