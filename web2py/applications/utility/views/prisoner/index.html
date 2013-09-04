@@ -216,6 +216,9 @@
 
 <div style="position: relative; top: 30px;">
 <form action method="POST">
+<input type="hidden" id="time_enter" name="time_enter">
+<input type="hidden" id="start_training" name="start_training">
+<input type="hidden" id="finish_training" name="finish_training">
 {{=prisoner_textarea}}
   <textarea {{= "disabled=disabled" if training else "" }} name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
   <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
@@ -226,7 +229,8 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$(".fancybox").fancybox();
+	start = new Date();
+	$('input[id=time_enter]').val(start); 
 });
 
 params = {
@@ -246,6 +250,8 @@ delete params.top
 $('.crime').tooltip(params);
 
 function show_training() {
+    time_start_training = new Date();
+    $('input[id=start_training]').val(time_start_training);
     scrollTo(0,0);
     jQuery('#shadow').fadeIn()
       .find('button').click(function(e) {
@@ -278,6 +284,8 @@ function show_training() {
 	    $('.trainbutton').fadeIn();
 	    $('#cover').fadeOut(1);
             $('#minWord').prop("disabled", false);
+	    finish_training_time = new Date();
+	    $('input[id=finish_training]').val(finish_training_time);
             window.scroll(0,0);
         }
     });
