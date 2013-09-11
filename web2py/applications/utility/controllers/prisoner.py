@@ -22,6 +22,8 @@ def index():
     letter = request.vars.letter_to_prisoner
     if letter:
         othervars['letter'] = letter
+#### This log_action function is storing the worker response to a database table
+#### othervars is a way how to store additional information
         log_action('submit', othervars)
         wordcount = (letter.split())
 	if wordcount < min_words:

@@ -14,7 +14,7 @@
 {{ prisoner_textarea = DIV('You have not yet completed the ', A('required training.', _class='training', 
 	_href='#training'), _id='cover') }}
 
-<div id="shadow" style="display: none; height: {{ = '1000px;' if not training else '1800px;' }}">
+<div id="shadow" style="display: none; min-height: {{ = '1000px;' if not training else '1800px;' }}">
     <h2>Training Guidelines for Writing a Prisoner</h2>
     <p>
         You must learn these rules to write letters to prisoners.
