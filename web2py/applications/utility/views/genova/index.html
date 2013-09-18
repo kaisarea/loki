@@ -126,7 +126,7 @@
 	Look at the image tags below and write down (in the text field to the right of the tag) which photo category do they describe. To review
 	the categories see the Training Guidelines.
     </p>
-    <div>
+    <div style="clear: both">
       <div style="float: left; min-width: 200px;">
         <ul>
           <li>eagle
@@ -138,19 +138,15 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="category1" {{ = "value=wildlife" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="category2" {{ = "value=fashion" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="category3" {{ = "value=astrophotography" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="category4" {{ = "value=paparazzi" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="category5" {{ = "value=landscape" if not training else "" }}>
+          <li><input type="text" id="par1" {{ = "value=wildlife" if not training else "" }}>
+          <li><input type="text" id="par2" {{ = "value=fashion" if not training else "" }}>
+          <li><input type="text" id="par3" {{ = "value=astrophotography" if not training else "" }}>
+          <li><input type="text" id="par4" {{ = "value=paparazzi" if not training else "" }}>
+          <li><input type="text" id="par5" {{ = "value=landscape" if not training else "" }}>
         </ul>
       </div>
 </div>
-        <p style="clear: both;">
-	Look at the image tags below and write down which category do they belong to. Use only lowercase letters. To review
-	the categories see the Training Guidelines.
-    </p>
-    <div>
+    <div style="clear: both">
       <div style="float: left; min-width: 200px">
         <ul>
           <li>score</li>
@@ -162,19 +158,15 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=sports" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=architectural" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=macro" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=travel" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=wildlife" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par6" name="article1" {{ = "value=sports" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par7" name="article1" {{ = "value=architectural" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par8" name="article1" {{ = "value=macro" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par9" name="article1" {{ = "value=travel" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par10" name="article1" {{ = "value=wildlife" if not training else "" }}>
         </ul>
       </div>
 </div>
-<p style="clear: both;">
-	Look at the image tags below and write down which category do they belong to. Use only lowercase letters. To review
-	the categories see the Training Guidelines.
-    </p>
-    <div>
+    <div style="clear: both">
       <div style="float: left; min-width: 200px;">
         <ul>
           <li>model</li>
@@ -186,11 +178,11 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=fashion" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=astrophotography" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=wildlife" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=fashion" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par1" name="article1" {{ = "value=sports" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par11" {{ = "value=fashion" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par12" {{ = "value=astrophotography" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par13" {{ = "value=wildlife" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par14" {{ = "value=fashion" if not training else "" }}>
+          <li><input style="position: relative; left: 25px;" type="text" id="par15" {{ = "value=sports" if not training else "" }}>
         </ul>
       </div>
 </div>
@@ -217,7 +209,7 @@
     <div class="tab selected">
       <div class="stat">{{=request.price_string}}</div> Per HIT
         <span class="details">
-		 This job pays {{=request.price_string}} per letter via
+		 This job pays {{=request.price_string}} per {{ = len(pics) }} images via
 		 bonus. <br><br>You can find
 		 bonus payments in <i>Your Account-&gt;Account
 		 Settings-&gt;<br>-&gt;View your account balance and
@@ -327,6 +319,13 @@ function show_training() {
   scrollTo(0,0);
   jQuery('#shadow').fadeIn().find('button').click(function(e) {
     e.preventDefault();
+/*
+	THIS WAS THE OLD VALIDATION ALGORITHM FOR WHEN WE HAD SEVERAL ANSWERS
+	IN ONE INPUT FIELD
+
+	NOW, HOWEVER, WE ARE TRANSITIONING TO A SYSTEM WITH ONE ANSWER PER
+	INPUT FIELD
+
     pattern = /[a-z-]+/g;
     myText1 = $('input[id=par1]').val().match(pattern);
     answers1 = new Array("geese", "yard", "close-up");
@@ -341,12 +340,15 @@ function show_training() {
     misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
     misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
     overall = misses1 + misses2 + misses3
+*/
+    jQuery('#err').remove();
     if($('input[id=quiz_given]').val()=='0')
     {
-      overall = 0
+      overall = 15
     }
-        //   overall = 0  //This is for testing purposes only
-    if(overall == 0)
+    //overall = 0  //This is for testing purposes only
+    overall = $('.quiz input[name=correct]').length
+    if(overall == 15)
     {
             //$('.test').hide();
       $('form input:text').prop("disabled", false);
@@ -360,9 +362,56 @@ function show_training() {
       $('.trainbutton').fadeIn();
       window.scroll(0,0);
     }
+    else
+    {
+	first_mistake_position = $('.quiz input:text').index($('.quiz input[name=false]')[0]);
+	if(first_mistake_position +1 < 6)
+	{
+		hint = "first five or you have not filled in all the answers yet.";
+	} 
+	else if(first_mistake_position + 1 < 11)
+	{
+		hint = "second batch of five.";
+	}
+	else
+	{
+		hint = "last five";
+	}
+	$('#butt').parent().before('<div id="err" style="clear: both;">One or more answers is incorrect! (Hint: One of the ' + hint+')</div>');
+    }
   });
 }
 
+$('.quiz input:text').on("change", function() { 
+	/* ... */ 
+
+  possible_answers = new Array("landscape", "wildlife", "sports", "architectural", "macro", "action", "astrophotography",
+	"fashion", "travel", "paparazzi");
+  user_answer = new Array(this.value.toLowerCase());
+  if($(user_answer).not(possible_answers).length != 0)
+  {
+	$(this).after('<div id="err">Not a possible answer!</div>');
+  }
+  else
+  {
+    position_input = $('.quiz input:text').index($(this));
+    correct_answers = new Array("wildlife", "fashion", "astrophotography", 
+          "paparazzi", "landscape", "sports", "architectural", "macro",
+          "travel", "wildlife", "fashion", "astrophotography", "wildlife",
+          "fashion", "sports");
+    if(correct_answers[position_input]==user_answer)
+    {
+        this.name="correct";
+    }
+    else
+    {
+	this.name="false";
+	//$('#butt').parent().before('<div id="err" style="clear: both;">One or more answers is incorrect! (Hint: )</div>');
+    }
+  }        
+    });
+
+/*
 $("#par1").on("change", function() {
   var explanations = {};
   explanations["time"] = "None of these tags give any information about time.";
@@ -474,6 +523,7 @@ $("#par3").on("change", function() {
     }
   }
 });
+*/
 
 function leave_training(){
   window.scroll(0,0);

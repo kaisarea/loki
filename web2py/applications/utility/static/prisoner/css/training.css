@@ -37,6 +37,13 @@ h1 {
 	margin-bottom: 20px;
 }
 
+.quiz input {
+	position: relative; 
+	float: left;
+	left: 25px;
+	margin: 3px;
+}
+
 .train_info {
         max-width: 302px;
         background: #eee;
@@ -98,12 +105,13 @@ h1 {
 
 #err {
 	color: red;
-	margin: 15px;
+	margin: 0px;
+	float: left;
 	position: relative;
-	float: right;
 	font: monospace;
 	font-style: italic;
-	left: 1em;
+	left: 3em;
+	top: -5px;
 }
 #cor {
 	color: black;
