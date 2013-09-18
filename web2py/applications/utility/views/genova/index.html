@@ -13,6 +13,9 @@
  <h2>Training Guidelines for Image Tagging</h2>
  <p>
 	When you tag a photo, you assign it a keyword or phrase for simplified searching and classification. 
+        One way how to do this is to divide the images based on style or topic and then pick tags
+	that detail the image within that category. The following training lists several such 
+	categories and explains how tags can be chosen to describe image within the category.
     <div style="width: 45%; float: left;  max-width: 350px; margin: 0 10px;" class="column1">  
     <img src="/static/genova/chess.jpg" width="275" height="200" border="0">
     <p><em>This photo belongs into the sports category and could be tagged with "chess" to describe the 
@@ -128,13 +131,13 @@
     </p>
     <div style="clear: both">
       <div style="float: left; min-width: 200px;">
-        <ul>
+        <ol>
           <li>eagle
           <li>Haute couture
           <li>black hole
           <li>Princess Diana
           <li>Mt. Rainier
-        </ul>
+        </ol>
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
@@ -148,13 +151,13 @@
 </div>
     <div style="clear: both">
       <div style="float: left; min-width: 200px">
-        <ul>
+        <ol>
           <li>score</li>
           <li>Golden Gate Bridge</li>
           <li>bugs</li>
           <li>Tadj Mahal</li>
           <li>zebra</li>
-        </ul>
+        </ol>
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
@@ -168,13 +171,13 @@
 </div>
     <div style="clear: both">
       <div style="float: left; min-width: 200px;">
-        <ul>
+        <ol>
           <li>model</li>
           <li>Earth</li>
           <li>python</li>
           <li>pier</li>
           <li>Seahawks</li>
-        </ul>
+        </ol>
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
@@ -426,7 +429,7 @@ $("#par1").on("change", function() {
   });
   if(matches.length!=3)
   {
-    $('#par1').after('<div id="err">You have listed either too many or too little categories.</div>')
+    $('#par1').after('<div id="err">You have listed either too many or too few categories.</div>')
   }
   else
   {
@@ -464,7 +467,7 @@ $("#par2").on("change", function() {
   });
   if(matches.length!=3)
   {
-    $('#par2').after('<div id="err">This is not the right number of categories. Either too much or too little.</div>')
+    $('#par2').after('<div id="err">This is not the right number of categories. Either too much or too few.</div>')
   }
   else
   {
