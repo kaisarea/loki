@@ -141,11 +141,11 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li><input type="text" id="par1" {{ = "value=wildlife" if not training else "" }}>
-          <li><input type="text" id="par2" {{ = "value=fashion" if not training else "" }}>
-          <li><input type="text" id="par3" {{ = "value=astrophotography" if not training else "" }}>
-          <li><input type="text" id="par4" {{ = "value=paparazzi" if not training else "" }}>
-          <li><input type="text" id="par5" {{ = "value=landscape" if not training else "" }}>
+          <li style="position: relative;"><input type="text" id="par1" {{ = "value=wildlife" if not training else "" }}>
+          <li style="position: relative;"><input type="text" id="par2" {{ = "value=fashion" if not training else "" }}>
+          <li style="position: relative;"><input type="text" id="par3" {{ = "value=astrophotography" if not training else "" }}>
+          <li style="position: relative;"><input type="text" id="par4" {{ = "value=paparazzi" if not training else "" }}>
+          <li style="position: relative;"><input type="text" id="par5" {{ = "value=landscape" if not training else "" }}>
         </ul>
       </div>
 </div>
@@ -161,11 +161,11 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li><input style="position: relative; left: 25px;" type="text" id="par6" name="article1" {{ = "value=sports" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par7" name="article1" {{ = "value=architectural" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par8" name="article1" {{ = "value=macro" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par9" name="article1" {{ = "value=travel" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par10" name="article1" {{ = "value=wildlife" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par6" name="article1" {{ = "value=sports" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par7" name="article1" {{ = "value=architectural" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par8" name="article1" {{ = "value=macro" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par9" name="article1" {{ = "value=travel" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par10" name="article1" {{ = "value=wildlife" if not training else "" }}>
         </ul>
       </div>
 </div>
@@ -175,17 +175,17 @@
           <li>model</li>
           <li>Earth</li>
           <li>python</li>
-          <li>pier</li>
+          <li>catwalk</li>
           <li>Seahawks</li>
         </ol>
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li><input style="position: relative; left: 25px;" type="text" id="par11" {{ = "value=fashion" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par12" {{ = "value=astrophotography" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par13" {{ = "value=wildlife" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par14" {{ = "value=fashion" if not training else "" }}>
-          <li><input style="position: relative; left: 25px;" type="text" id="par15" {{ = "value=sports" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par11" {{ = "value=fashion" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par12" {{ = "value=astrophotography" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par13" {{ = "value=wildlife" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par14" {{ = "value=fashion" if not training else "" }}>
+          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par15" {{ = "value=sports" if not training else "" }}>
         </ul>
       </div>
 </div>
@@ -231,7 +231,7 @@
            </span>
 	 </div>
 	<div class="tab">
-	  <div class="stat">{{=work_limit}}</div> Available
+	  <div class="stat">{{=work_limit/len(pics) if work_limit % len(pics) == 0 else work_limit/len(pics)+1}}</div> Available
 	    <span class="details">
 		Today you can tag {{=work_limit}} images (there are {{ = len(pics) }} per HIT
 		so {{=work_limit}} images translates into {{=work_limit/len(pics) if work_limit % len(pics) == 0 else work_limit/len(pics)+1}} HITs). This will
@@ -344,7 +344,7 @@ function show_training() {
     misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
     overall = misses1 + misses2 + misses3
 */
-    jQuery('#err').remove();
+    //#jQuery('.err').remove();
     if($('input[id=quiz_given]').val()=='0')
     {
       overall = 15
@@ -368,35 +368,79 @@ function show_training() {
     else
     {
 	first_mistake_position = $('.quiz input:text').index($('.quiz input[name=false]')[0]);
-	if(first_mistake_position +1 < 6)
+	we_have_a_go = $('.quiz input[name=false]')[0]!=undefined
+	if(we_have_a_go)
 	{
-		hint = "first five or you have not filled in all the answers yet.";
-	} 
-	else if(first_mistake_position + 1 < 11)
-	{
-		hint = "second batch of five.";
+		if(first_mistake_position == 6 & $('.quiz input[name=false]')[0].value == "travel")
+		{
+			hint = "Since Golden Gate Bridge is located in the United States we decided not to categorize it as 'travel'.";
+		}
+		else if(first_mistake_position == 4 & $('.quiz input[name=false]')[0].value == "wildlife")
+		{
+			hint = "Even though there certainly is wildlife in Mt. Rainier the keyword itself does not hint at a living entity.";
+		}
+		else if(first_mistake_position == 7 & $('.quiz input[name=false]')[0].value == "wildlife")
+		{
+			hint = "While bugs certainly are living beings we feel that they would more appropriately be classified in a different category.";
+		}
+		else if(first_mistake_position == 4 & $('.quiz input[name=false]')[0].value == "travel")
+		{
+			hint = "Since Mt. Rainier is located in the US we feel it would more appropriately be classified in a different category.";
+		}
 	}
-	else
-	{
-		hint = "last five";
+	else{
+		if(first_mistake_position +1 < 6)
+		{
+			hint = "One of the first five or you have not filled in all the answers yet.";
+		} 
+		else if(first_mistake_position + 1 < 11)
+		{
+			hint = "One of the second batch of five.";
+		}
+		else
+		{
+			hint = "One of the last five.";
+		}
 	}
-	$('#butt').parent().before('<div id="err" style="clear: both;">One or more answers is incorrect! (Hint: One of the ' + hint+')</div>');
+	$('div.err').remove();
+	$('#butt').parent().before('<div class="err" style="left: 1em; clear: both;">One or more answers is incorrect! (Hint: ' + hint+')</div>');
     }
   });
 }
 
 $('.quiz input:text').on("change", function() { 
 	/* ... */ 
-
   possible_answers = new Array("landscape", "wildlife", "sports", "architectural", "macro", "action", "astrophotography",
 	"fashion", "travel", "paparazzi");
   user_answer = new Array(this.value.toLowerCase());
   if($(user_answer).not(possible_answers).length != 0)
   {
-	$(this).after('<div id="err">Not a possible answer!</div>');
+     	if($(this).attr('id').length==4)
+	{
+	  multiplier = $(this).attr('id')[3];
+	}
+	else
+	{
+	  multiplier = $(this).attr('id')[3] + $(this).attr('id')[4];
+	}
+
+  	if(multiplier < 6)
+  	{
+	  my_top = (multiplier-1.1)*23;
+	}
+	else if(multiplier < 11)
+	{
+	  my_top = (multiplier-6.1)*23;
+	}
+	else
+	{
+	  my_top = (multiplier-11.1)*23;
+	}
+	$(this).after('<span style="position: absolute; left: 200px; min-width: 200px; top: ' + my_top + 'px;" class="err">Not a possible answer!</span>');
   }
   else
   {
+    $(this).parent().find('.err').remove();
     position_input = $('.quiz input:text').index($(this));
     correct_answers = new Array("wildlife", "fashion", "astrophotography", 
           "paparazzi", "landscape", "sports", "architectural", "macro",
