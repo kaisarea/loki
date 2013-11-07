@@ -397,7 +397,7 @@ function show_training() {
 
 $('.quiz input:text').on("change", function() { 
 	/* ... */ 
-  possible_answers = new Array("environment", "context", "subject", "object", "technique", "time", "color scheme",
+  possible_answers = new Array("environment", "activity", "actor", "object", "technique", "time", "color scheme",
 	"mood", "own name", "style", "genre");
   user_answer = new Array(this.value.toLowerCase());
   if($(user_answer).not(possible_answers).length != 0)
@@ -429,9 +429,9 @@ $('.quiz input:text').on("change", function() {
   {
     $(this).parent().find('.err').remove();
     position_input = $('.quiz input:text').index($(this));
-    correct_answers = new Array("subject", "context", "object", 
-          "own name", "own name", "technique", "own name", "subject",
-          "own name", "subject", "time", "object", "subject",
+    correct_answers = new Array("actor", "activity", "object", 
+          "proper name", "proper name", "technique", "proper name", "actor",
+          "proper name", "actor", "time", "object", "actor",
           "environment", "style");
     if(correct_answers[position_input]==user_answer)
     {
