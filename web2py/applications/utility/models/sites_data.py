@@ -5,13 +5,13 @@ import os
 	I got as far as http://disturbingpictures.tumblr.com/page/22. Next time continue with
 	page 23."""
 
-list_files = os.listdir("/home/kaisar/loki/web2py/applications/utility/static/genova/control")
+list_files = os.listdir("/home/econ/loki/web2py/applications/utility/static/genova/control")
 pics_control = []
 for single_file in list_files:
   full_path = "/static/genova/control/" + single_file
   pics_control.append({"url" : full_path})
 
-list_files = os.listdir("/home/kaisar/loki/web2py/applications/utility/static/genova/treatment")
+list_files = os.listdir("/home/econ/loki/web2py/applications/utility/static/genova/treatment")
 pics_treatment = []
 for single_file in list_files:
   full_path = "/static/genova/treatment/" + single_file

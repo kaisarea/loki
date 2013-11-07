@@ -103,7 +103,7 @@ h1 {
         padding: 10px;
 }
 
-#err {
+.err {
 	color: red;
 	margin: 0px;
 	float: left;
