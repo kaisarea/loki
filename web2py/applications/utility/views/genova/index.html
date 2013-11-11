@@ -84,7 +84,7 @@
         Look at the tags below and write down (in the text field to the right of the tag) which photo 
         category do they describe. To review the categories see the Training Guidelines.
     </p>
-    <div style="clear: both">
+    <div name="batch1" style="clear: both">
       <div style="float: left; min-width: 200px;">
         <ol>
           <li>portrait
@@ -96,15 +96,15 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li style="position: relative;"><input type="text" id="par1" {{ = "value=wildlife" if not training else "" }}>
-          <li style="position: relative;"><input type="text" id="par2" {{ = "value=fashion" if not training else "" }}>
-          <li style="position: relative;"><input type="text" id="par3" {{ = "value=astrophotography" if not training else "" }}>
-          <li style="position: relative;"><input type="text" id="par4" {{ = "value=paparazzi" if not training else "" }}>
-          <li style="position: relative;"><input type="text" id="par5" {{ = "value=landscape" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par1" {{ = "value=wildlife" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par2" {{ = "value=fashion" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par3" {{ = "value=astrophotography" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par4" {{ = "value=paparazzi" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par5" {{ = "value=landscape" if not training else "" }}>
         </ul>
       </div>
 </div>
-    <div style="clear: both">
+    <div name="batch2" style="clear: both">
       <div style="float: left; min-width: 200px">
         <ol>
           <li>collage
@@ -116,15 +116,15 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par6" name="article1" {{ = "value=sports" if not training else "" }}>
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par7" name="article1" {{ = "value=architectural" if not training else "" }}>
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par8" name="article1" {{ = "value=macro" if not training else "" }}>
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par9" name="article1" {{ = "value=travel" if not training else "" }}>
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par10" name="article1" {{ = "value=wildlife" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par6" {{ = "value=sports" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par7" {{ = "value=architectural" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par8" {{ = "value=macro" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par9" {{ = "value=travel" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par10" {{ = "value=wildlife" if not training else "" }}>
         </ul>
       </div>
 </div>
-    <div style="clear: both">
+    <div name="batch3" style="clear: both">
       <div style="float: left; min-width: 200px;">
         <ol>
           <li>autumn
@@ -136,11 +136,11 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par11" {{ = "value=fashion" if not training else "" }}>
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par12" {{ = "value=astrophotography" if not training else "" }}>
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par13" {{ = "value=wildlife" if not training else "" }}>
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par14" {{ = "value=fashion" if not training else "" }}>
-          <li style="position: relative;"><input style="position: relative; left: 25px;" type="text" id="par15" {{ = "value=sports" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par11" {{ = "value=fashion" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par12" {{ = "value=astrophotography" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par13" {{ = "value=wildlife" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par14" {{ = "value=fashion" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par15" {{ = "value=sports" if not training else "" }}>
         </ul>
       </div>
 </div>
@@ -277,28 +277,6 @@ function show_training() {
   scrollTo(0,0);
   jQuery('#shadow').fadeIn().find('button').click(function(e) {
     e.preventDefault();
-/*
-        THIS WAS THE OLD VALIDATION ALGORITHM FOR WHEN WE HAD SEVERAL ANSWERS
-        IN ONE INPUT FIELD
-
-        NOW, HOWEVER, WE ARE TRANSITIONING TO A SYSTEM WITH ONE ANSWER PER
-        INPUT FIELD
-
-    pattern = /[a-z-]+/g;
-    myText1 = $('input[id=par1]').val().match(pattern);
-    answers1 = new Array("geese", "yard", "close-up");
-    pattern = /[a-z-]+/g;
-    myText2 = $('input[id=par2]').val().match(pattern);
-    answers2 = new Array("bottle", "blue", "spill");
-    pattern = /[a-z-]+/g;
-    myText3 = $('input[id=par3]').val().match(pattern);
-    answers3 = new Array("meet", "woman", "rain", "sunset");
-           
-    misses1 = $(answers1).not(myText1).length + $(myText1).not(answers1).length;
-    misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
-    misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
-    overall = misses1 + misses2 + misses3
-*/
     //#jQuery('.err').remove();
     if($('input[id=quiz_given]').val()=='0')
     {
@@ -322,54 +300,32 @@ function show_training() {
     }
     else
     {
-/*
-        first_mistake_position = $('.quiz input:text').index($('.quiz input[name=false]')[0]);
-        we_have_a_go = $('.quiz input[name=false]')[0]!=undefined
-        if(we_have_a_go)
-        {
-                if(first_mistake_position == 6 & $('.quiz input[name=false]')[0].value == "travel")
-                {
-                        hint = "Since Golden Gate Bridge is located in the United States we decided not to categorize it as 'travel'.";
-                }
-                else if(first_mistake_position == 4 & $('.quiz input[name=false]')[0].value == "wildlife")
-                {
-                        hint = "Even though there certainly is wildlife in Mt. Rainier the keyword itself does not hint at a living entity.";
-                }
-                else if(first_mistake_position == 7 & $('.quiz input[name=false]')[0].value == "wildlife")
-                {
-                        hint = "While bugs certainly are living beings we feel that they would more appropriately be classified in a different category.";
-                }
-                else if(first_mistake_position == 4 & $('.quiz input[name=false]')[0].value == "travel")
-                {
-                        hint = "Since Mt. Rainier is located in the US we feel it would more appropriately be classified in a different category.";
-                }
-        }
-        else{
-                if(first_mistake_position +1 < 6)
-                {
-                        hint = "One of the first five or you have not filled in all the answers yet.";
-                } 
-                else if(first_mistake_position + 1 < 11)
-                {
-                        hint = "One of the second batch of five.";
-                }
-                else
-                {
-                        hint = "One of the last five.";
-                }
-        }
-*/
         $('div.err').remove();
-        $('#butt').parent().before('<div class="err" style="left: 1em; clear: both;">One or more answers is incorrect or missing!</div>');
-//(Hint: ' + hint+' )</div>');
+	//var first_empty = $('.quiz input[name=empty]').attr("id").replace( /^\D+/g, '');
+	//var first_incorrect = $('.quiz input[name=incorrect]').attr("id").replace( /^\D+/g, '');
+	//if(first_empty < 6 | first_incorrect < 6)
+	if($('div[name=batch1] input[name=empty]').length > 0)
+	{
+		$('.quiz div[name=batch1]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the first batch of questions!</div>');
+	}
+	//else if(first_empty < 11 | first_incorrect < 11)
+	if($('div[name=batch2] input[name=empty]').length > 0)
+	{
+		$('.quiz div[name=batch2]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the second batch of questions!</div>');
+	}
+	if($('div[name=batch3] input[name=empty]').length > 0)
+	{
+		$('.quiz div[name=batch3]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the third batch of questions!</div>');
+	}
+        //$('#butt').parent().before('<div class="err" style="left: 1em; clear: both;">Fool, One or more answers is incorrect or missing!</div>');
     }
   });
 }
 
 $('.quiz input:text').on("change", function() { 
         /* ... */ 
-  possible_answers = new Array("environment", "activity", "actor", "object", "technique", "time", "color scheme",
-        "mood", "own name", "style", "genre");
+  possible_answers = new Array("foreground", "background", "orientation", "emotion", "technique", "time", "color",
+        "emotion", "artistic genre");
   user_answer = new Array(this.value.toLowerCase());
   if($(user_answer).not(possible_answers).length != 0)
   {
@@ -395,140 +351,27 @@ $('.quiz input:text').on("change", function() {
           my_top = (multiplier-11.1)*23;
         }
         $(this).after('<span style="position: absolute; left: 200px; min-width: 200px; top: ' + my_top + 'px;" class="err">Not a possible answer!</span>');
+	$(this).attr("name", "incorrect");
   }
   else
   {
     $(this).parent().find('.err').remove();
     position_input = $('.quiz input:text').index($(this));
-    correct_answers = new Array("actor", "object", "object", 
-          "proper name", "proper name", "technique", "proper name", "actor",
-          "proper name", "actor", "time", "object", "actor",
-          "environment", "style");
-    if(correct_answers[position_input]==user_answer)
+    correct_answers = new Array("orientation", "time", "technique", 
+          "emotion", "artistic genre", "technique", "emotion", "technique",
+          "emotion", "technique", "time", "object", "emotion",
+          "technique", "artistic style");
+    if (correct_answers[position_input]==user_answer)
     {
         this.name="correct";
     }
     else
     {
-        this.name="false";
-        //$('#butt').parent().before('<div id="err" style="clear: both;">One or more answers is incorrect! (Hint: )</div>');
+        $(this).attr("name", "incorrect");
     }
   }        
     });
 
-/*
-$("#par1").on("change", function() {
-  var explanations = {};
-  explanations["time"] = "None of these tags give any information about time.";
-  explanations["quality"] = "None of these tags describe the quality of the image.";
-  jQuery('#err').remove();
-  jQuery('#cor').remove();
-  var answers = new Array("forefront","background","technique");
-  var pattern = /[a-z-]+/g;
-  var matches = this.value.match(pattern);
-  matches = $.grep(matches, function(v, k){
-    return $.inArray(v, matches) === k;
-  });
-  if(matches.length!=3)
-  {
-    $('#par1').after('<div id="err">You have listed either too many or too few categories.</div>')
-  }
-  else
-  {
-    if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
-    {
-      var feasible_answers = new Array("forefront", "background", "time", "technique", "quality", "story");
-      if($(matches).not(feasible_answers).length == 0)
-      {
-        $('#par1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
-      }
-      else
-      {
-        $('#par1').after('<div id="err">Only categories explained in the Training Guidelines count as a valid answer.</div>');
-      }
-    }
-    else
-    {
-      $('#par1').after('<div id="cor">Well done!</div>');
-    }
-  }
-});
-
-$("#par2").on("change", function() {
-  var explanations = {};
-  explanations["time"] = "There is no tag conveying time information in the list.";
-  explanations["technique"] = "None of the tags quite describes how to picture was taken or what kind of photo it is.";
-  explanations["quality"] = "None of the tags tells us about resolution, colors or sharpness of the image.";
-  jQuery('#err').remove();
-  jQuery('#cor').remove();
-  var answers = new Array("forefront","background","story");
-  var pattern = /[a-z-]+/g;
-  var matches = this.value.match(pattern);
-  matches = $.grep(matches, function(v, k){
-    return $.inArray(v, matches) === k;
-  });
-  if(matches.length!=3)
-  {
-    $('#par2').after('<div id="err">This is not the right number of categories. Either too much or too few.</div>')
-  }
-  else
-  {
-    if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
-    {
-      var feasible_answers = new Array("forefront", "background", "time", "technique", "quality", "story");
-      if($(matches).not(feasible_answers).length == 0)
-      {
-        $('#par2').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
-      }
-      else
-      {
-        $('#par2').after('<div id="err">Only categories described in the above Training Guidelines are admissible answers.</div>');
-      }
-    }
-    else
-    {
-      $('#par2').after('<div id="cor">Well done!</div>');
-    }
-  }
-});
-
-$("#par3").on("change", function() {
-  var explanations = {};
-  explanations["technique"] = "Read the Training Guidelines.";
-  explanations["quality"] = "Review the Training Guidelines.";
-  jQuery('#err').remove();
-  jQuery('#cor').remove();
-  var answers = new Array("forefront","background","time", "story");
-  var pattern = /[a-z-]+/g;
-  var matches = this.value.match(pattern);
-  matches = $.grep(matches, function(v, k){
-    return $.inArray(v, matches) === k;
-  });
-  if(matches.length!=4)
-  {
-    $('#par3').after('<div id="err">You are either missing a category or have written down too many of them.</div>')
-  }
-  else
-  {
-    if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
-    {
-      var feasible_answers = new Array("forefront", "background", "time", "technique", "quality", "story");
-      if($(matches).not(feasible_answers).length == 0)
-      {
-        $('#par3').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
-      }
-      else
-      {
-        $('#par3').after('<div id="err">Only categories described in the above Training Guidelines are admissible.</div>');
-      }
-    }
-    else
-    {
-      $('#par3').after('<div id="cor">Well done!</div>');
-    }
-  }
-});
-*/
 
 function leave_training(){
   window.scroll(0,0);
