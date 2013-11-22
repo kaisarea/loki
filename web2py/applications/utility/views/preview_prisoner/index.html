@@ -1,5 +1,6 @@
 {{ extend 'layout.html' }}
 
+<link rel="stylesheet" href="/static/prisoner/css/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 <link rel="stylesheet" href="/static/prisoner/css/training.css" type="text/css" media="screen"/>
 
 {{ title = "an Inmate" }}
@@ -7,6 +8,20 @@
 {{ bonus_time = 60 }}
 
 <h1>Write a Short Letter to {{=title}}</h1>
+
+<div style="position: absolute; left: 410px;">
+	<h3 style="margin-bottom: 3px;">Payment Details</h3>
+	<div class="stats">
+		 <div id="details_box" style=" top: 0; text-align: left;">
+				 This job pays per letter via bonus. 
+				 <br><br>You can find
+				 bonus payments in <i>Your Account-&gt;Account
+				 Settings-&gt;<br>-&gt;View your account balance and
+				 transaction history</i>.
+		</div>
+	</div>			
+
+</div>
 
 <div style="max-width: 325px;" class="taskdetails">
     <p>

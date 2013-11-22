@@ -10,45 +10,52 @@
 {{ bonus_time = 60 }}
 <!-- PHOTOS DOWNLOADED FROM OPENPHOTO.NET --> 
 <div id="shadow" style="display: none; min-height: 2800px;">
- <h2>Guidelines for Tagging Classification</h2>
+ <h2>Training: Read this Primer on Tagging{{if training:}} and Pass a Test{{pass}}</h2>
  <p>
-        When you tag a photo, you assign it a keyword or phrase for simplified searching and classification. 
+        <!--When you tag a photo, you assign it a keyword or phrase for simplified searching and classification. 
         Let us go through this information session on tags that may help you with the task
         of tagging picture. Tags describe an image. There are multiple ways to describe
         an image and so naturally there are several different categories of tags.
         Understanding this may help you organize your thoughts later on when you are
         tagging pictures. The word guidelines is chosen with a purpose and when tagging
         actual images in this task you can rely on your own common sense, instinct
-        or experience. 
-    <div style="width: 45%; float: left;  max-width: 350px; margin: 0 10px;" class="column1">  
+        or experience. -->
+        There are different categories of tags.  This primer explains them
+        to make you a better image tagger.
+        {{if training:}}You will be tested on your understanding at the end.{{pass}}
+            <div style="width: 45%; float: left;  max-width: 350px; margin: 0 10px;" class="column1">  
     <img src="/static/genova/chess.jpg" width="275" height="200" border="0">
-    <p><em>This picture can be tagged with "room", "indoors" (environment); "game of chess", 
-        "chess tournament" (context); "chess pieces", "pawn", "king" (objects). Subjects are
-        not present in the image.</em></p><br>
+    <p><em>This picture can be tagged with "chessboard", 
+        "chess pieces" (objects); "landscape" (orientation).</em></p><br>
     <img src="/static/genova/autumn.jpg" width="275" height="200" border="0">
-    <p><em>This photo could be tagged with "bank" (object), "park" (environment), "autumn" (time)
-        or "calm" (mood).</em></p><br>
+    <p><em>This photo could be tagged with "bank", "trees" (object), "landscape" (orientation), "autumn" (time)
+        or "calm" (emotion).</em></p><br>
     <img src="/static/genova/pollination.jpg" width="275" height="200">
-    <p><em>This photo can be tagged with "macro" (technique), "insect" (subject), "flower" (object),
-        "bee" (subject), "nature" (environment), "pollination" (context), "spring" (time).</em></p><br><br>
-    <img src="/static/genova/control/1.jpg" width="275" heigh="200">
+    <p><em>This photo can be tagged with "macro" (technique), "insect" (object), "flower" (object),
+        "bee" (object), "spring" (time).</em></p><br><br>
+<!--    <img src="/static/genova/control/1.jpg" width="275" heigh="200">
     <p>
       <em>
         This image can be tagged with "collage" (technique), "Eiffel tower" (own name), 
         "landmark" (object), "Paris" (own name).
       </em>
     </p><br>
+-->
     </div>  
     <div style="width: 45%; float: left; max-width: 350px; margin: 0 10px;" class="column2">
     <ul>
-        <li><strong>Foreground</strong> - Some photos have main actors in the forefront of the
+<!--        <li><strong>Foreground</strong> - Some photos have main actors in the forefront of the
                 image (e. g. the bear in the photo on the left). Tags can identify this aspect of the
                 image. In the images on the left <em>chess pieces</em> appear in the foreground
                 of the first image while the room is in the background. In the second picture
                 the <em>bank</em> appears in the foreground of the image while the trees and
                 the park appears in the background of the image.
         <li><strong>Background</strong> - Tags can describe the background of the image.
-                Is there <em>landscape</em>? Is it a picture of a city? Is there <em>sea</em> or <em>mountains</em>?
+                Is there <em>landscape</em>? Is it a picture of a city? Is there <em>sea</em> or <em>mountains</em>? -->
+	<li><strong>Object</strong> - Most important part of every image is represented by objects.
+		<em>Chess pieces</em> appear in the first image on the left. A <em>bank</em>
+		surrounded with <em>leaves</em> in the second, <em>bee</em> pollinating
+		a <em>flower</em> in the third.
         <li><strong>Orientation</strong> - Tags can describe whether the image is of a
                 <em>portrait</em> format or a <em>landscape</em> format.
         <li><strong>Technique</strong> - How is the photo taken? How is the image drawn?
@@ -57,14 +64,14 @@
                 <em>motion blur photography</em> where the photo was taken over a long 
                 period of time? Is it a <em>collage</em> created by putting together
                 hundreds of smaller pictures?
-        <li><strong>Time</strong> - Was the picture taken in the evening? Is there a sunset or sunrise?
-                Can you tell a season of the year? Do fallen leaves indicate autumn? 
-                Or do the clothes of the people indicate summer or spring?
+        <li><strong>Time</strong> - Was the picture taken in the <em>evening</em>? Is there a <em>sunset</em> 
+		or <em>sunrise</em>? Can you tell a season of the year? Do fallen leaves indicate <em>autumn</em>? 
+                Or do the clothes of the people indicate <em>summer</em> or <em>spring</em>?
         <li><strong>Color</strong> - This may better apply to drawing rather than photos.
                 Some drawings use shades of the same color or maybe the colors were chosen
                 so that they show high degree of contrast? The colors may be sharp or fuzzy.
-        <li><strong>Emotion</strong> - Is the image evocative of certain emotion like fear
-                anxiety or nausea? Or does it seem to have a rather calming effect on 
+        <li><strong>Emotion</strong> - Is the image evocative of certain emotion like <em>fear</em>
+                <em>anxiety</em> or <em>nausea</em>? Or does it seem to have a rather <em>calming</em> effect on 
                 you?
         <li><strong>Artistic Genre</strong> - Is the style <em>dada</em>? Does it belong into the movement of
                 <em>impressionism</em>? Does it belong into Andy Warhol's visual art movement
@@ -81,8 +88,8 @@
     <h2>Testing Your Understanding of the Guidelines</h2>
     <form>
     <p>
-        Look at the tags below and write down (in the text field to the right of the tag) which photo 
-        category do they describe. To review the categories see the Training Guidelines.
+        Look at the tags below and write down (in the text field to the right of the tag) which
+        category they belong to.
     </p>
     <div name="batch1" style="clear: both">
       <div style="float: left; min-width: 200px;">
@@ -96,11 +103,11 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li style="position: relative;"><input type="text" name="empty" id="par1" {{ = "value=wildlife" if not training else "" }}>
-          <li style="position: relative;"><input type="text" name="empty" id="par2" {{ = "value=fashion" if not training else "" }}>
-          <li style="position: relative;"><input type="text" name="empty" id="par3" {{ = "value=astrophotography" if not training else "" }}>
-          <li style="position: relative;"><input type="text" name="empty" id="par4" {{ = "value=paparazzi" if not training else "" }}>
-          <li style="position: relative;"><input type="text" name="empty" id="par5" {{ = "value=landscape" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par1" {{ = "value=orientation" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par2" {{ = "value=time" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par3" {{ = "value=technique" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par4" {{ = "value=emotion" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par5" {{ = "value=artistic genre" if not training else "" }}>
         </ul>
       </div>
 </div>
@@ -109,18 +116,18 @@
         <ol>
           <li>collage
           <li>nausea
-          <li>art photography
+          <li>chessboard
           <li>cheer
-          <li>computer art
+          <li>tree
         </ol>
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par6" {{ = "value=sports" if not training else "" }}>
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par7" {{ = "value=architectural" if not training else "" }}>
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par8" {{ = "value=macro" if not training else "" }}>
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par9" {{ = "value=travel" if not training else "" }}>
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par10" {{ = "value=wildlife" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par6" {{ = "value=collage" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par7" {{ = "value=emotion" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par8" {{ = "value=object" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par9" {{ = "value=emotion" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par10" {{ = "value=object" if not training else "" }}>
         </ul>
       </div>
 </div>
@@ -136,11 +143,11 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par11" {{ = "value=fashion" if not training else "" }}>
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par12" {{ = "value=astrophotography" if not training else "" }}>
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par13" {{ = "value=wildlife" if not training else "" }}>
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par14" {{ = "value=fashion" if not training else "" }}>
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par15" {{ = "value=sports" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par11" {{ = "value=time" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par12" {{ = "value=technique" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par13" {{ = "value=emotion" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par14" {{ = "value=technique" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par15" {{ = "value=artistic genre" if not training else "" }}>
         </ul>
       </div>
 </div>
@@ -157,7 +164,7 @@
 <div class="congrats">
 <h1>Congratulations!</h1>
 <p>You have successfully completed the training</p>
-<button class="leave_training" style="margin-left: 70px; padding: 5px;">Go Back to the Task</button>
+<button class="leave_training" style="margin-left: 70px; padding: 5px;">Finish Training</button>
 </div>
 <h1>Image Tagging</h1>
 
@@ -167,30 +174,30 @@
     <div class="tab selected">
       <div class="stat">{{=request.price_string}}</div> Per HIT
         <span class="details">
-                 This job pays {{=request.price_string}} per {{ = len(pics) }} images via
-                 bonus. <br><br>You can find
+                 <ul><li>This job pays {{=request.price_string}} per {{ = len(pics) }} images
+                 <li>It pays via bonus. (Find
                  bonus payments in <i>Your Account-&gt;Account
                  Settings-&gt;<br>-&gt;View your account balance and
-                 transaction history</i>.
+                 transaction history</i>.)</ul>
          </span>
        </div>
        <div class="tab">
          <div class="stat">{{= improbability_rate }}%</div> Approved
            <span class="details">
-                 <p>Your submitted keywords must pass an evaluation. You will be
-                 notified of your work's approval within {{=bonus_time}}
-                 minutes.</p>
-                 <p>To ensure that our clients are best served, we require you
-                 to go through <a class="training" href="#training">image tagging training</a> 
-                 before you can begin work on this task.</p>
+                 <ul><li>Your work must be approved.
+                 <li>You will be
+                 notified within {{=bonus_time}}
+                 minutes.
+                 <li>You must complete <a class="training" href="#training">image tagging training</a>
+                 before working.
+                 </ul>
            </span>
          </div>
         <div class="tab">
-          <div class="stat">{{=work_limit/len(pics) if work_limit % len(pics) == 0 else work_limit/len(pics)+1}}</div> Available
+          <div class="stat">{{=work_limit/len(pics)}}</div> Available
             <span class="details">
-                Today you can tag {{=work_limit}} images (there are {{ = len(pics) }} per HIT
-                so {{=work_limit}} images translates into {{=work_limit/len(pics) if work_limit % len(pics) == 0 else work_limit/len(pics)+1}} HITs). This will
-                change tomorrow, depending upon our client's needs.
+                <ul><li>Today you can do {{=work_limit/len(pics)}} HITs.
+				<li>The number of HITs available changes each day.</ul>
             </span>
           </div>
           <div id="details_box"></div> 
@@ -212,16 +219,15 @@ These pictures may contain disagreeable content (explicit sexual
 <form action id="response" method="POST">
 {{ i = 0 }}
 {{ while i < len(pics): }}
-<h2>Image</h2>
-<img style="max-width: 275px;" src={{ = pics[i].url }}>
+<h2 style="margin-top: 160px;">Image</h2>
+<img style="max-width: 800px;" src={{ = pics[i].url }}>
 <!-- FROM http://www.morguefile.com/archive -->
 <h2>Submit your Keywords</h2>
 <p>
 <div style="position: relative;">
 <div class="train_info">
-<p>To ensure that our clients are best served, we require you
-                 to go through <a class="training" href="#training">image tagging training</a>
-                 before you can begin work on this task.</p>
+<p>You must complete <a class="training" href="#training">image tagging training</a>
+                 before working.</p>
 </div>
 <div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
 {{ for j in [1, 2, 3, 4, 5]: }}
@@ -301,21 +307,34 @@ function show_training() {
     else
     {
         $('div.err').remove();
+	$('div.cor').remove();
 	//var first_empty = $('.quiz input[name=empty]').attr("id").replace( /^\D+/g, '');
 	//var first_incorrect = $('.quiz input[name=incorrect]').attr("id").replace( /^\D+/g, '');
 	//if(first_empty < 6 | first_incorrect < 6)
-	if($('div[name=batch1] input[name=empty]').length > 0)
+	if($('div[name=batch1] input[name=empty]').length > 0 | $('div[name=batch1] input[name=incorrect]').length > 0)
 	{
 		$('.quiz div[name=batch1]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the first batch of questions!</div>');
 	}
+	else
+	{
+		$('.quiz div[name=batch1]').after('<div class="cor" style="left: 1em; clear: both;">Success!</div>');
+	}
 	//else if(first_empty < 11 | first_incorrect < 11)
-	if($('div[name=batch2] input[name=empty]').length > 0)
+	if($('div[name=batch2] input[name=empty]').length > 0 | $('div[name=batch2] input[name=incorrect]').length > 0)
 	{
 		$('.quiz div[name=batch2]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the second batch of questions!</div>');
 	}
-	if($('div[name=batch3] input[name=empty]').length > 0)
+	else
+	{
+		$('.quiz div[name=batch2]').after('<div class="cor" style="left: 1em; clear: both;">Success!</div>');
+	}
+	if($('div[name=batch3] input[name=empty]').length > 0 | $('div[name=batch3] input[name=incorrect]').length > 0)
 	{
 		$('.quiz div[name=batch3]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the third batch of questions!</div>');
+	}
+	else
+	{
+		$('.quiz div[name=batch3]').after('<div class="cor" style="left: 1em; clear: both;">Success!</div>');
 	}
         //$('#butt').parent().before('<div class="err" style="left: 1em; clear: both;">Fool, One or more answers is incorrect or missing!</div>');
     }
@@ -324,7 +343,7 @@ function show_training() {
 
 $('.quiz input:text').on("change", function() { 
         /* ... */ 
-  possible_answers = new Array("foreground", "background", "orientation", "emotion", "technique", "time", "color",
+  possible_answers = new Array("object", "orientation", "emotion", "technique", "time", "color",
         "emotion", "artistic genre");
   user_answer = new Array(this.value.toLowerCase());
   if($(user_answer).not(possible_answers).length != 0)
@@ -358,9 +377,9 @@ $('.quiz input:text').on("change", function() {
     $(this).parent().find('.err').remove();
     position_input = $('.quiz input:text').index($(this));
     correct_answers = new Array("orientation", "time", "technique", 
-          "emotion", "artistic genre", "technique", "emotion", "technique",
-          "emotion", "technique", "time", "object", "emotion",
-          "technique", "artistic style");
+          "emotion", "artistic genre", "technique", "emotion", "object",
+          "emotion", "object", "time", "color", "emotion",
+          "technique", "artistic genre");
     if (correct_answers[position_input]==user_answer)
     {
         this.name="correct";

@@ -122,6 +122,16 @@ h1 {
 	font-style: italic;
 	left: 100px;
 }
+.cor{
+       color: black;
+        margin: 15px;
+        position: relative;
+        clear: both;
+        font: monospace;
+        font-style: italic;
+        left: 100px;
+}
+
 /* test */
 #constancy
 {
