@@ -1,5 +1,7 @@
 {{ extend 'layout.html' }}
 
+{{ firsttime = "$0.50" }}
+
 <link rel="stylesheet" href="/static/prisoner/css/training.css" type="text/css" media="screen"/>
 
 
@@ -15,11 +17,11 @@
 
 <div style="max-width: 325px;" class="taskdetails">
     <p>
-	We give $0.50 to each first-time worker. It is our way of saying "hello."
+	We give {{=firsttime}} to each first-time worker. It is our way of saying "hello."
 	</p>
 
 	<p>
-	<button type="button" label="submit" class="submit" onclick="alert('Hello world!')">Accept one-time $0.50 bonus</button>
+	<button type="button" label="submit" class="submit" onclick="alert('Hello world!')">Accept one-time {{=firsttime}} bonus</button>
 	</p>
 
 	<p>
