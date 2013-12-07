@@ -138,7 +138,7 @@
     </div>   
     <input id="quiz_given" type="hidden" {{= "value=1" if training else "value=0" }}>
 <div style="clear: both;">
-    <button id="butt" style="margin-left: 180px; padding: 5px; padding-left: 20px; padding-right: 20px;">Submit Answers</button>
+    <button id="butt" style="margin-left: 180px; padding: 5px; padding-left: 20px; padding-right: 20px;">Finish Training</button>
     <button class="cancel_training" style="padding: 5px; padding-left: 30px; padding-right: 30px; margin-left: 80px;">Cancel</button>
 </div>
     </form>
@@ -148,7 +148,7 @@
 <div class="congrats">
 <h1>Congratulations!</h1>
 <p>You have successfully completed the training</p>
-<button class="leave_training" style="margin-left: 70px; padding: 5px;">Finish Training</button>
+<button class="leave_training" style="margin-left: 70px; padding: 5px;">Continue to Task</button>
 </div>
 <h1>Image Tagging</h1>
 
@@ -270,10 +270,15 @@ function show_training() {
     //#jQuery('.err').remove();
     if($('input[id=quiz_given]').val()=='0')
     {
-      overall = 15
+      overall = 15;
+      //alert('Yo!');
     }
-    //overall = 0  //This is for testing purposes only
-    overall = $('.quiz input[name=correct]').length
+    else
+    {
+      //overall = 0  //This is for testing purposes only
+      overall = $('.quiz input[name=correct]').length;
+    }
+
     if(overall == 15)
     {
             //$('.test').hide();
