@@ -1,4 +1,7 @@
-def index():
+def preview(): return {}
+def first_time(): return {}
+
+def mindex():
     min_words = 100
 
     # Choose a random prisoner ordering for this worker
@@ -33,7 +36,7 @@ def index():
   
     # Otherwise, display the form
     log_action('with prisoner', othervars)
-    return dict(min_words=100,
+    return dict(min_words=min_words,
                 prisoner=prisoner,
                 disagreeable=request.disagreeable,
                 training=request.training,
@@ -98,3 +101,4 @@ def results():
                 results=sorted([worker_results(w) for w in workers],
                                key=lambda w: now-w.latest),
                 format=plaintext2html)
+

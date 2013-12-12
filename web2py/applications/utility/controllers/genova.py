@@ -1,3 +1,6 @@
+def preview(): return {}
+def first_time(): return {}
+
 def index():
 ## Why do I still have min_words here? What does it serve?
     min_words = 100

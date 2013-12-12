@@ -1,5 +1,5 @@
 def index():
-    return {}
+    return dict()
 
 def first_time():
     return {}
