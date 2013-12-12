@@ -130,7 +130,8 @@ def submit():
     redirect(turk_submit_url())
 
 def submit_first_hit():
-    soft_assert(hits_done() < 1)
+    soft_assert(db((db.actions.workerid == request.workerid)
+                   & (db.actions.action == 'finished')).count() < 1)
     hit_finished(bonus_amount=request.first_time_bonus or 0.51)
 
 def hello():

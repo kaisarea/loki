@@ -2,7 +2,8 @@ def index():
     min_words = 100
 
     # Kludgey redirect for the first_time hit that pays $.50
-    if not request.test and hits_done() < 1:
+    if not request.testing and db((db.actions.workerid == request.workerid)
+                                  & (db.actions.action == 'finished')).count() < 1:
         response.view = 'first_time.html'
         return {}
 
