@@ -1,6 +1,6 @@
 {{ extend 'layout.html' }}
 
-{{ firsttime = "$0.50" }}
+{{ firsttime = "$%.2f" % request.first_time_bonus }}
 
 <link rel="stylesheet" href="/static/prisoner/css/training.css" type="text/css" media="screen"/>
 
