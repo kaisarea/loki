@@ -1,6 +1,3 @@
-def preview(): return {}
-def first_time(): return {}
-
 def mindex():
     min_words = 100
 
@@ -102,3 +99,7 @@ def results():
                                key=lambda w: now-w.latest),
                 format=plaintext2html)
 
+def preview(): return {}
+def first_time():
+    response.view = 'first_time.html'
+    return {}

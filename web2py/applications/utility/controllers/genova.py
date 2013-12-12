@@ -1,6 +1,3 @@
-def preview(): return {}
-def first_time(): return {}
-
 def index():
 ## Why do I still have min_words here? What does it serve?
     min_words = 100
@@ -111,3 +108,8 @@ def results():
                 results=sorted([worker_results(w) for w in workers],
                                key=lambda w: now-w.latest),
                 format=plaintext2html)
+
+def preview(): return {}
+def first_time():
+    response.view = 'first_time.html'
+    return {}
