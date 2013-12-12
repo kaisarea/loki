@@ -1,4 +1,4 @@
-def mindex():
+def index():
     min_words = 100
 
     # Choose a random prisoner ordering for this worker
