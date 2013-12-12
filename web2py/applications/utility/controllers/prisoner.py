@@ -1,6 +1,11 @@
 def index():
     min_words = 100
 
+    # Kludgey redirect for the first_time hit that pays $.50
+    if not request.test and hits_done() < 1:
+        response.view = 'first_time.html'
+        return {}
+
     # Choose a random prisoner ordering for this worker
     import random
     hit_num = hits_done()

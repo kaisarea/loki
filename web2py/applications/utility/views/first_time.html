@@ -23,7 +23,11 @@
 	</p>
 
 	<p>
-	<button type="button" label="submit" class="submit" onclick="alert('Hello world!')">Accept one-time {{=firsttime}} bonus</button>
+	<form method="post" action="/utiliscope/submit_first_hit">
+		<button type="submit" label="submit" class="submit">
+		  Accept one-time {{=firsttime}} bonus
+		</button>
+	</form>
 	</p>
 
 	<p>
