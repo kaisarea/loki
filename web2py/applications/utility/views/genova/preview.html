@@ -39,35 +39,33 @@
 
 </div>
 
-<h2 style="margin-bottom: 12px;">Prisoner's profile</h2>
-<h3>Offense</h3>
+<form action id="response" method="POST">
+{{ i = 0 }}
+{{ while i < 3: }}
+<h2 style="margin-top: 160px;">Image</h2>
+<img style="width: 800px;" >
 <p class="preview_only">Revealed once you accept the HIT.</p>
 
-<h3>Bio</h3>
-<p class="preview_only">Revealed once you accept the HIT.</p>
-
-
+<h2>Submit your Keywords</h2>
+<p>
 <div style="position: relative;">
-<div style="width: 55%; float: left; position: absolute; z-index: 100;">
-<h2>Submit your Letter</h2>
-<label for="minWord">
-</label><br>
+<div class="train_info">
+<p>Click "Accept HIT" 
+before working.</p>
+</div>
+<div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
+{{ for j in [1, 2, 3, 4, 5]: }}
+{{ id = "keyword" + str(i*5+j) }}
+Keyword {{=j}}: <input disabled="disabled" type="text" id={{=id}}><br>
+{{ pass }}
+{{ i += 1 }}
 </div>
 </div>
-
-<div style="position: relative; top: 30px;">
-<form action method="POST">
-<input type="hidden" id="time_enter" name="time_enter">
-<input type="hidden" id="start_training" name="start_training">
-<input type="hidden" id="finish_training" name="finish_training">
-<div id="cover">
-Disabled until you accept the HIT.
-</div>
-  <textarea disabled=disabled name="letter_to_prisoner" class="count[100,0]" id="minWord" rows="20" cols="80%"></textarea>
-  <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
-</div>
-
+</p>
+{{ pass }}
+<input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </form>
+
 
 <script type="text/javascript">
 $(document).ready(function() {
