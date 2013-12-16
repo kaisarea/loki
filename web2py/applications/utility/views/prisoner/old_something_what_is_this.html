@@ -1,0 +1,474 @@
+{{ extend 'layout.html' }}
+<script type="text/javascript" src="/static/prisoner/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/static/prisoner/word-count.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+<link rel="stylesheet" href="/static/prisoner/css/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+<script type="text/javascript" src="/static/prisoner/jquery.fancybox.pack.js?v=2.1.5"></script>
+<link rel="stylesheet" href="/static/prisoner/css/style-dropdown.css" type="text/css" media="screen"/>
+
+{{ title = "an Inmate" }}
+{{ org = 'inmates' }}
+{{ bonus_time = 30 }}
+{{if inconstancy and work_limit == 70:}}
+{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph1.png') }}
+{{elif not inconstancy and work_limit == 70:}}
+{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph2.png') }}
+{{elif inconstancy and work_limit == 140:}}
+{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph3.png') }}
+{{else:}}
+{{ availability_message = A('the following graph', _class='fancybox', _rel='group', _href='/static/prisoner/graph4.png') }}
+{{pass}}
+ 
+
+<!--
+R command used to generate the graphs:
+
+ggplot(df, aes(x=factor(days, as.character(df$days)), y=hits)) + geom_bar(stat="identity") + geom_text(aes(label=hits), vjust=1.5, colour="white") + xlab("") + theme(axis.text.x = element_text(size=14, face="bold", color="black"))
+-->
+{{ improbability_message = P('Your submitted letter must pass an evaluation. You will be notified of your letter\'s approval within ', bonus_time, ' minutes.', BR(), '(Current approval rate: ', B(improbability_rate, '%'), ' of HITs submitted)') if improbability else "" }}
+{{ prisoner_textarea = DIV('You have not yet completed the ', A('required training.', _class='training', 
+	_href='#training'), _id='cover') if training else "" }}
+
+<div id="shadow" style="display: none;">
+    <h2>Training Guidelines for Writing a Prisoner</h2>
+    <p>
+        You must learn these rules to write letters to prisoners.
+        Your letter will be <b>rejected</b> if it:
+    </p>
+    <ol>
+        <li>Depicts or describes procedures for the brewing of alcoholic 
+            beverages, or the manufacture of drugs or other intoxicants;
+        <li>Is written in code;
+        <li>Depicts, describes or encourages activities which may lead to the 
+            use of physical violence or group disruption;
+        <li>Encourages or instructs in the commission of criminal activity;
+        <li>Be rude or disrespectful;
+        <li>Write racist, chauvinistic, sexist or obscene comments. Hopefully that 
+            needs no further explanation;
+        <li>Discourages the prisoner from successfully continuing in his civil
+            life upon release;
+        <li>Lacks enthusiasm and positive outlook;
+        <li>Describes an illegal activity in a positive way leading to distortion
+            in role model creating process on the side of the prisoner (e. g. 
+	    describes a criminal as a hero so that the prisoner grows to admire
+	    him and hence starts to perceive criminal activity as attractive
+	    or laudable);
+        <li>Undermines the correctionary process the prisoner is undergoing
+            in the correction facility;
+    </ol>
+   {{ test = "inline" if training else "none" }} 
+    <div class="test" style="display: {{=test}}">
+    <h2>Testing Your Understanding of the Guidelines</h2>
+    <p>
+        Read each of these ficticious letters, and identify the rules
+        they violate.
+    </p>
+    <form>
+    <ul>
+        <li><p>"Dear Carlos,<br>
+                I cannot possibly comprehend how a human being might be 
+                capable of doing what you did. However, you were justly
+                convicted and you are paying your debt to society.
+                So I guess it would be wrongful of me to deny you 
+                my friendship. On the other hand, it is not quite
+                clear whether you have been praying to God to ask 
+                you forgiveness and whether it will be granted to you.
+                I guess it all depends on the entirety of your life,
+                personality and actions. Anyway, I find difficult to relate to you
+                as a person. Neverthless, I would like to say that I hope
+                that you won't deviate from the righteous path again
+                and pray for God's forgiveness. Dabit deus his quoque 
+                finem.<br>
+                <br>
+                Yours Truly,<br>
+                Jacob"
+            </p>
+            <em>
+		List <b>4 of the above</b> rules that this letter violates 
+		separated by commas (e. g. if it violates 
+		the first and second items, write "1,2" in the text field below).
+	    </em><br><br>
+                Items Violated: <input type="text" id="letter1" name="letter1">
+	     <br><br>
+        <li><p>"Dear Tom,<br>
+                Your only crime is that you got caught! There is a lot of white-collar
+                folks steeling megabucks from people in investment banks 
+                and other garbage corporations. Politicians fool people all
+                the time and cash in on it. Your only crime was that you didn't
+                think big and you didn't have the right friends in the right places!
+                They put you in that position, man! It ain't your fault!
+                Next time you just gotta be smarter, don't steal pennies, steal
+                big! Don't lie just in the court room, lie all the time!
+                That's how the white people do it!<br>
+                <br>
+                Sincerely Yours,<br>
+                Margret"
+            </p>
+              <em>List <b>6 of the above</b> rules that this letter violates
+		separated by commas or white space (e. g. if you think 
+		it violates the first and fourth items, write "1,4" in the text 
+		field below).</em><br><br>
+                Items Violated: <input type="text" id="letter2" name="letter2"><br>
+                <br>
+        <li>
+            <p>"Hello there,<br>
+                looks like your life has been a big bummer. Don't worry about 
+                it pal! Life can be crazy sometime. Things just happen. Shit happens, man!
+                We're only human, ain't we? You screw up here and there. But hey, 
+                keep it real, man! Don't let them bring you down. Get up 
+                and live it up! But first you gotta get out of that sh*thole,
+                man! Can't wait for the man to let you go! Gotta grab things
+                into your own hand. Live is too short! Don't let the white man
+                take it away from you! When you get outta there I can figure 
+                out a job for you if you know what I mean;) Need folks with
+                experience!;)<br>
+                <br>
+                Take it easy bro!<br>
+                Jim"</p>
+                <em>List <b>7 of the above</b> rules that this letter violates
+		separated by commas or white spaces (e. g. if you think 
+		it violates the first, fifth and second item, write
+                "1,2,5" in the text field below).</em><br><br>
+                Items Violated: <input type="text" id="letter3" name="letter3">
+    </ul>       
+      
+    
+    <button id="butt" style="left: 20em; position: relative; padding: 7px; padding-left: 20px; padding-right: 20px; margin-top: 20px;">Answer</button>
+    </form>
+</div>
+{{ button_vis = "none" if training else "inline" }}
+<button class="trainbutton" onClick="hideTrainingBox()" style="margin-left: 33%; display: {{=button_vis}}; margin-right: 33%; width: 33%; padding: 7px; padding-left: 20px; padding-right: 20px; margin-top: 20px;">Back to the task</button>
+</div>
+{{ training_message = P('To ensure that our clients are best served, we require you to go through ', A('writing style training', _class='training', _href='#training'), ' before you can begin work on this task.') }}
+
+<h1>Write a Short Letter to {{=title}}</h1>
+<div class="menutop">
+<div class="treatment_box">
+  <ul id="sdt_menu" class="sdt_menu">
+    <li>
+      <a href="#">
+      <span class="sdt_active"></span>
+      <span class="sdt_wrap">
+        <span class="sdt_link">{{=request.price_string}}</span>
+        <span class="sdt_descr">PER HIT</span>
+      </span>
+      </a>
+      <div style="display: inline;" class="sdt_box">
+	This job pays {{=request.price_string}} per
+	letter via bonus. <br>You will receive your bonus payment 
+        within {{=bonus_time}} minutes of submitting. <br><br>You can 
+	find bonus payments in 
+	<i>Your Account-&gt;Account Settings-&gt;<br>-&gt;View your account balance 
+	and transaction history</i>.		
+      </div>
+    </li>
+    <li>
+      <a href="#">
+	<span class="sdt_active"></span>
+	<span class="sdt_wrap">
+		<span class="sdt_link">{{=work_limit}} HITs</span>
+		<span class="sdt_descr">Available</span>
+	</span>
+      </a>
+      <div class="sdt_box">
+        This HIT will allow you to work on up to
+	{{=work_limit}}. 
+      </div>
+    </li>
+{{ if improbability: }}
+    <li>
+	<a href="#">
+	  <span class="sdt_active"></span>
+	  <span class="sdt_wrap">
+		<span class="sdt_link">{{ = improbability_rate }}%</span>
+		<span class="sdt_descr">Approval Rate</span>
+	  </span>
+	</a>
+        <div class="sdt_box">
+		{{=improbability_message}}
+		{{=training_message}}
+      </div>
+     </li>
+{{ pass }}
+    </ul>
+</div>
+<div class="taskdetails">
+<h2>Details of the Task</h2>
+   <p>
+    Inmates need moral support from outside of the prison
+    walls. Research shows that inmates with positive contacts outside
+    of prison are less likely to return to prison, crime, and substance
+    abuse, and more likely to find a job upon release.
+   </p>
+
+   <p>Read the following prisoner's bio, and write a positive, encouraging letter.
+	Please do not include your email address, full name or address in the letter.</p>
+</div>
+</div>
+<h2 style="margin-bottom: 12px;">{{=prisoner.name}}'s profile</h2>
+<h3>Offense</h3>
+<p><span class="crime {{if prisoner.crime.long:}} underline" title="{{=prisoner.crime.long}}{{pass}}"
+>{{=prisoner.crime.short}}</span></p>
+
+<h3>Bio</h3>
+<p>{{=XML(prisoner.bio)}}</p>
+
+
+<div style="position: relative;">
+<div style="width: 55%; float: left; position: absolute; z-index: 100;">
+<h2>Submit your Letter</h2>
+<label for="minWord">
+</label><br>
+</div>
+</div>
+
+
+<div style="position: relative; top: 30px;">
+<form action method="POST">
+{{=prisoner_textarea}}
+  <textarea {{= "disabled=disabled" if training else "" }} name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
+  <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
+</div>
+
+
+</form>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".fancybox").fancybox();
+});
+
+$(function() {
+	/**
+	* for each menu element, on mouseenter, 
+	* we enlarge the image, and show both sdt_active span and 
+	* sdt_wrap span. If the element has a sub menu (sdt_box),
+	* then we slide it - if the element is the last one in the menu
+	* we slide it to the left, otherwise to the right
+	*/
+	$('#sdt_menu > li').bind('mouseenter',function(){
+	var $elem = $(this);
+	$elem.find('a').css('background-color', '#e3e3e3');
+		var $sub_menu = $elem.find('.sdt_box');
+		if($sub_menu.length){
+		  var left = '0px';
+		  if($elem.index()==0){
+		    left = '0px';
+		  }
+		else if($elem.index()==1){
+		  left = '-105px';
+		}
+		else { left = '-210px'; }
+
+			/*if($elem.parent().children().length == $elem.index()+2)
+				left = '0px';
+			if($elem.parent().children().length == $elem.index()+1){
+				left = '0px';
+				$elem.find('.sdt_wrap').hide()
+				$elem.find('.sdt_active').hide()
+			} */
+		//#alert($elem.index())	
+			var first_prio = $elem.parent().children().first().find('.sdt_box').css('z-index')	
+			var second_prio = $elem.parent().children().first().next().find('.sdt_box').css('z-index')
+			var third_prio = $elem.parent().children().first().next().next().find('.sdt_box').css('z-index')
+			var highest_prio = Math.max(first_prio, second_prio, third_prio)
+			var visi = parseInt($sub_menu.css('z-index'))+1;
+			$sub_menu.css('z-index', highest_prio);
+			$sub_menu.css('left', left);
+			
+		}	
+		/*});*/
+	  }).bind('mouseleave',function(){
+		var $elem = $(this);
+		$elem.find('a').css('background-color', '#eee');
+		$elem.find('.sdt_link').css('color', '#444');
+		$elem.find('.sdt_wrap').show()
+		var $sub_menu = $elem.find('.sdt_box');
+		if($sub_menu.length){
+			
+			var visi = parseInt($sub_menu.css('z-index'))-2;
+			$sub_menu.css('z-index', visi.toString());
+				
+		}	
+		$elem.find('.sdt_active')
+		 .stop(true)
+		 .animate({'height':'0px'},300)
+		 .andSelf().find('img')
+		 .stop(true)
+		 .animate({
+			'width':'0px',
+			'height':'0px',
+			'left':'85px'},400)
+		 .andSelf()
+		 .find('.sdt_wrap')
+		 .stop(true)
+		 .animate({'top':'15px'},500);
+				});
+            });
+
+params = {
+    track: true,
+    delay: 0, 
+    showURL: false, 
+    showBody: " - ", 
+    fade: 150,
+    fixPNG: true, 
+    opacity: 1, 
+    left: -120,
+	 top: 9
+};
+$('.bonus').tooltip(params);
+delete params.left
+delete params.top
+$('.crime').tooltip(params);
+
+function show_training() {
+    scrollTo(0,0);
+    jQuery('#shadow').fadeIn()
+      .find('button').click(function(e) {
+            e.preventDefault();
+	    var pattern = /[0-9]+/g;
+            var myText1 = $('input[name=letter1]').val().match(pattern);
+            var answers1 = new Array("5", "7", "8", "10");
+            var myText2 = $('input[name=letter2]').val().match(pattern);
+	    var answers2 = new Array("4", "6", "7", "8", "9", "10");
+            var myText3 = $('input[name=letter3]').val().match(pattern);
+	    var answers3 = new Array("3", "4", "6", "7", "8", "9", "10");
+	   
+	    var misses1 = $(answers1).not(myText1).length + $(myText1).not(answers1).length;
+	    var misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
+	    var misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
+	    var overall = misses1 + misses2 + misses3
+	    overall = 0 
+        if(overall == 0)
+        {
+	    $('.test').hide();
+	    $('.trainbutton').fadeIn();
+	    $('#cover').fadeOut(1);
+            $('#minWord').prop("disabled", false);
+            window.scroll(0,0);
+        }
+    });
+}
+
+function hideTrainingBox(){
+	$('#shadow').fadeOut(1000);
+}
+
+$("#letter1").on("change", function() {
+	var explanations = {};
+	explanations[1] = "There is absolutely no mention of drugs or alcohol in the letter. Read the instructions before you answer!";
+	explanations[2] = "While latin is a language that is not commonly spoken in the US, the meaning of the sentence can be easily looked up and is unambiguous";
+	explanations[3] = "The letter certainly does not encourage violence on the part of the prisoner. Read the instructions cafefully!";
+	explanations[4] = "The letter certainly does not encourage criminal activity. Learn the guidelines before you attempt to pass the quiz!";
+	explanations[6] = "No racial, ethnic, gender or obscene comments are present in the letter. Learn the guidelines before you do the test!";
+	explanations[9] = "If you read the instructions carefully you will know that this letter does not describe any illegal activity.";
+	jQuery('#err').remove();
+	var answers = new Array("5","7","8","10");
+	var pattern = /[0-9]+/g;
+	var matches = this.value.match(pattern);
+	matches = $.grep(matches, function(v, k){
+    		return $.inArray(v, matches) === k;
+		});
+	if(matches.length!=4)
+	{
+		$('#letter1').after('<div id="err">You have to enter 4 distinctive items violated in the letter! See the instructions to this quiz above.</div>')
+	}
+	else
+	{
+		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+		{
+			var feasible_answers = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+			if($(matches).not(feasible_answers).length == 0)
+			{
+	  			$('#letter1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			}
+			else
+			{
+				$('#letter1').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
+			}
+		}
+		else
+		{
+			$('#letter1').after('<div id="cor">Well done!</div>');
+		}
+	}
+});
+
+$("#letter2").on("change", function() {
+	var explanations = {};
+	explanations[1] = "While the letter certainly does encourage certain non-laudable activities, the abuse of intoxicants is not one of them.";
+	explanations[2] = "While the letter might seem little hazy at times it does not qualify as written in code.";
+	explanations[3] = "While the letter does encourage criminal activity, it actually encourages the prisoner to abandon the low-level violent activites in the pursuit of more sophisticated white-collar crimes.";
+	explanations[5] = "The letter takes the side of the prisoner and is attempting to provide an advise to the prisoner, however, misguided. There is certainly nothing rude or disrespectful in it.";
+	jQuery('#err').remove();
+	var answers = new Array("4","6", "7","8","9", "10");
+	var pattern = /[0-9]+/g;
+	var matches = this.value.match(pattern);
+	matches = $.grep(matches, function(v, k){
+    		return $.inArray(v, matches) === k;
+		});
+	if(matches.length!=6)
+	{
+		$('#letter2').after('<div id="err">You have to enter 6 items violated in the letter! Read the above quiz instructions more carefully.</div>');
+	}
+	else
+	{
+		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+		{
+			var feasible_answers = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+			if($(matches).not(feasible_answers).length == 0)
+			{
+	  			$('#letter2').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			}
+			else
+			{
+				$('#letter2').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
+			}
+		}
+		else
+		{
+			$('#letter2').after('<div id="cor">Well done!</div>');
+		}
+	}
+});
+
+$("#letter3").on("change", function() {
+	var explanations = {};
+	explanations[1] = "While the letter certainly does encourage some serious criminal activity, consumption of intoxicants is not one of them.";
+	explanations[2] = "The letter is quite explicit if ill-advised so it does not qualify as written in code.";
+	explanations[5] = "The letter does not quite provide the correct advise but clearly not out of rudeness or disrespect but rather because of the person providing it is probably committing those same very mistakes.";
+	jQuery('#err').remove();
+	var answers = new Array("3", "4", "6","7","8","9", "10");
+	var pattern = /[0-9]+/g;
+	var matches = this.value.match(pattern);
+	matches = $.grep(matches, function(v, k){
+    		return $.inArray(v, matches) === k;
+		});
+	if(matches.length!=7)
+	{
+		$('#letter3').after('<br><div id="err">You have to enter 7 items violated in the letter! Go back to the quiz instructions and read them carefully.</div>');
+	}
+	else
+	{
+		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+		{
+			var feasible_answers = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+			if($(matches).not(feasible_answers).length == 0)
+			{
+	  			$('#letter3').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+			}
+			else
+			{
+				$('#letter3').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
+			}
+		}
+		else
+		{
+			$('#letter3').after('<div id="cor">Well done!</div>');
+		}
+	}
+});
+
+    $(".training").bind('click', show_training);    
+</script>
