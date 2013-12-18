@@ -126,8 +126,13 @@ h1 {
        color: black;
         margin: 15px;
         position: relative;
+        border-style: solid;
         clear: both;
         font: monospace;
+        border-width: 2px;
+        width: 70px;
+        text-align: center;
+        border-color: green;
         font-style: italic;
         left: 100px;
 }
