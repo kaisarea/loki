@@ -133,6 +133,7 @@ def submit_first_hit():
     soft_assert(db((db.actions.workerid == request.workerid)
                    & (db.actions.action == 'finished')).count() < 1)
     hit_finished(bonus_amount=request.first_time_bonus or 0.51)
+ 
 
 def hello():
     theme = 'whitepink'
@@ -261,24 +262,6 @@ def launch_one_off_hit():
     launch_test_study(request.vars.task)
     debug("We added a hit to the launch queue.")
     return 'success'
-
-def background_process_1():
-    log('Processing launch queue')
-    process_launch_queue()
-    if request and request.args and request.args[0] == 'return':
-        redirect(URL(r=request, f='index'))
-    import threading
-    log('In background_process_1, ' + str(threading.activeCount()) \
-                  + ' threads are ' \
-                  + str(threading.enumerate()))
-
-def background_process_2():
-    log('Processing queues')
-    process_bonus_queue()
-    refresh_hit_status()
-    if request and request.args and request.args[0] == 'return':
-        redirect(URL(r=request, f='index'))
-
 
 
 ############################################################

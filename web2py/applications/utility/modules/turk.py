@@ -253,7 +253,9 @@ def get_reviewable_hit_ids ():
 
 def get_assignments_for_hit(hitid):
     data = ask_turk('GetAssignmentsForHIT', {
-        'HITId' : hitid})
+        'HITId' : hitid,
+        'PageSize': 30
+    })
     return getsx(data, 'Assignment')
 
 def get_worker_answers(hitid):
@@ -316,6 +318,12 @@ def give_bonus_up_to(assignmentid, workerid, bonusamt, reason):
     return new_bonus
 
 def give_bonus(assignmentid, workerid, bonusamt, reason):
+    '''
+    FYI If this fails, it will raise an error, because xmlify()
+    within ask_turk() runs error_check() which will raise an error
+    and store it in the amazon_health_log.
+    '''
+
     params = {'AssignmentId' : assignmentid,
               'WorkerId' : workerid,
               'BonusAmount.1.Amount' : bonusamt,

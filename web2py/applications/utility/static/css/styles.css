@@ -104,8 +104,7 @@ div.fixed { width: 93% !important; }
  lu { margin-bottom: 1em; }
  li { margin-left: 2em; line-height: 1.5em; }
  dt { text-decoration:none; margin-left: +10em; }
- /*p { line-height: 1.8em; margin-bottom: 0.2em; }*/
- p { line-height: 1.3em; margin-bottom: 1em; }
+ p { line-height: 1.8em; margin-bottom: 0.2em; }
  pre { padding: 1em}
  code { font-size: 12px; font-family: Bitstream Vera Sans Mono,monospace; }
  table { border-spacing: 2px;}
