@@ -20,7 +20,7 @@ h1 {
         display: none;
         max-width: 700px;
         width: 700px;
-        background: #eee;
+        background: #e5e5e5;
         position: absolute;
         left: 0px;
         z-index: 500;
@@ -46,10 +46,10 @@ h1 {
 
 .train_info {
         max-width: 302px;
-        background: #eee;
+        background: #e5e5e5;
         position: relative;
 	z-index: 20;
-        left: 145px;
+        left: 245px;
         top: 0px;
         box-shadow: 3px 3px 0px 0px #888888;
         padding: 20px;
@@ -65,7 +65,7 @@ h1 {
         margin-left: 5px;
         height:60px;
     box-shadow: 3px 3px 0px 0px #888888;
-        background-color: #eeeeee;
+        background-color: #e5e5e5;
 
         font-size: 14px;
         text-align: center;

@@ -7,12 +7,32 @@
 
 <style>
 .preview_only {
+	position: absolute;
     background-color: #e5e5e5;
-    padding: 9px;
-    width: 800px;
-    height: 800px;
+	padding: 20px;
+/*     width: 260px; */
+	max-width: 302px;
     Border: solid 1px #c5c5c5;
+    left:255px;
     }
+
+.image {
+	position: relative;
+	width: 100%;
+	}
+
+.imgtext {
+	position: absolute;
+	top: 20px;
+	left: 83px;
+	width: 100%;
+	}  
+	
+.keyword {
+	position: absolute; 
+	left: 105px;
+	}  
+    
 </style>
 
 {{ bonus_time = 60 }}
@@ -30,7 +50,7 @@
 
 </div>
 
-<div style="max-width: 325px;" class="taskdetails">
+<div style="max-width: 325px; margin-bottom: 110px" class="taskdetails">
     <p>
 	You will be presented with a series of pictures. Provide 5 keywords
 	most appropriately describing the content of these pictures. These
@@ -43,25 +63,29 @@
 <form action id="response" method="POST">
 {{ i = 0 }}
 {{ while i < 3: }}
-<h2 style="margin-top: 160px;">Image</h2>
-<img style="width: 800px;" >
-<p class="preview_only">Revealed once you accept the HIT.</p>
+<h2 style="margin-top: 30px;">Image</h2>
+<div class="image">
+	<img style="width: 400px;" src="/static/genova/greyX.jpg">
+	<div class="imgtext">
+		Revealed once you accept the HIT.
+	</div>
+</div>
 
 <h2>Submit your Keywords</h2>
 <p>
-<div style="position: relative;">
-<div class="train_info">
-<p>Click "Accept HIT" 
-before working.</p>
-</div>
-<div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
-{{ for j in [1, 2, 3, 4, 5]: }}
-{{ id = "keyword" + str(i*5+j) }}
-Keyword {{=j}}: <input disabled="disabled" type="text" id={{=id}}><br>
-{{ pass }}
-{{ i += 1 }}
-</div>
-</div>
+	<div class="preview_only">
+		<p>Click "Accept HIT" 
+		before working.</p>
+	</div>
+	<div class="key_inputs">
+		{{ for j in [1, 2, 3, 4, 5]: }}
+		{{ id = "keyword" + str(i*5+j) }}
+		Keyword {{=j}}: 
+			<input disabled="disabled" type="text" id={{=id}} class="keyword">
+		<br>
+		{{ pass }}
+		{{ i += 1 }}
+	</div>
 </p>
 {{ pass }}
 <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />

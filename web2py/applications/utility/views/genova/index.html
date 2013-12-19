@@ -7,6 +7,14 @@
 <link rel="stylesheet" href="/static/prisoner/css/training.css" type="text/css" media="screen"/>
 <script type="text/javascript" src="/static/prisoner/stats-box.js"></script>
 
+<style>
+.keyword {
+	position: absolute; 
+	left: 91px;
+	}  
+</style>
+
+
 {{ bonus_time = 60 }}
 <!-- PHOTOS DOWNLOADED FROM OPENPHOTO.NET --> 
 <div id="shadow" style="display: none; min-height: 2800px;">
@@ -189,7 +197,7 @@
   </div>
 </div>
 
-<div style="max-width: 325px;" class="taskdetails">
+<div style="max-width: 325px; margin-bottom: 175px" class="taskdetails">
 <p>
 
 You will be presented with a series of pictures. Provide 5 keywords most
@@ -203,7 +211,7 @@ These pictures may contain disagreeable content (explicit sexual
 <form action id="response" method="POST">
 {{ i = 0 }}
 {{ while i < len(pics): }}
-<h2 style="margin-top: 160px;">Image</h2>
+<h2 style="margin-top: 75px;">Image</h2>
 <img style="max-width: 800px;" src={{ = pics[i].url }}>
 <!-- FROM http://www.morguefile.com/archive -->
 <h2>Submit your Keywords</h2>
@@ -216,7 +224,7 @@ These pictures may contain disagreeable content (explicit sexual
 <div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
 {{ for j in [1, 2, 3, 4, 5]: }}
 {{ id = "keyword" + str(i*5+j) }}
-Keyword {{=j}}: <input disabled="disabled" type="text" id={{=id}}><br>
+Keyword {{=j}}: <input disabled="disabled" type="text" id={{=id}} class="keyword"><br>
 {{ pass }}
 {{ i += 1 }}
 </div>
