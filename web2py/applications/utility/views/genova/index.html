@@ -159,7 +159,6 @@
 <button class="leave_training" style="margin-left: 70px; padding: 5px;">Continue to Task</button>
 </div>
 <h1>Image Tagging</h1>
-
 <div style="position: absolute; left: 410px;">
   <h3 style="margin-bottom: 3px;">Payment Details</h3>
   <div class="stats">
@@ -188,8 +187,10 @@
         <div class="tab">
           <div class="stat">{{=work_limit/len(pics)}}</div> Available
             <span class="details">
-                <ul><li>Today you can do {{=work_limit/len(pics)}} HITs.
-				<li>The number of HITs available changes each day.</ul>
+                <ul>
+		  <li>You have completed {{ = hit_count }} HITs already.
+                  <li>Today you can do {{=work_limit/len(pics)}} HITs.
+		  <li>The number of HITs available changes each day.</ul>
             </span>
           </div>
           <div id="details_box"></div> 
