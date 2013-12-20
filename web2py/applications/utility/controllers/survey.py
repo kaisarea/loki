@@ -1,14 +1,19 @@
 survey_pay = .20
 
+# Things to do:
+# - Improve the HTML
+#   - Fix the images for prisoner/genova in prisoner html
+#   - Make the submit button not orange
+#   - ??? anything else ???
+# - Do we want a server-side validation function?  Probably not necessary.
+# - When ready, prolly re-enable the check that they've completed this hit
+# - Test it (multiple browsers, etc.)
+#
+# - Craft a good outgoing survey email message in models/survey.py
+#   in the announce_survey() function I just made there
+# - Test it
+
 def index():
-    '''
-    In here, check:
-     - Have they done the task?
-
-    Then when they do it for the first time, pay them and insert into
-    database.
-    '''
-
     if not request.vars.workerid or len(request.vars.workerid) < 1:
         return 'missing workerid'
 
@@ -21,20 +26,21 @@ def index():
                          workerid=request.vars.workerid):
         return 'You already completed this survey'
 
-    tmp = db((db.actions.workerid==request.vars.workerid)
-             & (db.actions.study == db.studies.id)
-             & (db.studies.task == request.vars.task)
-             & (db.actions.action == 'finished')).select()
+    # # Make sure they actually completed some of these hits
+    # if len(db((db.actions.workerid==request.vars.workerid)
+    #           & (db.actions.study == db.studies.id)
+    #           & (db.studies.task == request.vars.task)
+    #           & (db.actions.action == 'finished')).select()) == 0:
+    #     return 'You did not complete this hit'
 
-    if len(tmp) == 0:
-        pass
-        #return 'You did not complete this hit'
-
-    if "age" in request.vars:
-        #db.bonus_queue.insert
+    # If this was a POST with the survey data, let's collect the
+    # survey results and pay them
+    if 'age' in request.vars:
         db.survey_results.insert(workerid=request.vars.workerid,
                                  task=request.vars.task,
-                                 result=request.vars)
+                                 result=sj.dumps(request.vars))
+        enqueue_bonus(request.workerid, survey_pay,
+                      reason='Thank you for completing our survey!')
         return """
             <h3>Thank you</h3>
 

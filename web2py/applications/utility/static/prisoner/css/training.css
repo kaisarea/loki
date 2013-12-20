@@ -51,8 +51,8 @@ h1 {
 	z-index: 20;
         left: 245px;
         top: 0px;
-        box-shadow: 3px 3px 0px 0px #888888;
-        padding: 20px;
+        box-shadow: 2px 2px 0px 0px #888888;
+        padding: 19px;
 }
 
 .stats {

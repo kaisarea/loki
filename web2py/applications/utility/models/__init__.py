@@ -281,7 +281,7 @@ def hit_finished(bonus_amount=None, do_redirect=True):
             if not bonus_amount: bonus_amount = request.price
 
             if not request.testing:
-                enqueue_bonus(request.workerid, 
+                enqueue_bonus(request.workerid,
                               bonus_amount,
                               request.assid,
                               request.hitid,

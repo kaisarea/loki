@@ -10,24 +10,16 @@
   }
 		
   #Content {
-	width:800px;
+	width:770px;
 	margin:0px auto; /* Right and left margin widths set to "auto" */
 	text-align:left; /* Counteract to IE5/Win Hack */
 	padding:15px;
+/* 
 	border:1px dashed #333;
-	background-color:#eee;
+	background-color:#e5e5e5;
+ */
 	}
 
-  <!---
-  p {
-  	max-width: 700px;
-  	margin:0px auto;
-  	text-align: left;
-  	padding: 15px;
-  	border: 1px dashed #333;
-  	background-color: #eeee;
-  }
-  --->
   #rightAlign {text-align:right}
   .label {
     text-align:right;
@@ -59,15 +51,27 @@ Means that we have to find a way to way everybody who looks at our tasks.
 
 <div id="Content">
   <h1 style="color:#c60">Survey for "{{="Write a Short Letter to an Inmate" if request.vars.task == "prisoner" else "Image Tagging"}}"
-task</h2>
-  <br>
-  [MAYBE ADD A LINK TO A SCREENSHOT OF THE TASK]
-  <img src = "/static/survey/{{="prisoner image" if request.vars.task == "prisoner" else "[tagging image]" }}">
-  <br>
-  
-  <p>Please help us improve our HITs and attract the best Turkers by filling out this survey.</p>
+task</h1>
 
-  <p>For your time and trouble <b>you will be paid {{=request.price_string}}</b> by bonus once the survey has been completed and vetted.</p>
+<div style="float: right; margin-top:20px;">
+  <img src = "/static/survey/{{="prisonerScreenShot.jpg" if request.vars.task == "prisoner" else "genovaScreenShot.jpg" }}" style="height:285px;Border: solid 1px #c5c5c5;">
+</div>  
+
+<div style="max-width: 375px; margin-top:20px; margin-bottom: 80px" class="taskdetails">
+  <p>
+  Please help us improve our HITs and attract the best Turkers by filling out this survey.
+  </p>
+
+  <p>
+  To remind you of the task the image to the right shows a version of the task you were
+  offered/worked on
+  </p>
+
+  <p>
+  For your time and trouble <b>you will be paid {{=request.price_string}}</b> by bonus once the survey has been completed and vetted.
+  </p>
+</div>
+
 
   <br>
   <form method="post" name="survey" id="survey">
