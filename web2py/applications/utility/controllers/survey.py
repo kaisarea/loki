@@ -2,8 +2,8 @@ survey_pay = .20
 
 # Things to do:
 # - Improve the HTML
-#   - Fix the images for prisoner/genova in prisoner html
-#   - Make the submit button not orange
+#   DONE - Fix the images for prisoner/genova in prisoner html
+#   DONE - Make the submit button not orange
 #   - ??? anything else ???
 # - Do we want a server-side validation function?  Probably not necessary.
 # - When ready, prolly re-enable the check that they've completed this hit
@@ -24,7 +24,8 @@ def index():
 
     if db.survey_results(task=request.vars.task,
                          workerid=request.vars.workerid):
-        return 'You already completed this survey'
+        return 'You already completed this survey.' \
+        	+ 'If you feel you have gottent this message in error please contact us at XXXX@XXXX.'
 
     # # Make sure they actually completed some of these hits
     # if len(db((db.actions.workerid==request.vars.workerid)

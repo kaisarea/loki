@@ -1,3 +1,5 @@
+survey_pay = 0.20
+
 options.survey = {'price' : [.15, .30],
                   'mystery_task': True,
                   'work_limit' : 20}
@@ -16,12 +18,45 @@ def announce_survey(study):
                  .select(db.actions.workerid, distinct=True)
 
     workers = [w.workerid for w in workers]
-    for worker in workers:
-        message_body = '''blah blah title.
+#     for worker in workers:
+#         message_body = '''Dear Mechanical Turk worker,
+#         
+#         We are working to improve our HITs and make them more attractive to
+#         workers like you.
+#         
+#         If you fill out the survey using the link below you will receive $%.2f and 
+#         our undying gratitude...
+#         
+#         The survey should take no more than 2 minutes to complete.
+# 
+# Link to survey: http://yuno.us:8003/survey?workerid=%s&task=%s
+# ''' % (survey_pay, workerid, study.task)
+# 
+#         subject = ('Help us improve our HITs on Mechanical Turk and receive $%.2f'
+#                    % (survey_pay))
+# 
+#         turk.message_worker(worker,
+#                             subject,
+#                             message_body)
 
-Link to survey: http://yuno.us:8003/survey?workerid=%s&task=%s
-''' % (workerid, study.task)
+    for worker in workers:
+        message_body =  '''Dear Mechanical Turk worker,
+		
+		We are working to improve our HITs and make them more attractive to
+		workers like you.
+
+		If you fill out the survey using the link below you will receive $%.2f and 
+		our undying gratitude...
+
+		The survey should take no more than 2 minutes to complete.
+
+		Link to survey: http://yuno.us:8003/survey?workerid=%s&task=%s \
+		''' % (survey_pay, workerid, study.task)
+
+        subject_line =  '''\
+		Help us improve our HITs on Mechanical Turk and receive $%.2f \
+		''' % (survey_pay)
 
         turk.message_worker(worker,
-                            '[put subject here]',
+                            subject_line,
                             message_body)

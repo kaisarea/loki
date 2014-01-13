@@ -1,6 +1,6 @@
 def index():
 ## Why do I still have min_words here? What does it serve?
-    min_words = 100
+#    min_words = 100
     if request.disagreeable:
         pics = pics_treatment
     else:
@@ -47,6 +47,7 @@ def index():
 		#pic3=pic3,
 		#pic4=pic4,
 		#pic5=pic5,
+		hit_count = hit_num,
 		pics=pichus,
 		disagreeable=request.disagreeable,
                 training=request.training,
@@ -113,3 +114,7 @@ def preview(): return {}
 def first_time():
     response.view = 'first_time.html'
     return {}
+
+def echo():
+#    return request.vars.value
+  return "HELOOOOOOOOOO"

@@ -18,6 +18,7 @@
 	border:1px dashed #333;
 	background-color:#e5e5e5;
  */
+ 	line-height:1.4em;
 	}
 
   #rightAlign {text-align:right}
@@ -31,9 +32,9 @@
     color: red;  
   }
   .submit {
-  	font-size: 120%;
-  	background-color:#c60;
-  	padding: 4px 8px;
+  	text-align: right;
+  	font-size: 100%;
+  	padding: 4px 40px;
   }
   </style>
   
@@ -57,19 +58,19 @@ task</h1>
   <img src = "/static/survey/{{="prisonerScreenShot.jpg" if request.vars.task == "prisoner" else "genovaScreenShot.jpg" }}" style="height:285px;Border: solid 1px #c5c5c5;">
 </div>  
 
-<div style="max-width: 375px; margin-top:20px; margin-bottom: 80px" class="taskdetails">
-  <p>
+<div style="max-width: 315px; margin-top:20px; margin-bottom: 80px;">
+  <br>
   Please help us improve our HITs and attract the best Turkers by filling out this survey.
-  </p>
+  </br>
 
-  <p>
-  To remind you of the task the image to the right shows a version of the task you were
-  offered/worked on
-  </p>
+  <br>
+  For your time and trouble <b>you will be paid {{=request.price_string}}</b> by bonus once you have submitted the survey.
+  </br>
 
-  <p>
-  For your time and trouble <b>you will be paid {{=request.price_string}}</b> by bonus once the survey has been completed and vetted.
-  </p>
+  <br>
+  As a reminder, the image to the right shows a screenshot of the task.
+  </br>
+
 </div>
 
 
@@ -624,6 +625,7 @@ task</h1>
           </select></td>
         </tr>
 
+<!-- 
         <tr>
           <td class="label">
             <label for="duration">
@@ -661,6 +663,7 @@ task</h1>
             </option>
           </select></td>
         </tr>
+ -->
 
         <tr>
           <td class="label">
@@ -694,12 +697,57 @@ task</h1>
         
         <tr>
           <td class="label">
+            <label for="why">
+				Reason for leaving the HIT:
+            </label>
+          </td>
+
+          <td><select name="why" id="why" required>
+            <option value="">
+              None selected
+            </option>
+
+            <option value="1">
+				Bored
+            </option>
+
+            <option value="2">
+				Did not like the task
+            </option>
+
+            <option value="3">
+				Had to leave / ran out of time
+            </option>
+
+            <option value="4">
+				No more HITs available 
+            </option>
+
+            <option value="5">
+				Pay too low
+            </option>
+
+            <option value="6">
+				Task too difficult
+            </option>
+
+            <option value="7">
+				Other (please explain in comments)
+            </option>
+            
+          </select></td>
+        </tr>
+
+    
+        
+        <tr>
+          <td class="label">
             <label for="comment">
               Do you have any comments on the task:
             </label>
           </td>
           <td>
-            <textarea rows="10" cols="50" name="comment" id="comment"></textarea>
+            <textarea rows="10" cols="55" name="comment" id="comment"></textarea>
           </td>
         </tr>
 

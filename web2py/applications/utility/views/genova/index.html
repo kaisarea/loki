@@ -33,14 +33,6 @@
     <img src="/static/genova/pollination.jpg" width="275" height="200">
     <p><em>This photo can be tagged with "macro" (technique), "insect" (object), "flower" (object),
         "bee" (object), "spring" (time).</em></p><br><br>
-<!--    <img src="/static/genova/control/1.jpg" width="275" heigh="200">
-    <p>
-      <em>
-        This image can be tagged with "collage" (technique), "Eiffel tower" (own name), 
-        "landmark" (object), "Paris" (own name).
-      </em>
-    </p><br>
--->
     </div>  
     <div style="width: 45%; float: left; max-width: 350px; margin: 0 10px;" class="column2">
     <ul>
@@ -188,8 +180,8 @@
           <div class="stat">{{=work_limit/len(pics)}}</div> Available
             <span class="details">
                 <ul>
-		  <li>You have completed {{ = hit_count }} HITs already.
-                  <li>Today you can do {{=work_limit/len(pics)}} HITs.
+		  <li>You have completed {{ = hit_count }} HITs today.
+                  <li>Today you can do {{=work_limit/len(pics) - hit_count }} more HITs.
 		  <li>The number of HITs available changes each day.</ul>
             </span>
           </div>
@@ -225,10 +217,11 @@ These pictures may contain disagreeable content (explicit sexual
 <div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
 {{ for j in [1, 2, 3, 4, 5]: }}
 {{ id = "keyword" + str(i*5+j) }}
-Keyword {{=j}}: <input disabled="disabled" type="text" id={{=id}} class="keyword"><br>
+Keyword {{=j}}: <input disabled="disabled" name="voila" onchange="ajax('echo', ['voila'], 'target')" type="text" id={{=id}} class="keyword"><br>
 {{ pass }}
 {{ i += 1 }}
 </div>
+<div id="target"></div>
 </div>
 </p>
 {{ pass }}
