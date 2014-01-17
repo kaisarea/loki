@@ -50,8 +50,8 @@ def announce_survey(study):
 
 		The survey should take no more than 2 minutes to complete.
 
-		Link to survey: http://yuno.us:8003/survey?workerid=%s&task=%s \
-		''' % (survey_pay, workerid, study.task)
+		Link to survey: http://yuno.us:8003/survey?workerid=%s&s=%s \
+		''' % (survey_pay, workerid, study.id)
 
         subject_line =  '''\
 		Help us improve our HITs on Mechanical Turk and receive $%.2f \

@@ -17,12 +17,13 @@ def index():
     if not request.vars.workerid or len(request.vars.workerid) < 1:
         return 'missing workerid'
 
-    if request.vars.task != 'genova' and request.vars.task != 'prisoner':
-        return 'Hey Claus, this is Mike.  I just added a check to' \
-            + 'force specifying genova or prisoner in the URL.' \
-            + 'This is what you see if you don\'t do it.'
+    study = db.studies(request.vars.s)
+    if not study: return 'Missing s parameter.  (ask mike)'
+    task = study.task
+    if not task or (task != 'genova' and task != 'prisoner'):
+        return 'No task on this s'
 
-    if db.survey_results(task=request.vars.task,
+    if db.survey_results(task=task,
                          workerid=request.vars.workerid):
         return 'You already completed this survey.' \
         	+ 'If you feel you have gottent this message in error please contact us at XXXX@XXXX.'
@@ -38,7 +39,7 @@ def index():
     # survey results and pay them
     if 'age' in request.vars:
         db.survey_results.insert(workerid=request.vars.workerid,
-                                 task=request.vars.task,
+                                 task=task,
                                  result=sj.dumps(request.vars))
         enqueue_bonus(request.workerid, survey_pay,
                       reason='Thank you for completing our survey!')
@@ -49,7 +50,10 @@ def index():
             You will receive $%.2f once the survey has been processed.
             You will be paid via bonus and should receive an email from Amazon confirming this.</p>
             """ % survey_pay
-    return {}
+    return {'hits_completed' : hits_done(workerid=request.vars.workerid,
+                                         study=study),
+            'survey_pay_string' : '$%.2f' % survey_pay,
+            'task' : task}
 
 
 def results():

@@ -217,7 +217,7 @@ These pictures may contain disagreeable content (explicit sexual
 <div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
 {{ for j in [1, 2, 3, 4, 5]: }}
 {{ id = "keyword" + str(i*5+j) }}
-Keyword {{=j}}: <input disabled="disabled" name="voila" onchange="ajax('echo', ['voila'], 'target')" type="text" id={{=id}} class="keyword"><br>
+Keyword {{=j}}: <input disabled="disabled" name="image_tag" type="text" id={{=id}} class="keyword"><br>
 {{ pass }}
 {{ i += 1 }}
 </div>

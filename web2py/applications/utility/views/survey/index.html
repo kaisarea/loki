@@ -51,11 +51,11 @@ Means that we have to find a way to way everybody who looks at our tasks.
 -->
 
 <div id="Content">
-  <h1 style="color:#c60">Survey for "{{="Write a Short Letter to an Inmate" if request.vars.task == "prisoner" else "Image Tagging"}}"
+  <h1 style="color:#c60">Survey for "{{="Write a Short Letter to an Inmate" if task == "prisoner" else "Image Tagging"}}"
 task</h1>
 
 <div style="float: right; margin-top:20px;">
-  <img src = "/static/survey/{{="prisonerScreenShot.jpg" if request.vars.task == "prisoner" else "genovaScreenShot.jpg" }}" style="height:285px;Border: solid 1px #c5c5c5;">
+  <img src = "/static/survey/{{="prisonerScreenShot.jpg" if task == "prisoner" else "genovaScreenShot.jpg" }}" style="height:285px;Border: solid 1px #c5c5c5;">
 </div>  
 
 <div style="max-width: 315px; margin-top:20px; margin-bottom: 80px;">
@@ -64,7 +64,7 @@ task</h1>
   </br>
 
   <br>
-  For your time and trouble <b>you will be paid {{=request.price_string}}</b> by bonus once you have submitted the survey.
+  For your time and trouble <b>you will be paid {{=survey_pay_string}}</b> by bonus once you have submitted the survey.
   </br>
 
   <br>
@@ -78,6 +78,65 @@ task</h1>
   <form method="post" name="survey" id="survey">
     <table>
       <tbody>
+
+        <tr>
+          <td class="label">
+            <label for="why">
+                You completed {{=hits_completed}} HITS on this task. </br>
+                What was the main reason you
+                {{="stopped" if hits_completed > 0
+                    else "did not do any"}}?
+            </label>
+          </td>
+
+          <td><select name="why" id="why" required>
+            <option value="">
+              None selected
+            </option>
+
+            <option value="1">
+				Bored
+            </option>
+
+            <option value="2">
+				Did not like the task
+            </option>
+
+            <option value="3">
+				Had to leave / ran out of time
+            </option>
+
+            <option value="4">
+				No more HITs available 
+            </option>
+
+            <option value="5">
+				Pay too low
+            </option>
+
+            <option value="6">
+				Task too difficult
+            </option>
+
+            <option value="7">
+				Other (please explain in comments)
+            </option>
+            
+          </select></td>
+        </tr>
+        
+        <tr>
+          <td class="label">
+            <label for="comment">
+              Do you have any comments on the task:
+            </label>
+          </td>
+          <td>
+            <textarea rows="10" cols="55" name="comment" id="comment"></textarea>
+          </td>
+        </tr>
+
+
         <tr>
           <td class="label">
           <div id="rightAlign">
@@ -694,62 +753,6 @@ task</h1>
             </option>
           </select></td>
         </tr>
-        
-        <tr>
-          <td class="label">
-            <label for="why">
-				Reason for leaving the HIT:
-            </label>
-          </td>
-
-          <td><select name="why" id="why" required>
-            <option value="">
-              None selected
-            </option>
-
-            <option value="1">
-				Bored
-            </option>
-
-            <option value="2">
-				Did not like the task
-            </option>
-
-            <option value="3">
-				Had to leave / ran out of time
-            </option>
-
-            <option value="4">
-				No more HITs available 
-            </option>
-
-            <option value="5">
-				Pay too low
-            </option>
-
-            <option value="6">
-				Task too difficult
-            </option>
-
-            <option value="7">
-				Other (please explain in comments)
-            </option>
-            
-          </select></td>
-        </tr>
-
-    
-        
-        <tr>
-          <td class="label">
-            <label for="comment">
-              Do you have any comments on the task:
-            </label>
-          </td>
-          <td>
-            <textarea rows="10" cols="55" name="comment" id="comment"></textarea>
-          </td>
-        </tr>
 
         <tr>
           <td class="label">
@@ -761,6 +764,7 @@ task</h1>
 
           </td>
         </tr>
+      
       </tbody>
     </table>
   </form>

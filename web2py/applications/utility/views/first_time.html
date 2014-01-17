@@ -23,7 +23,14 @@
 	</p>
 
 	<p>
-	<form method="post" action="/utiliscope/submit_first_hit">
+
+	<form method="post" action="/utiliscope/submit_first_hit?live&assignmentId={{=request.assid}}&hitId={{=request.hitid}}&workerId={{=request.workerid}}&turkSubmitTo={{=request.vars.turkSubmitTo}}">
+<!--		<input type="hidden" name="workerId" value="{{=request.workerid}}"/>
+		<input type="hidden" name="hitId" value="{{=request.hitid}}"/>
+		<input type="hidden" name="assignmentId" value="{{=request.assid}}"/>
+		<input type="hidden" name="live" value="true"/>
+		<input type="hidden" name="turkSubmitTo" value="{{=request.vars.turkSubmitTo}}"/>
+		<input type="hidden" name="live" value="true"/> -->
 		<button type="submit" label="submit" class="submit">
 		  Accept one-time {{=firsttime}} bonus
 		</button>

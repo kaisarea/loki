@@ -5,50 +5,40 @@ def index():
         pics = pics_treatment
     else:
         pics = pics_control
-    # Choose a random prisoner ordering for this worker
+    pics = [Storage(p) for p in pics]
+
+    # Choose a random picture ordering for this worker
     import random
-    hit_num = hits_done()
-    pics_num = hit_num % len(pics)
     random.seed(request.workerid)
-    random.shuffle(pics)
-# What is the following code doing? Why hit_num % len(pics)? This will be simply hit_num most of the time.
-    pichus = []
-    i = 0 
-# pic_count
-    while i<(request.pic_count):
-    #for i in [1, 2, 3, 4, 5]:
-      pichus.append(Storage(pics[pics_num+i]))
-      i += 1
-#      pic1 = Storage(pics[pics_num])
-#    pic2 = Storage(pics[pics_num+1])
-#    pic3 = Storage(pics[pics_num+2])
-#    pic4 = Storage(pics[pics_num+3])
-#    pic5 = Storage(pics[pics_num+4])
-#    pics = [pic1, pic2, pic3, pic4, pic5]
-    othervars = {'hit_num' : hit_num,
-                 'pichus' : pichus}
+    random.shuffle(pics)        # Shuffles all the pics in a set way
+
+    # Now the pictures are shuffled.  Let's give the worker a set of
+    # pictures.
+    hit_num = hits_done()
+    first_pic = hit_num * request.pics_per_task # The first of n pics
+    pics = pics[first_pic : first_pic + request.pics_per_task]
+    
+    # Now we have taken a snippet of pics out of the original shuffled pics
+
+    
+    othervars = {'hit_num' : hit_num, 'first_pic' : first_pic, 'all_vars': request.vars}
 
     # If this is a hit submission, then let's finish!
-    review = request.vars.review
-    if review:
-        othervars['review'] = review
+    image_tag = request.vars.image_tag
+    if image_tag:
+        #othervars['review'] = review
         log_action('submit', othervars)
-        wordcount = (review.split())
-	if wordcount < min_words:
-	    send_me_mail('Someone is trying to trick us! %s %s'
-			 % (request.workerid, request.assignmentid))
+        #wordcount = (review.split())
+	#if wordcount < min_words:
+	#    send_me_mail('Someone is trying to trick us! %s %s'
+	#		 % (request.workerid, request.assignmentid))
         hit_finished() # Automatically exits this function
   
     # Otherwise, display the form
     log_action('with pic', othervars)
     return dict(min_words=100,
-                #pic1=pic1,
-		#pic2=pic2,
-		#pic3=pic3,
-		#pic4=pic4,
-		#pic5=pic5,
 		hit_count = hit_num,
-		pics=pichus,
+		pics=pics,
 		disagreeable=request.disagreeable,
                 training=request.training,
                 improbability_rate=request.improbability_rate,
