@@ -16,6 +16,7 @@
 
 
 {{ bonus_time = 60 }}
+
 <!-- PHOTOS DOWNLOADED FROM OPENPHOTO.NET --> 
 <div id="shadow" style="display: none; min-height: 2800px;">
  <h2>Training: Read this Primer on Tagging{{if training:}} and Pass a Test{{pass}}</h2>
@@ -171,17 +172,27 @@
                  <li>You will be
                  notified within {{=bonus_time}}
                  minutes.
-                 <li>You must complete <a class="training" href="#training">image tagging training</a>
+		{{ if hit_count == 0: }}
+	            <li>You must complete <a class="training" href="#training">image tagging training</a>
                  before working.
+		{{ pass }}
+		{{ if work_limit == hit_count: }}
+		  <li>You have reached the maximum amount of HITs available. There is no more work left to be done. Thank you!
+		{{ pass }}
                  </ul>
            </span>
          </div>
         <div class="tab">
-          <div class="stat">{{=work_limit/len(pics)}}</div> Available
+          <div class="stat">{{=work_limit}}</div> Available
             <span class="details">
                 <ul>
 		  <li>You have completed {{ = hit_count }} HITs today.
-                  <li>Today you can do {{=work_limit/len(pics) - hit_count }} more HITs.
+			{{ if work_limit > hit_count: }}
+				<li>Today you can do {{=work_limit - hit_count }} more HITs.
+			{{ pass }}
+	{{ if work_limit == hit_count: }}
+		<li>There is no more work left for you to do.
+	{{ pass }}	
 		  <li>The number of HITs available changes each day.</ul>
             </span>
           </div>
@@ -210,14 +221,18 @@ These pictures may contain disagreeable content (explicit sexual
 <h2>Submit your Keywords</h2>
 <p>
 <div style="position: relative;">
-<div class="train_info">
+<div class={{ = "train_info" if hit_count == 0 else "train_info_hidden" }}>
 <p>You must complete <a class="training" href="#training">image tagging training</a>
                  before working.</p>
 </div>
+<div class={{ = "work_limit" if (work_limit == hit_count) else "work_limit_hidden" }}>
+<p>You have finished all the HITs available. There is no more work to be done. Thank you for your participation!</p>
+</div>
+
 <div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
 {{ for j in [1, 2, 3, 4, 5]: }}
 {{ id = "keyword" + str(i*5+j) }}
-Keyword {{=j}}: <input disabled="disabled" name="image_tag" type="text" id={{=id}} class="keyword"><br>
+Keyword {{=j}}: <input {{ = "disabled" if hit_count == 0 else "" }} name="image_tag" type="text" id={{=id}} class="keyword"><br>
 {{ pass }}
 {{ i += 1 }}
 </div>
@@ -251,39 +266,22 @@ $('.crime').tooltip(params);
 //######## actual task
 
     
-    
-$('form input:text').change(function(){
-        re1 = $('input[id=keyword1]').val();
-        re2 = $('input[id=keyword2]').val();
-        re3 = $('input[id=keyword3]').val();
-        re4 = $('input[id=keyword4]').val();
-        re5 = $('input[id=keyword5]').val();
-
-        if(re1 != '' & re2 != '' & re3 != '' & re4 != '' & re5 != '')
-        {
-                $("input[type=submit]").removeAttr('disabled');
-        }
-      });
      
 function show_training() {
   scrollTo(0,0);
   jQuery('#shadow').fadeIn().find('button').click(function(e) {
     e.preventDefault();
-    //#jQuery('.err').remove();
     if($('input[id=quiz_given]').val()=='0')
     {
       overall = 15;
-      //alert('Yo!');
     }
     else
     {
-      //overall = 0  //This is for testing purposes only
       overall = $('.quiz input[name=correct]').length;
     }
 
     if(overall == 15)
     {
-            //$('.test').hide();
       $('form input:text').prop("disabled", false);
       $('#shadow').fadeOut();
       $('.train_info').fadeOut();
@@ -299,9 +297,6 @@ function show_training() {
     {
         $('div.err').remove();
 	$('div.cor').remove();
-	//var first_empty = $('.quiz input[name=empty]').attr("id").replace( /^\D+/g, '');
-	//var first_incorrect = $('.quiz input[name=incorrect]').attr("id").replace( /^\D+/g, '');
-	//if(first_empty < 6 | first_incorrect < 6)
 	if($('div[name=batch1] input[name=empty]').length > 0 | $('div[name=batch1] input[name=incorrect]').length > 0)
 	{
 		$('.quiz div[name=batch1]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the first batch of questions!</div>');
@@ -310,7 +305,6 @@ function show_training() {
 	{
 		$('.quiz div[name=batch1]').after('<div class="cor" style="left: 1em; clear: both;">Success!</div>');
 	}
-	//else if(first_empty < 11 | first_incorrect < 11)
 	if($('div[name=batch2] input[name=empty]').length > 0 | $('div[name=batch2] input[name=incorrect]').length > 0)
 	{
 		$('.quiz div[name=batch2]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the second batch of questions!</div>');
@@ -327,7 +321,6 @@ function show_training() {
 	{
 		$('.quiz div[name=batch3]').after('<div class="cor" style="left: 1em; clear: both;">Success!</div>');
 	}
-        //$('#butt').parent().before('<div class="err" style="left: 1em; clear: both;">Fool, One or more answers is incorrect or missing!</div>');
     }
   });
 }
@@ -382,6 +375,30 @@ $('.quiz input:text').on("change", function() {
   }        
     });
 
+
+// The following function enables the submit button only after all the input fields are filled with image tags    
+$('form input:text').change(function(){
+  var values = new Array();
+  store_keywords = new Array();
+  missing = 0;
+  total_inputs = 0;
+  $('input[class=keyword]').each(function(i) {
+    values[$(this).id] = $(this).val();
+    total_inputs = total_inputs+1;
+    store_keywords.push($(this).val());
+    if(values[$(this).id] == "")
+    {
+      missing = missing + 1;
+    }
+  });
+  
+  unique_keywords = jQuery.unique(values);
+  //$(this).after(jQuery.unique(store_keywords).length + total_inputs + store_keywords.length + missing + jQuery.unique(store_keywords));
+  if(missing == 0 & jQuery.unique(store_keywords).length == total_inputs)  
+  {
+    $("input[type=submit]").removeAttr('disabled');
+  }
+});
 
 function leave_training(){
   window.scroll(0,0);

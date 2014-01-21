@@ -55,6 +55,42 @@ h1 {
         padding: 19px;
 }
 
+
+.train_info_hidden {
+        visibility: hidden;
+        max-width: 302px;
+        background: #e5e5e5;
+        position: relative;
+	z-index: 20;
+        left: 245px;
+        top: 0px;
+        box-shadow: 2px 2px 0px 0px #888888;
+        padding: 19px;
+}
+
+.work_limit {
+        max-width: 302px;
+        background: #e5e5e5;
+        position: relative;
+	z-index: 20;
+        left: 245px;
+        top: 0px;
+        box-shadow: 2px 2px 0px 0px #888888;
+        padding: 19px;
+}
+
+.work_limit_hidden {
+	visibility: hidden;
+        max-width: 302px;
+        background: #e5e5e5;
+        position: relative;
+	z-index: 20;
+        left: 245px;
+        top: 0px;
+        box-shadow: 2px 2px 0px 0px #888888;
+        padding: 19px;
+}
+
 .stats {
         position: relative;
 }

@@ -1,6 +1,4 @@
 def index():
-## Why do I still have min_words here? What does it serve?
-#    min_words = 100
     if request.disagreeable:
         pics = pics_treatment
     else:
@@ -17,27 +15,20 @@ def index():
     hit_num = hits_done()
     first_pic = hit_num * request.pics_per_task # The first of n pics
     pics = pics[first_pic : first_pic + request.pics_per_task]
+    othervars = dict()
     
     # Now we have taken a snippet of pics out of the original shuffled pics
-
-    
-    othervars = {'hit_num' : hit_num, 'first_pic' : first_pic, 'all_vars': request.vars}
-
     # If this is a hit submission, then let's finish!
     image_tag = request.vars.image_tag
     if image_tag:
         #othervars['review'] = review
+        othervars['tags'] = request.vars.image_tag
         log_action('submit', othervars)
-        #wordcount = (review.split())
-	#if wordcount < min_words:
-	#    send_me_mail('Someone is trying to trick us! %s %s'
-	#		 % (request.workerid, request.assignmentid))
         hit_finished() # Automatically exits this function
   
     # Otherwise, display the form
-    log_action('with pic', othervars)
-    return dict(min_words=100,
-		hit_count = hit_num,
+    log_action('with pic')
+    return dict(hit_count = hit_num,
 		pics=pics,
 		disagreeable=request.disagreeable,
                 training=request.training,
