@@ -183,6 +183,7 @@ db.define_table('bonus_queue',
                 db.Field('worker', 'text'),
                 db.Field('amount', 'text'),
                 db.Field('reason', 'text'),
+                db.Field('delay', 'integer', default=0),
                 db.Field('study', db.studies),
                 migrate=migratep, fake_migrate=fake_migratep)
                 
@@ -249,7 +250,7 @@ options = Storage()
 options.fail = { 'price' : 0 }
 
 # Define the API that hit controllers can use
-def hit_finished(bonus_amount=None, do_redirect=True):
+def hit_finished(bonus_amount=None, do_redirect=True, pay_delay=None):
     log('Hit finished!')
     if request.live:
         status = db.hits(hitid = request.vars.hitId).status
@@ -281,12 +282,14 @@ def hit_finished(bonus_amount=None, do_redirect=True):
             if not bonus_amount: bonus_amount = request.price
 
             if not request.testing:
+                if pay_delay == None: pay_delay = request.pay_delay
                 enqueue_bonus(request.workerid,
                               bonus_amount,
                               request.assid,
                               request.hitid,
                               request.study,
-                              reason='Completed hit')
+                              reason='Completed hit',
+                              delay=pay_delay)
 
                 update_ass(assid=request.assid,
                            hitid=request.hitid,
@@ -534,7 +537,8 @@ def soft_assert(pred, error_message=None):
         log('ASSERT FAIL: ' + str(error_message))
         logger.error('ASSERT FAIL: ' + str(error_message))
 def enqueue_bonus(workerid, amount,
-                  assid=None, hitid=None, study=None, reason=None):
+                  assid=None, hitid=None, study=None,
+                  reason=None, delay=None):
     log('Adding %s to bonus queue for ass %s' % (amount, assid))
     db.bonus_queue.insert(
         worker = workerid,
@@ -542,7 +546,8 @@ def enqueue_bonus(workerid, amount,
         hitid = hitid,
         amount = amount,
         reason = reason,
-        study = study)
+        study = study,
+        delay = delay or 0)
 
 response.generic_patterns = ['html']
 

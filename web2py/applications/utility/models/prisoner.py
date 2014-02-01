@@ -6,6 +6,7 @@ options.prisoner = {'price' : [.20, .40],
                     'improbability_rate' : [94, 58],
                     'mystery_task': True,
                     'work_limit' : [5, 90],
+                    'pay_delay' : 13 * 60,
                     'first_time_bonus' : 0.50}
 
 

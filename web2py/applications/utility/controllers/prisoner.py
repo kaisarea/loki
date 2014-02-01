@@ -10,19 +10,21 @@ def index():
     # Choose a random prisoner ordering for this worker
     import random
     hit_num = hits_done()
-    prisoner_num = hit_num % len(prisoners)
+    #prisoner_num = hit_num % len(prisoners)       # What is this line doing?
     random.seed(request.workerid)
     random.shuffle(prisoners)
-    prisoner = Storage(prisoners[prisoner_num])
+    prisoner = Storage(prisoners[hit_num])   
+    # This way with fixed random seed the worker will get the following
+    # prisoner in a fixed randomized group of prisoners.
+    # Will achieve both randomization and predictability.
 
     # Choose a crime
     random.seed(str(hit_num) + str(request.workerid))
     choose_from = sex_crimes if request.disagreeable else crimes
     prisoner.crime = Storage(random.choice(choose_from))
-    random.seed(now)
+    random.seed(now)          # What is the purpose of this?
 
-    othervars = {'hit_num' : hit_num,
-                 'prisoner' : prisoner}
+    othervars = {'prisoner' : prisoner}
 
     # If this is a hit submission, then let's finish!
     letter = request.vars.letter_to_prisoner
@@ -43,6 +45,7 @@ def index():
                 prisoner=prisoner,
                 disagreeable=request.disagreeable,
                 training=request.training,
+                hits_done = hit_num,
                 #improbability=request.improbability,
                 improbability_rate=request.improbability_rate,
                 #inconstancy=request.inconstancy,

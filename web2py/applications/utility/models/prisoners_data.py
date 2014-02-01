@@ -38,7 +38,8 @@ prisoners = [
     {"bio": "I have gotten married twice &#8211;nine years the first time, and three years the second time. I have a 22 year-old son. Previously I owned a caf&#233;, a club, and a parking garage. I&#8217;m also a trained electrician. I have always lived on near the ocean, and I enjoy doing things outside, walking on the beach, sailing, and generally all things that involve the ocean. I also like to stay home. Barbeques are always good times at in a backyard or at the beach. Some of my favorite days involve cooking up ribs and  watching a movie. While in prison I have also taken a liking to reading, especially fiction including suspense and crime thrillers. If I have a lot of time sometimes I read up to three books in one week, but it depends how many hours I work as a human resources clerk. I stay very busy most of the time. I would appreciate it very much if you sent me a note. I will write you back quickly every time, I promise. I am open to different perspectives and a good listener. If you want to talk things out, I will be here for you. Wishing for a friend&#8230;.",
      "name": "Bruce M."},
     {"bio": "Awaiting a friend. If you want to send me a letter, write me, or I can just send you a drawing (which is done in ink) if you would like that. I will respond to your letter. I&#8217;m no swanky writer, just someone looking for a friend because that is something we can all use. I am trying to get parole next year but do not know if it will be granted. To anyone who sees this, I wish you great happiness and don&#8217;t forget God wants each of us to have a pure heart because His was. To everyone I send&#8230; California Love (2-PAC).",
-     "name": "Dale W."}]
+     "name": "Dale W."},
+]
 
 crimes = [#{'short' : 'Maliciously Dissuade Witness or Victim from Testimony', 'long' : ''},
           {'short' : '18 USC 2119: Carjacking', 'long' : 'Carjacking is the unlawful seizure of automobile.'},

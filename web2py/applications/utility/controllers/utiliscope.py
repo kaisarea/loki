@@ -133,7 +133,8 @@ def submit_first_hit():
     log('Request vars is %s %s' % (request.workerid, request.study))
     soft_assert(db((db.actions.workerid == request.vars.workerid)
                    & (db.actions.action == 'finished')).count() < 1)
-    hit_finished(bonus_amount=request.first_time_bonus or 0.51)
+    hit_finished(bonus_amount=request.first_time_bonus or 0.51,
+                 pay_delay=0)
  
 
 def hello():

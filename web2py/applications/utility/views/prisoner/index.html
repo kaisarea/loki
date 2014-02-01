@@ -141,28 +141,27 @@
 		 <div class="tab selected">
 			 <div class="stat">{{=request.price_string}}</div> Per HIT
 			 <span class="details">
-
-				 This job pays {{=request.price_string}} per letter via
-				 bonus. <br><br>You can find
+		         <ul><li>
+				 This job pays {{=request.price_string}} per letter.
+			<li> It pays via
+				 bonus. (You can find
 				 bonus payments in <i>Your Account-&gt;Account
 				 Settings-&gt;<br>-&gt;View your account balance and
-				 transaction history</i>.
-
+				 transaction history</i>.)
+			</ul>
 			 </span>
 		 </div>
 
 		 <div class="tab">
 			 <div class="stat">{{= improbability_rate }}%</div> Approved
 			 <span class="details">
-
-				 <p>Your submitted letter must pass an evaluation. You will be
-				 notified of your letter's approval within {{=bonus_time}}
-				 minutes.</p>
-
-				 <p>To ensure that our clients are best served, we require you
-				 to go through <a class="training" href="#training">writing
-				 style training</a> before you can begin work on this
-				 task.</p>
+			 <ul>
+			   <li>Your work must be approved.
+                           <li>You will be notified within {{=bonus_time}}
+				 minutes.
+		           <li>You must complete <a class="training" href="#training">writing
+				 style training</a> before working. 
+			</ul>
 
 			 </span>
 		 </div>
@@ -170,10 +169,11 @@
 		 <div class="tab">
 			 <div class="stat">{{=work_limit}}</div> Available
 			 <span class="details">
-
-				Today you can write {{=work_limit}} letters.  This will
-				change tomorrow, depending upon the prisoners.
-
+                         <ul>
+			   <li>You have completed {{=hits_done}} HITs today.
+			   <li>Today you can do {{=work_limit - hits_done}} more HITs.
+			   <li>The number of HITs available changes each day.
+			 </ul>
 			 </span>
 		 </div>
 

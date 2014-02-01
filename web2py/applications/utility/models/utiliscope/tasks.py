@@ -114,11 +114,11 @@ def process_bonus_queue():
     try:
         for row in db().select(db.bonus_queue.ALL):
             # Skip workers that we aren't ready for yet
-            if 'bonus_delay' in globals() and bonus_delay:
+            if row.delay and row.delay > 0:
                 action = db.actions(assid=row.assid, action='finished')
                 if not action:
                     logger_t.error('No finish action on bonus %s' % row.assid);
-                elif (datetime.now() - action.time).total_seconds() < bonus_delay:
+                elif (datetime.now() - action.time).total_seconds() < row.delay:
                     continue
 
             try:
