@@ -701,7 +701,9 @@ def load_live_hit():
         record_action('preview')
         log('this is preview. giving it a preview page.')
         if options['mystery_task']:
-            request.controller, request.function = 'utiliscope','preview'
+            request.function = 'preview'
+            if not os.path.exists('applications/utility/views/%s/preview.html' % request.controller):
+                request.controller = 'utiliscope'
             response.view = '%s/%s.%s' % (request.controller, request.function, 'html')
         # And get outa here!
         return None
@@ -765,7 +767,9 @@ def load_testing_hit():
     if is_preview():
         request.condition = {}
         if options['mystery_task']:
-            request.controller, request.function = 'utiliscope','preview'
+            request.function = 'preview'
+            if not os.path.exists('applications/utility/views/%s/preview.html' % request.controller):
+                request.controller = 'utiliscope'
             response.view = '%s/%s.%s' % (request.controller, request.function, 'html')
     else:
         request.condition = {'price' : .03}
