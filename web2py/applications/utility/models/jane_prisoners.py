@@ -666,8 +666,8 @@ I get out. I also love music.
 Truly,
 Aaron""", "name" : "Aaron J."},
 
-
-"""My name is Anthony Huffington and I want to talk and laugh with a 
+{"bio" : 
+"""My name is Anthony and I want to talk and laugh with a 
 female who wants to build something together. I'm not one to waste 
 time so here's what's up with me: 
 
@@ -677,10 +677,10 @@ Height: 5'10"
 Weight: 160 pounds
 Goals: Business, wealth, power, helping kids, traveling
 
-And you are….?"""
+And you are….?""", "name" : "Anthony H."},
 
-
-"""Hello my name is Ryan Murphy. I’m 5’8”, 205 pounds, brown hair and 
+{"bio" : 
+"""Hello my name is Ryan. I’m 5’8”, 205 pounds, brown hair and 
 eyes, 3 tattoos (hidden by long sleeves). I'm originally from the 
 city of brotherly love and have also lived in Cleaveland, Chicago 
 and DC. I am known as a fun guy, sometimes a bit of a clown, and 
@@ -700,9 +700,9 @@ please do drop me a few lines.
 
 Love and blessings.
 
-Ryan"""
+Ryan""", "name" : "Ryan P."},
 
-
+{"bio" : 
 """Hey there!  My name is Jay and I'm desperately looking to reconnect 
 with myself to feel like a human being again, which means I need to 
 connect with someone in the outside world. You feel me? I work out 
@@ -716,13 +716,13 @@ reconnecting with life beyond bars.
 
 Thank you,
 
-Jay Albertson"""
+Jay""", "name" : "Jay A."},
 
 
-
+{"bio" : 
 """To whom it may concern,
 
-My name is Edward Nowak and I am looking for a new friend while I wait on 
+My name is Edward and I am looking for a new friend while I wait on 
 my appeal. I am a kind, true, and simple man of modest means and a good 
 family. I have a good heart and a strong mind. I work hard and want 
 to support a family. I am close with my own family and hope to take 
@@ -733,12 +733,12 @@ I want to live a good life and plan to do so when I am appealed, as
 I have learned to do whilee serving my time. I believe in hard work, 
 honesty, and loyalty. If you are the same then I hope that you will contact me. 
 
-Ed Nowak"""
+Ed""", "name" : "Edward N."},
 
 
-
+{"bio": 
 """Wud up wud up wud up!
-I go by Eli Mueller and I'm a dude who likes cold beer and spicy food! I'm here 
+I go by Eli and I'm a dude who likes cold beer and spicy food! I'm here 
 to meet folks of any race, age, creed and gender…just so long as you've got 
 something to say. As for me, I’m 27, 6', 185 pounds and have a dreadlocks 
 and a whole lot of body art (that's tattoos for those who don't know it). 
@@ -750,11 +750,10 @@ my family wherever I am. I like to talk about politics, music (of course),
 ecology, and spirituality. I believe every human interaction has a purpose 
 and I'm putting myself out there to find more purpose with you….yes, YOU!
 I look forward to watching your layers dissolve and discovering the soul hidden beneath. 
-Eli"""
+Eli""", "name" : "Eli M."},
 
-
-"""Have you been looking for a decent man? Well look no further. 
-
+{"bio" : 
+"""
 Hi. My name is James and I’m using this service to find a friend. I am a 
 lover of life and a purveyor of all of its unique pleasures. I work hard, 
 I’m a loyal friend, and I always serve others first including the three 
@@ -768,11 +767,11 @@ So if you want to communicate via this medium with a good person
 and a decent man, take the leap of faith that is calling you and 
 ring my bell. You won’t be disappointed.
 
-James"""
+James""", "name" : "James D."},
 
-
+{"bio" : 
 """Hello, and how are you today? I hope that you are well! 
-My name is Maurice White but my friends and family call me Mo. 
+My name is Maurice but my friends and family call me Mo. 
 I am unique individual with a positive outlook on life, despite 
 having been incarcerated since the age of fifteen. Soon I will 
 be making my grand entrance into the free world and cherishing 
@@ -792,23 +791,21 @@ being a real problem. I hope that you will share your good heart with me
 and help me start my life.
 
 Best,
-Mo"""
+Mo""", "name" : "Maurice W."},
 
-
-"""My name is Brandon Misner and I am currently serving a five year sentence 
+{"bio" : 
+"""My name is Brandon and I am currently serving a five year sentence 
 and have three years left. I am 26 years old, 5'11” tall and weigh 185 pounds. 
 I have never been married and have no children. I want to establish a 
 relationship with someone who might be a good influence in my life and 
-hasn't been in jail. A serious future is a possibility. 
+hasn't been in jail. 
 
 I like gaming, going to concerts, hunting, camping and will try anything once. 
 I'm really looking forward to sharing letters with a new friend.  
 
-I'm looking forward to it."""
+I'm looking forward to it.""", "name" : "Brandon M."},
 
-
-
-
+{"bio" : 
 """Dear New Friend,
 I wasn't sure what to say about myself that might make you want to write me. 
 So instead of telling you who I am I'm going to tell you who I want to be and 
@@ -827,7 +824,7 @@ Keep judgements at bay.
 I hope some of this grabbed your attention. I'm looking forward to hearing what 
 you want to be and what you are becoming. Enjoy your day, enjoy your life.
 Love and Kindness,
-Your New Friend"""
+Your New Friend""", "name" : "Robert B."},
 
 
 {"bio" : 
