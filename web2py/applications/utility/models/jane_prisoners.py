@@ -15,8 +15,7 @@ maid service or resale store. I'd love to write letters with someone while I'm
 in here…especially if you can give me advice on how to make that money! 
 
 Besides business I'm also interested in writing letters, self-help, going to 
-the gym, reading, and my daughter. Writing to me or donating to my JPay account 
-is always appreciated. Can't wait to hear from you!""", "name" : "Lauren G."},
+the gym, reading, and my daughter. Can't wait to hear from you!""", "name" : "Lauren G."},
 
   {"bio" : 
 """Hey, there--I'm Joe and I hope that this letter reaches you in good health 
@@ -33,9 +32,7 @@ I also try to work out every day. It's important to me to keep busy,
 otherwise I start feeling down.
 
 No reason to be long-winded I guess! Thanks for writing to me and be 
-blessed always. If I have anything to say about it, we will be friends 
-on the outside when I'm released. Maybe I can even take you out for a 
-thank-you dinner!
+blessed always.  
 
 Best,
 Joe V.""", "name" : "Joe V."},
@@ -48,40 +45,30 @@ I turned 21 last week and have been in here for a month and 3 years. Since
 I started doing my time I've been trying really hard to get my body in check. 
 I quit smoking (I kinda had to…haha) and replaced that addiction with another 
 one. WORKING OUT. What used to be a six pack is turning into an eight and 
-I'm about to be a ten. Here what I'm saying ladies? 
+I'm about to be a ten.  
 
 I'm in the gym 6-7 days a week but when I'm not working out I'm in this program 
 getting a personal training degree. When I get out I want to coach football 
 for my high school and maybe for a travel team in off season too.
 
-I know beggerz can't be chooserz but I'd really rather be writing letters with 
-some hottie females since its all dudes in here. So if you're a cutie get 
-at me girl! I miss conversing with the ladies and I promise to be real 
-and truthful if you are.
+I promise to be real and truthful if you are.
 
 Peace,
 Jimmy
 
-PS By the way I still have 5 years left to go unless I have perfect behavior 
-and I know how to take care of my girl!""", "name" : "Michael J."},
+PS By the way I still have 5 years left to go unless I have perfect behavior!""", "name" : "Michael J."},
 
 {"bio" : 
 """Hi, my name is Darrel and I want to thank you immensely for taking the time 
 to read my biography. Just by doing this one small act, you already made my day, 
 so thank you.
 
-I joined my prison's pen pal program in order to fulfill my wish of meeting a 
-good woman and building a strong relationship. Even if we just start out 
-writing letters as friends, that's ok. I just need the essence of a woman in my life.
-
-My time here is almost up and I want to devote the rest of my sentence to 
-developing a deep connection with a strong woman. I'm a good, honest man 
-who never strays and knows how to treat the opposite sex. I work hard, 
-love God and respect women. 
+My time here is almost up. I'm a good, honest man 
+who never strays. I work hard and love God. 
 
 I want to thank you for reading my profile and hope that you are inspired to 
 take a chance on me. I have a lot waiting for me and I want to share it with 
-a good woman. I'm not a game player.
+you. I'm not a game player.
 
 Hopefully yours,
 
@@ -91,17 +78,12 @@ Darrel""", "name" : "Darrel A."},
 """My name is Mario L. but I’m known to the world as Big Pitt. Woof! I’m 
 from Sacramento and 5’8”, weigh around 180 pounds (its all muscle), 31 years, 
 Latino and proud of it. Woof! I'm known as the clown if yuo can't tell 
-and I'm the one who keeps people laughing. Nothings better than getting 
-pretty girls to smile so if you can send me a pic of those pretty chompers 
-it would make my millennium. I’m sending out this SOS cause I want to 
+and I'm the one who keeps people laughing. I’m sending out this SOS cause I want to 
 make a friend who doesn't have bank robbing experience. Though I got 
-no problems with tatts…
+no problems with tatts...
 
 I got some hella funny stories to tell so if you need a pick me up pass 
-me a note chica. And if I make you smile you better send me a pic of it! 
-Woof woof woof!!! Ahooooooo!
-
-For real though I'm not a bad person and it would be cool to write with 
+me a note. For real though I'm not a bad person and it would be cool to write with 
 someone else who is cool.
 
 **ML**""", "name" : "Mario L."},
@@ -109,8 +91,7 @@ someone else who is cool.
 {"bio" : 
 """I'm half wild-child/half old soul and I know why the cage bird sings.
 
-My name is Char and I'd love to get something going with either a man or 
-a woman. I'm a dirty-blonde 31 year old and used to be a massage 
+My name is Char. I'm a dirty-blonde 31 year old and used to be a massage 
 therapist. I love making people feel good and believe that the body 
 is a temple. I also sing professionally, sometimes in a band and 
 sometimes solo. 
@@ -180,13 +161,13 @@ Chris""", "name" : "Christopher J. J."},
 {"bio" : 
 """Hey y'all! My name is Brian and I love writing letters with everyone, 
 no matter what race or creed! I've been doing this a while and letters 
-usually lead to friendships….maybe some of the best friendships of 
+usually lead to friendships....maybe some of the best friendships of 
 your or my life! I can only write and read in English but I'm not against 
 LGBT and actually usually pretty interested in hearing about different 
-walks of life. Here are my FAQs: Male…30…democrat…lutheran but open 
-to new perspectives…half Korean and half Euro-mutt…been in Ohio my 
-entire life but was convicted in Indiana…taking classes in real 
-estate for when I get out because I'm good with people….and am ENTIRELY 
+walks of life. Here are my FAQs: Male...30...democrat...lutheran but open 
+to new perspectives...half Korean and half Euro-mutt...been in Ohio my 
+entire life but was convicted in Indiana...taking classes in real 
+estate for when I get out because I'm good with people....and am ENTIRELY 
 POSITIVELY TRULY interested in reading about your life and anything 
 you need to talk about! I'm also available for calls and visits 
 if it goes there! I'm a Cancer and do my best to keep a soft shell, 
@@ -241,7 +222,7 @@ a letter I will write back.""", "name" : "Antonio P. G."},
 """Hi. I'm looking for someone level-headed, unbiased, relaxed and honest to 
 develop a relationship with through writing letters. 
 
-I'm different from most men you have come across in your life.
+I'm different from most people you have come across in your life.
 Not too many guys like 
 me left. Especially real ones. You might come across a faker but they 
 reveal themselves soon enough. I have things to hide but I don't hide 
@@ -276,16 +257,14 @@ Jim""", "name" : "James B."},
 My name's Deebo and I'm looking for some new friends. I rep Detroit 
 where I was born and raised and got myself into the trouble that wound 
 up landing me here in jail. I'm tall, light skinned, trimmed, and a 
-good dresser. I was always known as a hustler but never a player. 
-Know what I'm saying ladies? I will always make you laugh and never 
-make you cry.
+good dresser. 
 
 I'm up in here turning my life around 360. I already got my degree 
 and now I'm taking classes in cooking so I can whip us up something 
 good in the kitchen. I follow the rules and stay out of fights 
 and am looking to get out of here real soon. What I'm looking for 
 is someone to give me that little extra inspiration to get out. 
-Right now I got no girl on the outside so why leave? 
+Right now I got no connections on the outside so why leave? 
 
 If you enjoyed reading this then you'll love getting my letters. 
 I got nothing to do all day but figure out what to say to make 
@@ -326,8 +305,8 @@ believe, and not who you are.""", "name" : "John D."},
 {"bio" : 
 """Hey! Thanks for considering to write with me. I'm a goal oriented 41 year 
 old man, 5’11” and weigh 160 lbs. I believe life is what you make it and 
-that the past doesn't determine the future. If you are a female who thinks 
-the same and is interested in getting to know me, read on…
+that the past doesn't determine the future. If you are a person who thinks 
+the same and is interested in getting to know me, read on...
 
 My parole hearing isn't too far off (1.5 years) and I've been working 
 hard in prison to improve the man I am. I have a Nursing Assistant 
@@ -342,8 +321,7 @@ to correspond with someone who has similar interests.
 
 Maybe you would like someone to talk about your fitness goals? I can 
 help you make goals and keep them. Its what I do best and it would 
-be my pleasure. Plus, it's a great way to get to know eachother 
-without moving too fast.
+be my pleasure. 
 
 Your new friend,
 
@@ -401,8 +379,7 @@ That's just the kind of lady I am, and there's no one else like me!
 
 Honestly it's a little lonely in here in this hen house and I could use 
 someone different to write me, someone who understands that I am different too. 
-If you are the type of man who stands out among the rest then you've met 
-your match. Can't wait to hear from you.
+Can't wait to hear from you.
 
 CC""", "name" : "Gina L."},
 
@@ -444,8 +421,8 @@ I like to do so if you have kids all the better.
 I'm big on honesty and you need to know that I am a recovering alcoholic. 
 I go to meetings regularly and don't plan to continue the party lifestyle 
 when I get out. I want to surround myself with clean, family oriented people 
-who live by God and have a good work ethic. Family is everything and you 
-must be down with kids. 
+who live by God and have a good work ethic. Family is everything for
+me. 
 
 "Keep your head up and the sky will stop falling."
 
@@ -467,7 +444,7 @@ I’m known as a social butterfly and some people say I light up a room.
 I love talking to new people and have an impressive grasp on astrology.
 
 For me, life is a movie with a happy ending. I get out in June and 
-can't wait. Please send your pic with your letter--your pic gets mine.
+can't wait. 
 
 Thanks,
 
@@ -485,7 +462,7 @@ chance on me and a new, different type of friendship.
 I'm known around here as Big J, and I've got a big heart. I am from 
 Fresno, CA but am considering a relocation to LA. I like all types 
 of music and am a pretty relaxed guy with a lot to give. I'm looking 
-to make a nice friend to greet me with a nice smile when I get home. 
+to make nice friends. 
 
 I believe in taking care of yourself and those you love. I hope to 
 hear from you soon.
@@ -517,12 +494,10 @@ Jeremy""", "name" : "Jeremy W."},
 """What’s up, people?
 My name is Scot (spelled with one t) and I’m 22 years old, trying to do my 
 best from minute to minute. I always go above and beyond and give 110%. 
-I'm using this site to make new friends who want to write letters and 
-continue communicating after I get out, so hopefully you're in the 
-New York area (city, not state).
+I'm using this site to make new friends who want to write letters.
 I love to skateboard and go out to see live music. I am a tattoo artist 
 but try to keep my own ink to a minimum. I like to read books about history. 
-If you are in NYC and interested in getting to know a guy like me, shoot me 
+If you are interested in getting to know a guy like me, shoot me 
 a letter and I'll get you back!""", "name" : "Scot B."},
 
 {"bio" : 
@@ -553,7 +528,7 @@ always keep you on your toes but I also know when to be very chill and
 relaxed. I don't judge and don't like being judged. 
 
 I love making new friends and am always writing so if you send me a 
-letter I will definitely write you back. We can talk about anything 
+letter that would be very nice! You can talk about anything 
 from riding to rims to rhymes. I'm honest and will always be truthful 
 about my life.
 
@@ -597,7 +572,7 @@ start new friendships with people from all corners of the earth to
 write letters with for the remaining time of my sentence. I like 
 learning about other people's customs and their family cultures. 
 I also like telling stories about my own people and the things 
-I have experienced in this life…
+I have experienced in this life...
 My interests include nature, family, art, and reading about 
 history and culture. I like to do art after spending a long 
 time reading. I feel inspired by the stories. I have been 
@@ -628,7 +603,6 @@ in mechanical engineering which made me pretty good money
 to support my son and his mom.
 
 I'm just looking for a friend to help me pass the time. 
-If you write me I'll write back. I keep my word.
 
 Rich""", "name" : "Richard S."},
 
@@ -647,9 +621,9 @@ put on a good show, so people like me generally and I have
 a lot of lifetime customers. I'm taking business classes so 
 that when I get out I can open up my own shop. That's whats up! 
 
-Honestly I'm getting a little bored in here. I promise I'll 
-do my best to write back to you, letter for letter, and 
-appreciate every minute you spend on me.
+Honestly I'm getting a little bored in here. Any message
+from the outside would be very refreshing from the dull
+routine in here. I appreciate every minute you spend on me.
 
 Erik G.""", "name" : "Erik G."},
 
@@ -667,8 +641,9 @@ Truly,
 Aaron""", "name" : "Aaron J."},
 
 {"bio" : 
-"""My name is Anthony and I want to talk and laugh with a 
-female who wants to build something together. I'm not one to waste 
+"""My name is Anthony and I want to hear from someone who
+is not a drug dealer to have a positive influence on me. 
+I'm not one to waste 
 time so here's what's up with me: 
 
 Age:  29
@@ -677,7 +652,7 @@ Height: 5'10"
 Weight: 160 pounds
 Goals: Business, wealth, power, helping kids, traveling
 
-And you are….?""", "name" : "Anthony H."},
+And you are...? Feel free to share your story or interests.""", "name" : "Anthony H."},
 
 {"bio" : 
 """Hello my name is Ryan. I’m 5’8”, 205 pounds, brown hair and 
@@ -689,12 +664,12 @@ swimming in the pool. I also like football and going out to eat.
 My favorite food is Polish and I can't wait to enjoy a big sausage 
 with some kraut when I get out.  
 
-I'm looking to correspond with someone by mail, email, phone or any 
-combination of the above. Are you interested? I will respond quickly 
-each time you write and always call you back.
+I'm looking to receive correspondence from people from the Outside
+by mail, email, phone or any combination of the above. Are you interested? 
+I appreciate you reaching out to me even if I cannot write you 
+back.
 
 Now that you know a little about me, let me know a little about you. 
-If you could, could you please include a picture or two or yourself? 
 Thanks for checking out my profile and if you have some extra time, 
 please do drop me a few lines.
 
@@ -711,8 +686,7 @@ care of I need to start nourishing my heart and soul. That's where you come in.
 
 I'm a pretty funny guy and think that laughter heals all wounds so if 
 you need to smile, I'm your man. Please, please get at me if you have 
-any interest at all in helping me heal my broken heart and 
-reconnecting with life beyond bars.
+any interest at all in helping me reconnecting with life beyond bars.
 
 Thank you,
 
@@ -763,9 +737,9 @@ reduced and I'd get out early. I haven't allowed my time behind
 bars to keep me down. A good heart always prevails and I really 
 believe that!
 
-So if you want to communicate via this medium with a good person 
-and a decent man, take the leap of faith that is calling you and 
-ring my bell. You won’t be disappointed.
+So if you want to communicate via this medium with a good person, 
+take the leap of faith that is calling you and 
+ring my bell. I will be very grateful.
 
 James""", "name" : "James D."},
 
@@ -796,8 +770,8 @@ Mo""", "name" : "Maurice W."},
 {"bio" : 
 """My name is Brandon and I am currently serving a five year sentence 
 and have three years left. I am 26 years old, 5'11” tall and weigh 185 pounds. 
-I have never been married and have no children. I want to establish a 
-relationship with someone who might be a good influence in my life and 
+I have never been married and have no children. I want people from
+the outside to reach out to me, people who might be a good influence in my life and 
 hasn't been in jail. 
 
 I like gaming, going to concerts, hunting, camping and will try anything once. 
@@ -867,10 +841,8 @@ I’ve been trying to make to most of prison and have taken pretty much
 every class offer. I got my GED and a certificate in commercial 
 labor. I learned speed typing, graphic design, television repair, 
 painting, yoga, food service technology, botanical maintenance, 
-and intro to needlework. And no I'm not gay, so no letters from 
-other males. I’m only seeking mature females who are interested 
-in friendship and true love. I'm looking to correspond with 
-someone who will do everything she can to help me accomplish 
+and intro to needlework. I'm looking to correspond with 
+someone who will do everything they can to help me accomplish 
 my goals once I get out of prison. If you like what you know about me 
 so far, I hope you will establish communication with me soon. 
 Until then be God-fearing and true to your family and friends.
@@ -918,7 +890,7 @@ author is Stephen King because he has a unique way of telling stories.
 I'm good at business and marketing and want to return to school 
 when I'm out of prison.
 
-Jess <3""", "name" : "Jessica R."},
+Jess""", "name" : "Jessica R."},
 
 
 {"bio" : 
@@ -945,6 +917,8 @@ I'm really looking forward to hearing from y’all…""", "name" : "Lynnette C."
 """Hello,
 I am Iker. I have brown hair, brown eyes, red skin and weigh around 152 pounds. 
 My birthday is Auguest 12, 1978. I am fun and have lots of energy. I am hard working, 
-creative and care about animals. I would like to have a long term relationship with 
-marriage in mind for the outcome when I am released. Willing to relocate.""", "name" : "Iker R."}]
+creative and care about animals. I do what I can to keep my mind of the 
+fact that I am doing time in here, working out, reading books, planning
+my future on the outside. If you got any advice, story or comfort to share
+hit me up!""", "name" : "Iker R."}]
 
