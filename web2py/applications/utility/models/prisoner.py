@@ -7,7 +7,12 @@ options.prisoner = {'price' : [.20, .40],
                     'mystery_task': True,
                     'work_limit' : [5, 90],
                     'pay_delay' : 13 * 60,
-                    'first_time_bonus' : 0.50}
+                    'first_time_bonus' : 0.50,
+                    'hit_params' : {'title' : 'foo',
+                                     'description' : 'this is description',
+                                     'keywords' : 'toomim, mystery task, bonus',
+                                     'block_india' : True}
+                    }
 
 
     
