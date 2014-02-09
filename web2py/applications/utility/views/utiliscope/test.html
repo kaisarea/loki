@@ -9,6 +9,8 @@
 
 <div style="max-width: 500px">
 {{for k,v in conditions.items():}}
+  {{ if k in ['hit_params', 'pay_delay', 'mystery_task', 'first_time_bonus']:
+     continue }}
   {{=k}}
 
   {{ if is_singleton(v): }}
