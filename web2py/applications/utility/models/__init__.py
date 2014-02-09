@@ -61,7 +61,7 @@ turk.AWS_SECRET_ACCESS_KEY = aws_secret_access_key
 
 # constants
 iframe_height = 650
-ass_duration = 60*15            # 15 minutes
+ass_duration = 60*60*1          # 1 hours
 hit_lifetime = 60*60*24         # 24 hours
 
 # Set up logging
