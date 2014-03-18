@@ -26,7 +26,8 @@ def index():
 
     # Choose a random prisoner ordering for this worker
     import random
-    hit_num = hits_done() - 1   # Subtract 1 for the first_time bonus
+    hit_num = hits_done() - 1        # Subtract 1 for the first_time bonus
+    if request.testing: hit_num = 0  # Cause otherwise it'll be -1
     random.seed(request.workerid)
     #prisoners = michelle_prisoners + meg_profiles + profiles + second_batch_of_profiles
     random.shuffle(prisoners)
@@ -65,12 +66,12 @@ def index():
                 training=request.training,
                 needs_to_train=hit_num == 0 or request.testing,
                 hit_num = hit_num,
-                hits_left = request.work_limit - hit_num,
+                hits_left = request.work_limit - hit_num - 1,
                 #improbability=request.improbability,
                 improbability_rate=request.improbability_rate,
                 #inconstancy=request.inconstancy,
                 #limit=request.limit,
-                work_limit=request.work_limit)
+                work_limit=request.work_limit - 1)
 
 
 def results():

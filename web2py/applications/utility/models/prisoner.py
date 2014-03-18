@@ -8,7 +8,7 @@ options.prisoner = {'price' : [.1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0],
                     'disagreeable' : [True, False],
                     'training' : [True, False],
                     'improbability_rate' : [94, 51],
-                    'work_limit' : [9, 90],
+                    'work_limit' : [10, 91],
 
                     'mystery_task': True,
                     'pay_delay' : 13 * 60,

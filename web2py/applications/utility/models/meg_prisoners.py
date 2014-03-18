@@ -76,7 +76,8 @@ either write to the address below or email me, whichever is easier.
 Thanks and write back soon!""", "name" : "Brad S."},
 
 {"bio" : 
-"""Allow me to tell you what you’ve won. 6 feet tall with a 
+"""CONGRATULATIONS!!
+Allow me to tell you what you’ve won. 6 feet tall with a 
 fit body, he was made in the 80’s in Chicago. Although people 
 have tried to imitate this product, nobody has been able to 
 reproduce this one-of-a-kind prize. It even has a few bonus 

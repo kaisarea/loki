@@ -11,7 +11,7 @@
 {{ org = 'inmates' }}
 {{ bonus_time = 60 }}
 
-{{ prisoner_textarea = DIV('You have not yet completed the ', A('required training.', _class='training', 
+{{ textbox_training_message = DIV('You have not yet completed the ', A('required training.', _class='training', 
 	_href='#training'), _id='cover') }}
 
 {{ include 'prisoner/training.html' }}
@@ -58,7 +58,11 @@
 <input type="hidden" id="time_enter" name="time_enter">
 <input type="hidden" id="start_training" name="start_training">
 <input type="hidden" id="finish_training" name="finish_training">
-{{=prisoner_textarea}}
+
+{{if needs_to_train:}}
+  <div id="cover">You have not yet completed the <a class="training" href="#training">required training</a></div>
+{{ pass }}
+
   <textarea {{if needs_to_train:}}disabled="disabled"{{pass}} name="letter_to_prisoner" class="count[{{=min_words}},0]" id="minWord" rows="20" cols="80%"></textarea>
   <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </div>
@@ -95,18 +99,18 @@ function show_training() {
     jQuery('#shadow').fadeIn()
       .find('button').click(function(e) {
             e.preventDefault();
-	    var pattern = /[0-9]+/g;
+	         var pattern = /[0-9]+/g;
             var myText1 = $('input[name=letter1]').val().match(pattern);
             var answers1 = new Array("5", "7", "8", "10");
             var myText2 = $('input[name=letter2]').val().match(pattern);
-	    var answers2 = new Array("4", "6", "7", "8", "9", "10");
-            var myText3 = $('input[name=letter3]').val().match(pattern);
-	    var answers3 = new Array("3", "4", "6", "7", "8", "9", "10");
+	    	   var answers2 = new Array("4", "6", "7", "8", "9", "10");
+            //var myText3 = $('input[name=letter3]').val().match(pattern);
+	    //var answers3 = new Array("3", "4", "6", "7", "8", "9", "10");
 	   
 	    var misses1 = $(answers1).not(myText1).length + $(myText1).not(answers1).length;
 	    var misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
-	    var misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
-	    var overall = misses1 + misses2 + misses3
+	    //var misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
+	    var overall = misses1 + misses2 // + misses3
 	if($('input[id=quiz_given]').val()=='0')
 	{
 		overall = 0
@@ -254,7 +258,4 @@ $("#letter3").on("change", function() {
 
     $(document).on('click', 'a.training', show_training);    
 
-{{ if not needs_to_train: }}
-	$('#cover').hide()
-{{ pass }}
 </script>
