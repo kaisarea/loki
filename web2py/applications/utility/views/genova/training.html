@@ -1,0 +1,134 @@
+<!-- PHOTOS DOWNLOADED FROM OPENPHOTO.NET --> 
+<div id="shadow" style="display: none; min-height: 2800px;">
+ <h2>Training: Read this Primer on Tagging{{if training:}} and Pass a Test{{pass}}</h2>
+ <p>
+        There are different categories of tags.  This primer explains them
+        to make you a better image tagger.
+        {{if training:}}You will be tested on your understanding at the end.{{pass}}
+            <div style="width: 45%; float: left;  max-width: 350px; margin: 0 10px;" class="column1">  
+    <img src="/static/genova/chess.jpg" width="275" height="200" border="0">
+    <p><em>This picture can be tagged with "chessboard", 
+        "chess pieces" (objects); "landscape" (orientation).</em></p><br>
+    <img src="/static/genova/autumn.jpg" width="275" height="200" border="0">
+    <p><em>This photo could be tagged with "bank", "trees" (object), "landscape" (orientation), "autumn" (time)
+        or "calm" (emotion).</em></p><br>
+    <img src="/static/genova/pollination.jpg" width="275" height="200">
+    <p><em>This photo can be tagged with "macro" (technique), "insect" (object), "flower" (object),
+        "bee" (object), "spring" (time).</em></p><br><br>
+    </div>  
+    <div style="width: 45%; float: left; max-width: 350px; margin: 0 10px;" class="column2">
+    <ul>
+	<li><strong>Object</strong> - Most important part of every image is represented by objects.
+		<em>Chess pieces</em> appear in the first image on the left. A <em>bank</em>
+		surrounded with <em>leaves</em> in the second, <em>bee</em> pollinating
+		a <em>flower</em> in the third.
+        <li><strong>Orientation</strong> - Tags can describe whether the image is of a
+                <em>portrait</em> format or a <em>landscape</em> format.
+        <li><strong>Technique</strong> - How is the photo taken? How is the image drawn?
+                Is it a <em>high speed photography</em> where you can see the climax 
+                of an action? Is it a 
+                <em>motion blur photography</em> where the photo was taken over a long 
+                period of time? Is it a <em>collage</em> created by putting together
+                hundreds of smaller pictures?
+        <li><strong>Time</strong> - Was the picture taken in the <em>evening</em>? Is there a <em>sunset</em> 
+		or <em>sunrise</em>? Can you tell a season of the year? Do fallen leaves indicate <em>autumn</em>? 
+                Or do the clothes of the people indicate <em>summer</em> or <em>spring</em>?
+        <li><strong>Color</strong> - This may better apply to drawing rather than photos.
+                Some drawings use shades of the same color or maybe the colors were chosen
+                so that they show high degree of contrast? The colors may be sharp or fuzzy.
+        <li><strong>Emotion</strong> - Is the image evocative of certain emotion like <em>fear</em>
+                <em>anxiety</em> or <em>nausea</em>? Or does it seem to have a rather <em>calming</em> effect on 
+                you?
+        <li><strong>Artistic Genre</strong> - Is the style <em>dada</em>? Does it belong into the movement of
+                <em>impressionism</em>? Does it belong into Andy Warhol's visual art movement
+                <em>pop art</em>?
+    </ul>
+   </div>
+    <div {{ = "class=bonus" if training else "" }}>
+    <button class="leave_training" style="margin-left: 35%; padding-left: 10px; padding-right: 10px; padding: 5px; margin-right: 35%;">Go Back to the Task</button>
+    </div> 
+    
+                  <br><br><br>
+    <div {{ = "class=bonus" if not training else "" }}>
+    <div class="quiz" style="clear: both">
+    <h2>Testing Your Understanding of the Guidelines</h2>
+    <form>
+    <p>
+        Look at the tags below and write down (in the text field to the right of the tag) which
+        category they belong to.
+    </p>
+    <div name="batch1" style="clear: both">
+      <div style="float: left; width: 210px;">
+        <ol>
+          <li>portrait
+          <li>dawn
+          <li>high speed photography
+          <li>anxiety
+          <li>impressionism
+        </ol>
+      </div>
+      <div style="float: left;">
+        <ul style="list-style-type: none;">
+          <li style="position: relative;"><input type="text" name="empty" id="par1" {{ = "value=orientation" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par2" {{ = "value=time" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par3" {{ = "value=technique" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par4" {{ = "value=emotion" if not training else "" }}>
+          <li style="position: relative;"><input type="text" name="empty" id="par5" {{ = "value=artistic genre" if not training else "" }}>
+        </ul>
+      </div>
+</div>
+    <div name="batch2" style="clear: both">
+      <div style="float: left; width: 210px">
+        <ol>
+          <li>macrophotography
+          <li>nausea
+          <li>chessboard
+          <li>cheerfulness
+          <li>tree
+        </ol>
+      </div>
+      <div style="float: left;">
+        <ul style="list-style-type: none;">
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par6" {{ = "value=collage" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par7" {{ = "value=emotion" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par8" {{ = "value=object" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par9" {{ = "value=emotion" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par10" {{ = "value=object" if not training else "" }}>
+        </ul>
+      </div>
+</div>
+    <div name="batch3" style="clear: both">
+      <div style="float: left; width: 210px;">
+        <ol>
+          <li>autumn
+          <li>black and white
+          <li>fear
+          <li>motion blur
+          <li>dada
+        </ol>
+      </div>
+      <div style="float: left;">
+        <ul style="list-style-type: none;">
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par11" {{ = "value=time" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par12" {{ = "value=technique" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par13" {{ = "value=emotion" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par14" {{ = "value=technique" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par15" {{ = "value=artistic genre" if not training else "" }}>
+        </ul>
+      </div>
+</div>
+    </div>   
+    <input id="quiz_given" type="hidden" {{= "value=1" if training else "value=0" }}>
+<div style="clear: both;">
+    <button id="butt" style="margin-left: 180px; padding: 5px; padding-left: 20px; padding-right: 20px;">Finish Training</button>
+    <button class="cancel_training" style="padding: 5px; padding-left: 30px; padding-right: 30px; margin-left: 80px;">Cancel</button>
+</div>
+    </form>
+    </div>
+    </div>
+</div>
+<div class="congrats">
+<h1>Congratulations!</h1>
+<p>You have successfully completed the training</p>
+<button class="leave_training" style="margin-left: 70px; padding: 5px;">Continue to Task</button>
+</div>

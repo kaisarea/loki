@@ -1,0 +1,61 @@
+{{extend 'layout.html'}}
+
+<style>
+div.mysterybox {
+	border: 1px solid #ccc;
+  	width: 262px;
+	text-align: center;
+	font-size: 34px;
+	position: absolute;
+	padding: 23px;
+	margin: 0px;
+	background-color: #faf7be;
+}
+h1 {font-size: 50px; margin-bottom: 40px; }
+p {font-size: 20px;}
+
+img#low-go {
+	margin-left: -11px;
+	margin-bottom: 23px;
+}
+.qbox {
+	border: dashed 2px #d7d7d7;
+	background-color: #f8f8f8;
+	width: 60px;
+	height: 1.2em;
+	/*position: absolute;*/
+	/*left: 130px;*/
+	display: inline-block;
+	position: relative;
+	bottom: -5px;
+   margin-right: 10px;
+}
+
+.right {
+	position: absolute;
+	margin-left: 410px;
+}
+</style>
+
+<div class="right">
+  <p>Current task:
+  <span class="qbox">&nbsp;</span>
+
+  Current price:
+  <span class="qbox">&nbsp;</span></p>
+
+</div>
+
+<img id="low-go" src="/static/img/crowdclearinghouse.png">
+
+<div class="right">
+  <p>Accept today's hit to see it.</p>
+  <p>Return it if you don't like it.</p>
+  <p>Task and price changes each day.</p>
+  <!--<p>Some days have better deals than others.</p>-->
+</div>
+
+<div class="mysterybox">
+	<p style="margin-bottom: 18px;">Each day brings a different task from a different vendor.</p>
+	<p><i>Enjoy the variety!</i></p>
+</div>

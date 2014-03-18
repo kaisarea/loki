@@ -1,28 +1,51 @@
 {{ extend 'layout.html' }}
 
-{{ firsttime = "$%.2f" % request.first_time_bonus }}
+{{ pay = "$%.2f" % request.first_time_bonus }}
 
-<link rel="stylesheet" href="/static/prisoner/css/training.css" type="text/css" media="screen"/>
 
+<link rel="stylesheet" href="/static/prisoner/css/prisoner.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="/static/css/stats_box.css" type="text/css" media="screen"/>
 
 <style>
-  .submit {
-  	font-size: 18px;
-  	background-color: #55f;
-	color: white;
+.submit {
+  	font-size: 20px;
+   font-family: georgia;
+  	background-color: #eee;
+	color: black;
   	padding: 10px 20px;
-	font-weight: 200;
-  }
+	margin-top: 10px;
+}
+p {font-size: 20px;}
+body {padding: 40px; }
+
+.bonus_line {
+	/*color: #007721;*/
+	/*text-decoration: underline;*/
+   margin-bottom: 1em;
+}
+
+.bonus_line b {letter-spacing: 0; color: #CC6600;}
+
 </style>
 
-<h1>First-time Worker Bonus!</h1>
+<h1>Hello! New worker!</h1>
 
-<div style="max-width: 325px;" class="taskdetails">
-    <p>
-	We give {{=firsttime}} to each first-time worker. It is our way of saying "hello."
-	</p>
+<div style="max-width: 525px;" class="taskdetails">
+    <h2 class="bonus_line">
+	Here's a <b>{{=pay}}</b> bonus, just for saying hello!
+	</h2>
 
-	<p>
+	<p>This will help you become accustomed to our payment
+	system. <i>Our hits pay entirely in bonus</i>, which you will see
+	listed in your
+	<a href="https://payments.amazon.com/sdui/sdui/dailysummary"
+	target="_blank">Amazon Payments History.</a> (For future
+	reference, you can find that link at the bottom of
+	your <a href="https://www.mturk.com/mturk/youraccount"
+	target="_blank">MTurk Account Settings.</a>)</p>
+
+	<p>When you click the button below, you'll get a {{=pay}} bonus and
+	be ready to accept your first real hit!</p>
 
 	<form method="post" action="/utiliscope/submit_first_hit?live&assignmentId={{=request.assid}}&hitId={{=request.hitid}}&workerId={{=request.workerid}}&turkSubmitTo={{=request.vars.turkSubmitTo}}">
 <!--		<input type="hidden" name="workerId" value="{{=request.workerid}}"/>
@@ -31,14 +54,12 @@
 		<input type="hidden" name="live" value="true"/>
 		<input type="hidden" name="turkSubmitTo" value="{{=request.vars.turkSubmitTo}}"/>
 		<input type="hidden" name="live" value="true"/> -->
-		<button type="submit" label="submit" class="submit">
-		  Accept one-time {{=firsttime}} bonus
+
+		<button type="submit" label="submit" class="submit orange">
+		  I'm ready to click accept on my first real hit!
 		</button>
+
 	</form>
 	</p>
 
-	<p>
-	You are under no obligations to do any work because of this extra bonus.
-	It is a free gift.
-	</p>
 </div>

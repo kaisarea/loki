@@ -256,10 +256,11 @@ def launch_study(num_hits, task, name, description, hit_params=None):
                             db.studies,
                             {'name' : name,
                              'launch_date' : datetime.now(),
-                             'description' : description,
-                             'task' : task,
-                             'hit_params' : sj.dumps(params, sort_keys=True)})
-    study.update_record(conditions = sj.dumps(conditions, sort_keys=True))
+                             'task' : task})
+    study.update_record(description = description,
+                        conditions = sj.dumps(conditions, sort_keys=True),
+                        hit_params = sj.dumps(params, sort_keys=True))
+
     for i in range(num_hits):
         schedule_hit(datetime.now(), study.id, task, {})
     db.commit()

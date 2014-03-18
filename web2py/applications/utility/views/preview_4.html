@@ -1,0 +1,71 @@
+{{extend 'layout.html'}}
+
+<style>
+  div.mysterybox {
+   background-color: #669;
+	color: #fff;
+	border: 1px solid #aaa;
+  	width: 300px;
+	text-align: center;
+	font-size: 120px;
+	position: absolute;
+	padding: 40px;
+	margin: 0px;
+   height: 150px;
+  }
+  #mb2 {
+	font-size: 50px;
+  }
+  h1 {font-size: 50px; margin-bottom: 40px; }
+  p {font-size: 20px;}
+
+img {
+	margin-left: -11px;
+}
+.qbox {
+	border: dashed 2px #d7d7d7;
+	background-color: #f8f8f8;
+	width: 60px;
+	height: 1.2em;
+	/*position: absolute;*/
+	/*left: 130px;*/
+	display: inline-block;
+	position: relative;
+	bottom: -5px;
+   margin-right: 10px;
+}
+
+</style>
+
+<div style="position: absolute; margin-left: 430px;">
+  <p>Current task:
+  <span class="qbox">&nbsp;</span>
+
+  Current price:
+  <span class="qbox">&nbsp;</span></p>
+</div>
+
+<img src="/static/img/crowdclearinghouse.png">
+
+<div style="position: absolute; margin-left: 430px;">
+  <p>Accept today's hit to see it.</p>
+  <p>Return it if you don't like it.</p>
+  <p>Task and price changes each day.</p>
+  <!--<p>Some days have better deals than others.</p>-->
+</div>
+
+<div id="mb1" class="mysterybox"></div>
+<div id="mb2" class="mysterybox"><span class="c2">Tasks change each day</span></div>
+
+
+<script>
+var curr = 0;
+var mbs = [$("#mb2"), $("#mb1")];
+function cycle() {
+  mbs[curr].fadeOut();
+  curr = (curr+1) % mbs.length;
+  mbs[curr].fadeIn();
+}
+//setInterval(cycle, 2000);
+//cycle();
+</script>

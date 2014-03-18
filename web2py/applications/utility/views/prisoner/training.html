@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="/static/prisoner/css/prisoner.css" type="text/css" media="screen"/>
+
+
+<div id="shadow" style="display: none; min-height: {{ = '1000px;' if not training else '1800px;' }}">
+    <h2>Training Guidelines for Writing a Prisoner</h2>
+    <p>
+        You must learn these rules to write letters to prisoners.
+        Your letter will be <b>rejected</b> if it:
+    </p>
+    <ol>
+        <li>Depicts or describes procedures for the brewing of alcoholic 
+            beverages, or the manufacture of drugs or other intoxicants;
+        <li>Is written in code;
+        <li>Depicts, describes or encourages activities which may lead to the 
+            use of physical violence or group disruption;
+        <li>Encourages or instructs in the commission of criminal activity;
+        <li>Is rude or disrespectful;
+        <li>Contains racist, chauvinistic, sexist or obscene comments. Hopefully that 
+            needs no further explanation;
+        <li>Discourages the prisoner from successfully continuing in his civil
+            life upon release;
+        <li>Lacks compassion and positive outlook;
+        <li>Describes an illegal activity in a positive way leading to distortion
+            in role model creating process on the side of the prisoner (e. g. 
+	    describes a criminal as a hero so that the prisoner grows to admire
+	    him and hence starts to perceive criminal activity as attractive
+	    or laudable);
+        <li>Undermines the correctionary process the prisoner is undergoing
+            in the correction facility;
+    </ol>
+    <div style="display: {{ = 'none' if training else 'inline' }}">
+    <button class="leave_training" style="margin-left: 35%; padding-left: 10px; padding-right: 10px; padding: 5px; margin-right: 35%;">Go Back to the Task</button>
+    </div> 
+   {{ test = "inline" if training else "none" }} 
+    <div class="test" style="display: {{=test}}">
+    <h2>Testing Your Understanding of the Guidelines</h2>
+    <p>
+        Read each of these ficticious letters, and identify the rules
+        they violate.
+    </p>
+    <form>
+    <ul>
+        <li><p>"Dear Carlos,<br>
+                I cannot possibly comprehend how a human being might be 
+                capable of doing what you did. However, you were justly
+                convicted and you are paying your debt to society.
+                So I guess it would be wrongful of me to deny you 
+                my friendship. On the other hand, it is not quite
+                clear whether you have been praying to God to ask 
+                you forgiveness and whether it will be granted to you.
+                I guess it all depends on the entirety of your life,
+                personality and actions. Anyway, I find difficult to relate to you
+                as a person. Neverthless, I would like to say that I hope
+                that you won't deviate from the righteous path again
+                and pray for God's forgiveness. Dabit deus his quoque 
+                finem.<br>
+                <br>
+                Yours Truly,<br>
+                Jacob"
+            </p>
+            <em>
+		List <b>4 of the above</b> rules that this letter violates 
+		separated by commas (e. g. if it violates 
+		the first and second items, write "1,2" in the text field below).
+	    </em><br><br>
+                Items Violated: <input type="text" id="letter1" name="letter1">
+	     <br><br>
+        <li><p>"Dear Tom,<br>
+                Your only crime is that you got caught! There is a lot of white-collar
+                folks steeling megabucks from people in investment banks 
+                and other garbage corporations. Politicians fool people all
+                the time and cash in on it. Your only crime was that you didn't
+                think big and you didn't have the right friends in the right places!
+                They put you in that position, man! It ain't your fault!
+                Next time you just gotta be smarter, don't steal pennies, steal
+                big! Don't lie just in the court room, lie all the time!
+                That's how the white people do it!<br>
+                <br>
+                Sincerely Yours,<br>
+                Margret"
+            </p>
+              <em>List <b>6 of the above</b> rules that this letter violates
+		separated by commas or white space (e. g. if you think 
+		it violates the first and fourth items, write "1,4" in the text 
+		field below).</em><br><br>
+                Items Violated: <input type="text" id="letter2" name="letter2"><br>
+                <br>
+        <li>
+            <p>"Hello there,<br>
+                looks like your life has been a big bummer. Don't worry about 
+                it pal! Life can be crazy sometime. Things just happen. Shit happens, man!
+                We're only human, ain't we? You screw up here and there. But hey, 
+                keep it real, man! Don't let them bring you down. Get up 
+                and live it up! But first you gotta get out of that sh*thole,
+                man! Can't wait for the man to let you go! Gotta grab things
+                into your own hand. Live is too short! Don't let the white man
+                take it away from you! When you get outta there I can figure 
+                out a job for you if you know what I mean;) Need folks with
+                experience!;)<br>
+                <br>
+                Take it easy bro!<br>
+                Jim&quot;</p>
+                <em>List <b>7 of the above</b> rules that this letter violates
+		separated by commas or white spaces (e. g. if you think 
+		it violates the first, fifth and second item, write
+                "1,2,5" in the text field below).</em><br><br>
+                Items Violated: <input type="text" id="letter3" name="letter3">
+    </ul>       
+      
+    
+    <input id="quiz_given" type="hidden" {{= "value=1" if training else "value=0" }}>
+    <button id="butt" style="margin-left: 20%; width: 20%; padding: 7px; padding-left: 20px; padding-right: 20px; margin-top: 20px;">Submit Answers</button>
+   <button class="trainbutton" onClick="hideTrainingBox()" style="margin-left: 20%; width: 20%; padding: 7px; padding-left: 20px; padding-right: 20px; margin-top: 20px;">Cancel</button>
+    </form>
+</div>
+</div>
+
+<div class="congrats">
+<h1>Congratulations!</h1>
+<p>You have successfully completed the training</p>
+<button class="leave_training" style="margin-left: 70px; padding: 5px;">Go Back to the Task</button>
+</div>

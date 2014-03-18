@@ -554,7 +554,7 @@ Until then...
 
 Andy""", "name" : "Andy M."},
 
-"""Everybody calls me “Bronco" so I think that's just what we'll go with for 
+{'bio':"""Everybody calls me “Bronco" so I think that's just what we'll go with for 
 this. I’m a 24 year old out of California and/or Nevada, 5’10” and 160 pounds wet. 
 I'm not your average joe. I work out and am trying to build up muscle 
 but don't think I'm not already strong. I have two daughters who are 
@@ -564,7 +564,7 @@ Experience comes with the territory. I love learning new things and
 can't wait to get out of incarceration. Oh, and if you're wondering 
 why everyone calls me Bronco it's because I used to drive a Bronco.
 Respectfully,
-Bronco""", "James M."},
+Bronco""", 'name' : "James M."},
 
 {"bio" : """Hello,
 My name is Mateo. My age is 21 years. My height is 6’4”. I want to 

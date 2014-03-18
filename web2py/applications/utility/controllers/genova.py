@@ -28,7 +28,8 @@ def index():
   
     # Otherwise, display the form
     log_action('with pic')
-    return dict(hit_count = hit_num,
+    return dict(hit_num=hit_num,
+                hits_left= request.work_limit - hit_num,
 		pics=pics,
 		disagreeable=request.disagreeable,
                 training=request.training,

@@ -1,0 +1,64 @@
+<script type="text/javascript" src="/static/prisoner/stats-box.js"></script>
+<link rel="stylesheet" href="/static/css/stats_box.css" type="text/css" media="screen"/>
+
+{{ def stats_box(): }}
+<div style="position: absolute; left: 410px;">
+	<h3 style="margin-bottom: 3px;">Payment Details</h3>
+	<div class="stats">
+
+		 <div class="tab selected">
+			 <div class="stat">{{=request.price_string}}</div> Per HIT
+			 <span class="details">
+		         <ul>
+
+			<li>This job pays {{=request.price_string}} per HIT via
+			    bonus.
+
+			<li>Bonus payments will be visible in your
+
+			    <a href="https://payments.amazon.com/sdui/sdui/dailysummary"
+			    target="_blank">Amazon Payments History</a>.
+
+			    (For future reference, you can find that link at the
+			    bottom of your MTurk
+			    <a href="https://www.mturk.com/mturk/youraccount"
+			    target="_blank">Account Settings</a>.)
+
+			</ul>
+			 </span>
+		 </div>
+
+		 <div class="tab">
+			 <div class="stat">{{=improbability_rate}}%</div> Approved
+			 <span class="details">
+			 <ul>
+
+			   <li>Our staff will approve or reject your work in roughly
+			   {{=bonus_time}} minutes.
+
+				<li>They are currently approving {{=improbability_rate}}%
+			   of submissions.
+
+		      <li>You must do the <a class="training"
+		      href="#training">training</a> before working.
+
+			</ul>
+
+			 </span>
+		 </div>
+
+		 <div class="tab">
+			 <div class="stat">{{if hit_num!=0:}}{{=hits_left}}/{{pass}}{{=work_limit}}</div> Available
+			 <span class="details">
+                         <ul>
+			   <li>We have {{=hits_left}} {{if hit_num!=0:}}more{{pass}} HITs available for you today.
+			   <li>You have completed {{=hit_num}}/{{=work_limit}} so far.
+			   <li>The number of HITs available depends on the demands of the day.
+			 </ul>
+			 </span>
+		 </div>
+
+		 <div id="details_box"></div>
+	 </div>
+</div>
+{{ pass }}

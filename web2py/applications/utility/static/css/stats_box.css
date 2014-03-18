@@ -1,0 +1,50 @@
+.stats {
+        position: relative;
+}
+
+.stats .tab {
+        float: left;
+        width:80px;
+        margin-left: 5px;
+        height:60px;
+    box-shadow: 3px 3px 0px 0px #888888;
+        background-color: #e5e5e5;
+
+        font-size: 14px;
+        text-align: center;
+}
+
+.stats .tab:first-child {
+    /* This ensures that the gaps between tabs are only BETWEEN them */
+        margin-left: 0;
+}
+
+.stats .tab.selected {
+        height: 100px;
+        background-color: #e3e3e3;
+}
+
+.stats .tab .stat {
+        font-size: 22px;
+        font-weight: bold;
+        font-family: georgia;
+        color: #092E66;/*#072C73;*/
+        text-align: center;
+        margin: 10px 0 5px 0;
+}
+
+.stats .details { display: none; }
+
+.stats #details_box {
+        position: absolute;
+        width: 230px;
+        height: 160px;
+        background-color: #e3e3e3;
+        box-shadow: 3px 3px 0px 0px #888888;
+        top: 69px;
+        font-size: 14px;
+        padding: 10px;
+}
+.stats #details_box ul li {
+	margin-left: 15px;
+}

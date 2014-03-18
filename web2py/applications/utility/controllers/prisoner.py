@@ -7,11 +7,28 @@ def index():
         response.view = 'first_time.html'
         return {}
 
+    ###########################################################
+    ##### Step 1: Set up all the experimental conditions  #####
+
+    # # Each condition's values listed as: [Control, Experimental]
+    # conditions = {'disagreeable'       : [False,    True],
+    #               'training'           : [False,    True],
+    #               'improbability_rate' : [94,      51],
+    #               'work_limit'         : [90,       5]}
+
+    # # Now let's set all these guys
+    # for k,v in conditions.items():
+    #     request[k] = v[1] if request.experimental_dimension == k else v[0]
+
+
+    #############################################################
+    ##### Ok... now let's get on with setting up this task  #####
+
     # Choose a random prisoner ordering for this worker
     import random
-    hit_num = hits_done()
-    #prisoner_num = hit_num % len(prisoners)       # What is this line doing?
+    hit_num = hits_done() - 1   # Subtract 1 for the first_time bonus
     random.seed(request.workerid)
+    #prisoners = michelle_prisoners + meg_profiles + profiles + second_batch_of_profiles
     random.shuffle(prisoners)
     prisoner = Storage(prisoners[hit_num])   
     # This way with fixed random seed the worker will get the following
@@ -22,7 +39,8 @@ def index():
     random.seed(str(hit_num) + str(request.workerid))
     choose_from = sex_crimes if request.disagreeable else crimes
     prisoner.crime = Storage(random.choice(choose_from))
-    random.seed(now)          # What is the purpose of this?
+    random.seed(now) # Now reset the randomizer in case anything in
+                     # the future needs actual random numbers
 
     othervars = {'prisoner' : prisoner}
 
@@ -45,7 +63,9 @@ def index():
                 prisoner=prisoner,
                 disagreeable=request.disagreeable,
                 training=request.training,
-                hits_done = hit_num,
+                needs_to_train=hit_num == 0 or request.testing,
+                hit_num = hit_num,
+                hits_left = request.work_limit - hit_num,
                 #improbability=request.improbability,
                 improbability_rate=request.improbability_rate,
                 #inconstancy=request.inconstancy,
