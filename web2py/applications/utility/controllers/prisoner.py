@@ -71,6 +71,7 @@ def index():
                 improbability_rate=request.improbability_rate,
                 #inconstancy=request.inconstancy,
                 #limit=request.limit,
+                bonus_time='%d' % (request.pay_delay/60),
                 work_limit=request.work_limit - 1)
 
 

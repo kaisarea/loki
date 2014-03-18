@@ -270,6 +270,16 @@ def launch_test_study(task, num_hits=1, nonce=None):
     launch_study(num_hits, task, study_name, " ... test ...")
 
 
+def launch_pinger(num_hits, delay_seconds, study_id, task):
+    time = datetime.now()
+    delay = timedelta(seconds=delay_seconds)
+    for i in range(num_hits):
+        time = time + delay
+        log('Scheduling at %s' % time)
+        schedule_hit(time, study_id, task, {})
+    db.commit()
+
+
 # ============== Launch a Eenie-Weenie Single Hit =============
 @log_scheduler_errors
 def process_launch_queue():

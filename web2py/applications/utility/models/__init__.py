@@ -288,7 +288,7 @@ def hit_finished(bonus_amount=None, do_redirect=True, pay_delay=None):
                               request.assid,
                               request.hitid,
                               request.study,
-                              reason='Completed hit',
+                              reason='Thanks!',
                               delay=pay_delay)
 
                 update_ass(assid=request.assid,
@@ -724,7 +724,9 @@ def load_live_hit():
         sj.loads(request.study.conditions),
         request.workerid)
     if not request.vars.ajax:
-        log('Sampled %s' % request.condition)
+        copy = request.condition.copy()
+        if 'hit_params' in copy: copy['hit_params'] = None
+        log('Sampled %s' % copy)
     for k,v in request.condition.items():
         request[k] = v
     request.condition_id = get_condition(request.condition)
