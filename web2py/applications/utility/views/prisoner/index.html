@@ -101,15 +101,15 @@ function show_training() {
 	         var pattern = /[0-9]+/g;
             var myText1 = $('input[name=letter1]').val().match(pattern);
             var answers1 = new Array("5", "7", "8", "10");
-            //var myText2 = $('input[name=letter2]').val().match(pattern);
-	    	   //var answers2 = new Array("4", "6", "7", "8", "9", "10");
+            var myText2 = $('input[name=letter2]').val().match(pattern);
+	    	   var answers2 = new Array("4", "6", "7", "8", "9", "10");
             //var myText3 = $('input[name=letter3]').val().match(pattern);
 	    //var answers3 = new Array("3", "4", "6", "7", "8", "9", "10");
 	   
 	    var misses1 = $(answers1).not(myText1).length + $(myText1).not(answers1).length;
-	    //var misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
+	    var misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
 	    //var misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
-	    var overall = misses1 // + misses2 // + misses3
+	    var overall = misses1 + misses2 // + misses3
 	if($('input[id=quiz_given]').val()=='0')
 	{
 		overall = 0

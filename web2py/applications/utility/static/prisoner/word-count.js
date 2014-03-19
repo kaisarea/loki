@@ -12,7 +12,7 @@ $(document).ready(function() {
 			maxWords = countControl[0];
 		}	
 		
-		$(this).after('<div class="wordCount"><strong>0</strong>/' + minWords + ' Words</div>');
+		$(this).after('<div class="wordCount">Write at least ' + minWords + ' words.  You have <strong>0</strong> so far.</div>');
 		//if(minWords > 0) {
 		//	$(this).siblings('.wordCount').addClass('error');
 		//}	

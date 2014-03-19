@@ -22,3 +22,5 @@ options.prisoner = {'price' : [.1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0],
 
     
 bad_workers = ['A3IKU2UUVMXBCQ', 'A14S4LB7IKVIF3', 'AN6CLA8F8NZF2', 'A1ED8FKNV1RTBU']
+bad_workers_2 = ['A341LHR7178BUY', 'A3MS21UJPMHLK0']
+skeptical_workers_2 = ['A2QHK3FRFCEDBJ']

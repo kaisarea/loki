@@ -76,7 +76,11 @@ def calc_study_price_min (num_hits, prices):
 #     return arith(start, stop, increment) * 
 
 
-
+def balance():
+    balance = float(turk.get(turk.balance(), 'Amount'))
+    to_pay = sum((float(a.amount) for a in db().select(db.bonus_queue.amount)))
+    print ('We have a little less than $%.2f - $%.2f = $%.2f' %
+           (balance, to_pay, balance - to_pay))
 
 # ============== Studies =============
 def study_feedback(study):
