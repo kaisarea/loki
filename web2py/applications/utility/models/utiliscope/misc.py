@@ -118,10 +118,12 @@ def print_open_hits():
                                                          db.hits.task,
                                                          db.hits.launch_date)
 
-def expire_open_hits():
+def expire_open_hits(hits=None):
     bad_count = 0
-    hits = open_hits()
-    for hit in hits:
+    hits = hits or open_hits()
+    for i,hit in enumerate(hits):
+        if i % 100 == 0:
+            log('Expiring hit #%d' % i)
         try:
             turk.expire_hit(hit.hitid)
         except:
