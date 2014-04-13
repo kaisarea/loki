@@ -14,11 +14,28 @@ survey_pay = .20
 # - Test it
 
 def index():
-    if not request.vars.workerid or len(request.vars.workerid) < 1:
+    study = request.vars.s
+    workerid = request.vars.workerid
+
+    if not request.vars.testing:
+        db.actions.insert(study=study,
+                          action='survey',
+                          hitid=None,
+                          workerid=workerid,
+                          assid=None,
+                          ip=request.env.remote_addr,
+                          condition=None,
+                          other=None)
+
+    # Check workerid
+    if not workerid or len(workerid) < 1:
         return 'missing workerid'
 
-    study = db.studies(request.vars.s)
+    # Check study
+    study = db.studies(study)
     if not study: return 'Missing s parameter.  (ask mike)'
+
+    # Check task
     task = study.task
     if not task or (task != 'genova' and task != 'prisoner'):
         return 'No task on this s'

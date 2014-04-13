@@ -248,7 +248,7 @@ def schedule_hit(launch_date, study, task, othervars):
     db.commit()
 def launch_study(num_hits, task, name, description, hit_params=None):
     # Hit params default to what's in options, but can be overridden here
-    params = options[task] and options[task]['hit_params'] or {}
+    params = task in options and 'hit_params' in options[task] and options[task]['hit_params'] or {}
     params.update(hit_params or {})
 
     conditions = options[task]

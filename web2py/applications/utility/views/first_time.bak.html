@@ -1,0 +1,44 @@
+{{ extend 'layout.html' }}
+
+{{ firsttime = "$%.2f" % request.first_time_bonus }}
+
+<link rel="stylesheet" href="/static/prisoner/css/prisoner.css" type="text/css" media="screen"/>
+
+
+<style>
+  .submit {
+  	font-size: 18px;
+  	background-color: #55f;
+	color: white;
+  	padding: 10px 20px;
+	font-weight: 200;
+  }
+</style>
+
+<h1>First-time Worker Bonus!</h1>
+
+<div style="max-width: 325px;" class="taskdetails">
+    <p>
+	We give {{=firsttime}} to each first-time worker. It is our way of saying "hello."
+	</p>
+
+	<p>
+
+	<form method="post" action="/utiliscope/submit_first_hit?live&assignmentId={{=request.assid}}&hitId={{=request.hitid}}&workerId={{=request.workerid}}&turkSubmitTo={{=request.vars.turkSubmitTo}}">
+<!--		<input type="hidden" name="workerId" value="{{=request.workerid}}"/>
+		<input type="hidden" name="hitId" value="{{=request.hitid}}"/>
+		<input type="hidden" name="assignmentId" value="{{=request.assid}}"/>
+		<input type="hidden" name="live" value="true"/>
+		<input type="hidden" name="turkSubmitTo" value="{{=request.vars.turkSubmitTo}}"/>
+		<input type="hidden" name="live" value="true"/> -->
+		<button type="submit" label="submit" class="submit">
+		  Accept one-time {{=firsttime}} bonus
+		</button>
+	</form>
+	</p>
+
+	<p>
+	You are under no obligations to do any work because of this extra bonus.
+	It is a free gift.
+	</p>
+</div>

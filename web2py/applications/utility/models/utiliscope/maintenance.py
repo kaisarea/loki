@@ -23,7 +23,9 @@ def create_indices_on_postgres():
                ('ips', 'from_ip'),
                ('ips', 'to_ip'),
                ('workers', 'workerid'),
-               ('store', 'key')]
+               ('store', 'key'),
+               ('experimental_condition_choices', 'key'),
+               ('experimental_condition_choices', 'workerid')]
     for table, column in indices:
         index_exists = db.executesql("select count(*) from pg_class where relname='%s_%s_idx';"
                                      % (table, column))[0][0] == 1

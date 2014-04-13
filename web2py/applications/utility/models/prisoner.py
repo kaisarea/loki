@@ -16,7 +16,8 @@ options.prisoner = {'price' : [.1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0],
                     'hit_params' : {'title' : 'Clearing House - Different Task Each Day! (Pays Bonus)',
                                     'description' : 'We aggregate tasks from many clients.  Tasks and task details change each day.  View today\'s HIT to see it and decide if you like it.',
                                     'keywords' : 'CrowdClearinghouse, Clearing House, Clearinghouse, random, bonus',
-                                    'block_india' : True}
+                                    'block_india' : True},
+                    'phase_change_time' : 24 * 60 * 60
                     }
 
 

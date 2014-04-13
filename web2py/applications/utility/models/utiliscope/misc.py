@@ -75,6 +75,12 @@ def calc_study_price_min (num_hits, prices):
 #         return sum([x for x in range(start, stop, increment)])
 #     return arith(start, stop, increment) * 
 
+def calc_real_study_price(study):
+    finishes = db((db.actions.study==study)
+                  & (db.actions.action=='finished')).select(db.actions.condition)
+    prices = (add_turk_fees(load_condition(f.condition)['price'])
+              for f in finishes)
+    return sum(prices)
 
 def balance():
     balance = float(turk.get(turk.balance(), 'Amount'))
@@ -138,34 +144,6 @@ def cancel_unlaunched_hits():
 
 
 # ============== Experimental Conditions =============
-def available_conditions(study):
-    conds = [sj.loads(db.conditions[x.condition].json)
-             for x in
-             db(db.actions.study == study) \
-                 .select(db.actions.condition, distinct=True)]
-
-    conds = [c for c in conds if c]
-
-    vars = experimental_vars(study)
-    conds = sorted(conds, key=
-                   lambda c: [c['price']] + [c[v] for v in vars if v != 'price'])
-    return [get_condition(x) for x in conds]
-
-def experimental_vars(study):
-    conditions = sj.loads(study.conditions)
-    vars = conditions.keys()
-    return [x for x in vars
-            if isinstance(conditions[x], (list, tuple))]
-
-def experimental_vars_vals(study):
-    conditions = sj.loads(study.conditions)
-    for k,v in conditions.items():
-        if not isinstance(v, (list, tuple)):
-            del conditions[k]
-        else:
-            conditions[k] = sorted(v)
-    return conditions
-
 last_study = None
 last_conditions = None
 def study_conditions_with(study, var, val):

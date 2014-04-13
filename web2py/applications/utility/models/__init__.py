@@ -112,6 +112,12 @@ db.define_table('studies',
                 db.Field('publish', 'boolean', default=False),
                 migrate=migratep, fake_migrate=fake_migratep)
 
+db.define_table('experimental_assignments',
+                db.Field('condition', db.conditions),
+                db.Field('workerid', 'text'),
+                db.Field('phase', 'text'),
+                db.Field('time_assigned', 'datetime'))
+
 db.define_table('actions',
                 db.Field('study', db.studies),
                 db.Field('action', 'text'),
@@ -172,6 +178,18 @@ db.define_table('hits',
 
                 migrate=migratep, fake_migrate=fake_migratep)
 
+db.define_table('assignments',
+                db.Field('assid', 'text', unique=True),
+                db.Field('hitid', 'text'),
+                db.Field('workerid', 'text'),
+                db.Field('status', 'text'),
+                db.Field('xmlcache', 'text'),
+                db.Field('cache_dirty', 'boolean', default=True),
+                db.Field('accept_time', 'datetime'),
+                db.Field('paid', 'double', default=0.0),
+                db.Field('condition', db.conditions),
+                migrate=migratep, fake_migrate=fake_migratep)
+
 db.define_table('bonus_queue',
                 # HOW THE BONUS QUEUE WORKS:
                 # For each item in the queue, we will:
@@ -187,18 +205,6 @@ db.define_table('bonus_queue',
                 db.Field('study', db.studies),
                 migrate=migratep, fake_migrate=fake_migratep)
                 
-
-db.define_table('assignments',
-                db.Field('assid', 'text', unique=True),
-                db.Field('hitid', 'text'),
-                db.Field('workerid', 'text'),
-                db.Field('status', 'text'),
-                db.Field('xmlcache', 'text'),
-                db.Field('cache_dirty', 'boolean', default=True),
-                db.Field('accept_time', 'datetime'),
-                db.Field('paid', 'double', default=0.0),
-                db.Field('condition', db.conditions),
-                migrate=migratep, fake_migrate=fake_migratep)
 
 db.define_table('continents',
                 db.Field('code','string'),
@@ -570,12 +576,128 @@ def make_request_vars_convenient():
                 options[k] = singleton(v)
 
 
+# ============== Experimental Conditions =============
+def condition(condition_number):
+    return sj.loads(db.conditions(condition_number).json)
+load_condition = condition
+def get_condition(dict):
+    soft_assert(type(dict).__name__ != 'str')
+    json = sj.dumps(dict, sort_keys=True)
+    c = db.conditions(json=json)
+    if not c: c = db.conditions.insert(json=json)
+    return c
+
+def available_conditions(study):
+    conds = [sj.loads(db.conditions[x.condition].json)
+             for x in
+             db(db.actions.study == study) \
+                 .select(db.actions.condition, distinct=True)]
+
+    conds = [c for c in conds if c]
+
+    vars = experimental_vars(study)
+    conds = sorted(conds, key=
+                   lambda c: [c['price']] + [c[v] for v in vars if v != 'price'])
+    return [get_condition(x) for x in conds]
+
+def experimental_vars(study):
+    conditions = sj.loads(study.conditions)
+    vars = conditions.keys()
+    return [x for x in vars
+            if isinstance(conditions[x], (list, tuple))]
+
+def experimental_vars_vals(study):
+    conditions = sj.loads(study.conditions)
+    for k,v in conditions.items():
+        if not isinstance(v, (list, tuple)):
+            del conditions[k]
+        else:
+            conditions[k] = sorted(v)
+    return conditions
+
 
 import random
 def hash_to_bucket(string, buckets):
     r = random.Random()
     r.seed(string)
     return r.choice(buckets)
+
+def old_choose_condition():
+    return sample_from_conditions(
+        sj.loads(request.study.conditions),
+        request.workerid)
+
+def choose_condition():
+    soft_assert(request.assid!='ASSIGNMENT_ID_NOT_AVAILABLE',
+                "Can't call choose condition on preview.")
+
+    study_phase = None
+    if options.phase_change_time:
+        study_phase = int((now - request.study.launch_date).total_seconds()
+                          / options.phase_change_time)
+
+    # if this assignment exists, return its condition
+    action = db.actions(assid=request.assid)
+    if action:
+        request.condition = sj.loads(action.condition.json)
+        log('Choosing existing assignment condition')
+        return
+
+    # The string that marks this phase of the study
+    phase = ('study %s, phase %s' % (request.study.id, study_phase)) if study_phase else \
+            ('study %s' % request.study.id)
+
+    # if workerid already has a condition for phase, return it
+    c = db.experimental_assignments(workerid=request.workerid, phase=phase)
+    if c:
+        log('Choosing existing phase condition')
+        request.condition = sj.loads(c.condition.json)
+        return
+
+    # else make one, give it this date
+    num_choices_made = db((db.experimental_assignments.phase==phase)).count()
+    request.condition = condition_at_index(experimental_vars_vals(request.study),
+                                           num_choices_made)
+
+    # Now add the singleton variables back in... (need to make this
+    # more consistent between option variables and experimental
+    # variables)
+    for k, v in sj.loads(request.study.conditions).items():
+        if is_singleton(v): request.condition[k] = v
+
+    log('Choosing a new available condition')
+    db.experimental_assignments.insert(phase=phase,
+                                       condition=get_condition(request.condition),
+                                       workerid=request.workerid, time_assigned=now)
+    
+
+def condition_at_index(conditions, index):
+    '''Takes a dictionary of all conditions, that maps each variable to
+       its possible values.  Returns a single choice of values for
+       each variable.  Enumerates all choices in order, like:
+
+         index    var1  var2  var3
+           #1      1     1     1
+           #2      1     1     2
+           #3      1     1     3
+           #4      1     2     1
+           #5      1     2     2
+           #6      1     2     3
+           #7      2     1     1
+           #8      2     1     2
+           #9      2     1     3
+           #10     2     2     1
+           #11     2     2     2
+           #12     2     2     3
+
+       ...and returns the nth (er, `index'th) enumeration.
+
+    '''
+    result = {}
+    for var,vals in conditions.items():
+        result[var] = vals[index % len(vals)]
+        index /= len(vals)
+    return result
 
 def sample_from_conditions(conditions, string):
     '''
@@ -588,12 +710,13 @@ def sample_from_conditions(conditions, string):
         'captchas_per_task' : [10]
         }
 
+    Returns a dictionary of the resulting key/value condition:
+    e.g. { 'price' : .01, 'style' : 'pretty', 'captchas_per_task' : 10 }
     '''
     result = {}
     for i,(key,value) in enumerate(conditions.items()):
         # Make sure each iteration gets different hash by prepending
-        # with str(i).  By attaching to front, it won't get cut off in
-        # the substring operation [:7] in hash_to_bucket
+        # with str(i).
         s = str(i) + string   
                               
         if is_singleton(value):
@@ -609,12 +732,6 @@ def sample_firsts_from_conditions(conditions):
     for (k,v) in conditions.items():
         result[k] = singleton(v) if is_singleton(v) else v[0]
     return result
-def get_condition(dict):
-    soft_assert(type(dict).__name__ != 'str')
-    json = sj.dumps(dict, sort_keys=True)
-    c = db.conditions(json=json)
-    if not c: c = db.conditions.insert(json=json)
-    return c
 def task_for(controller, function):
     possible_tasks = ['%s/%s' % (controller, function),
                       controller]
@@ -720,9 +837,8 @@ def load_live_hit():
     # Load the experimental conditions.
     if not request.study.conditions:
         raise Exception('No conditions for this study')
-    request.condition = sample_from_conditions(
-        sj.loads(request.study.conditions),
-        request.workerid)
+    choose_condition()
+
     if not request.vars.ajax:
         copy = request.condition.copy()
         if 'hit_params' in copy: copy['hit_params'] = None
