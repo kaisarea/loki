@@ -11,7 +11,7 @@
 <style>
 .keyword {
 	position: absolute; 
-	left: 91px;
+	left: 56px;
 	}  
 </style>
 
@@ -27,21 +27,27 @@
 <div style="max-width: 325px; margin-bottom: 175px" class="taskdetails">
 <p>
 
-You will be presented with a series of pictures. Provide 5 keywords most
-appropriately describing the content of these pictures.
-These pictures may contain disagreeable content (explicit sexual
+You will be presented with a series of pictures. Provide 5 tags that most
+appropriately describe the content of these pictures.
+The pictures may contain content that some find disturbing (explicit sexual
 content, violence, racism, etc.).  
     
 </p>
 </div>
 
 <form action id="response" method="POST">
+<table>
 {{ i = 0 }}
 {{ while i < len(pics): }}
+<tr>
+<td colspan="3">
 <h2 style="margin-top: 75px;">Image</h2>
+<tr>
+<td colspan="3">
 <img style="max-width: 800px;" src={{ = pics[i].url }}>
-<!-- FROM http://www.morguefile.com/archive -->
-<h2>Submit your Keywords</h2>
+<tr>
+<td colspan="3">
+<h2>Submit your Tags</h2>
 <p>
 <div style="position: relative;">
 <div class={{ = "train_info" if hit_num == 0 else "train_info_hidden" }}>
@@ -55,16 +61,29 @@ content, violence, racism, etc.).
 <div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
 {{ for j in [1, 2, 3, 4, 5]: }}
 {{ id = "keyword" + str(i*5+j) }}
-<span style="position: relative;">Keyword {{=j}}: </span><input {{ = "disabled" if hit_num == 0 else "" }} name="image_tag" type="text" id={{=id}} class="keyword"><br>
+<span style="position: relative;">Tag {{=j}}: </span><input {{ = "disabled" if hit_num == 0 else "" }} name="image_tag" type="text" id={{=id}} class="keyword"><br>
 {{ pass }}
 {{ i += 1 }}
 </div>
-<div id="target"></div>
-</div>
-</p>
+
+<!--<div style="position: relative; top: -100px;">-->
+<table style="position: relative; top: -10px;">
+<tr>
+  <td style="vertical-align: middle;">This photo is
+  <td>
+    <div>  
+{{ radio_id = "disturbingness" + str(i) }}
+      <input {{ = "disabled" if hit_num == 0 else "" }} style="margin: 2px 5px 2px 5px;" type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="0">appropriate<br>
+      <input {{ = "disabled" if hit_num == 0 else "" }} style="margin: 2px 5px 2px 5px;" type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="1">inappropriate
+    </div>
+  <td style="vertical-align: middle;">for a PG audience.
+</table>
 {{ pass }}
 <input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </form>
+
+</div>
+</p>
 
 
 <script>
@@ -105,9 +124,13 @@ function show_training() {
     if(overall == 15)
     {
       $('form input:text').prop("disabled", false);
+      $('form input:radio').prop("disabled", false);
       $('#shadow').fadeOut();
-      $('.train_info').fadeOut();
-      $('.key_inputs').css('position', 'relative');
+      //$('.train_info').fadeOut();
+	$('.train_info').css('visibility', 'hidden');
+	$('.train_info').css('display', 'block');
+// Nail: I commented this because it was creating undue space between 'Submit your Keywords' and the text entries themselves (Apr 13)
+//      $('.key_inputs').css('position', 'relative');
       if($('input[id=quiz_given]').val()=='1')
       {
         $('.congrats').fadeIn();
@@ -200,16 +223,21 @@ $('.quiz input:text').on("change", function() {
 
 // ivar values = new Array();
 //var store_keywords = new Array();
-var missing = 0;
+var missing = $('div.key_inputs input:text').length;
 var total_inputs = 0;
 var unique_count = 0;
- var values = new Array();
+var values = new Array();
 var debug1 = "";
 var debug2 = "";
 var fivetuple_keywords = new Array();
 var duplicity_troubles = 0;
+var radios_check = 0;
+var all_radios = $('form input:radio').length/2;
 
 // The following function enables the submit button only after all the input fields are filled with image tags    
+
+
+
 $('form input:text').change(function(){
   $('.err').remove();
   values = new Array();
@@ -249,6 +277,14 @@ jQuery('div.key_inputs').each(function(k) {
 	}
         
 });
+
+
+//#jQuery('form input:radio').each(function(l) {
+//#	if($(this).checked = true)
+//#	{
+//#		radios_check = radios_check +1;
+//#	}
+//#});
  
 // values = store_keywords;
 
@@ -256,8 +292,7 @@ jQuery('div.key_inputs').each(function(k) {
   //$(this).after(jQuery.unique(store_keywords).length + total_inputs + store_keywords.length + missing + jQuery.unique(store_keywords));
 
 //  unique_count = jQuery.unique(store_keywords).length;
-
-  if(missing == 0 & duplicity_troubles ==0)  
+  if(missing == 0 & duplicity_troubles ==0 & radios_check == all_radios)  
   {
     $("input[type=submit]").removeAttr('disabled');
   }
@@ -266,6 +301,19 @@ jQuery('div.key_inputs').each(function(k) {
     $("input[type=submit]").attr("disabled", "true");
     $(this).after('<span style="position: absolute; left: 270px; top: ' + $(this).position().top + 'px; min-width: 200px;" class="err">Check for possible duplicates or missing tags!</span>');
   }
+});
+
+$('form input:radio').change(function(){	
+  radios_check = $('form input:radio:checked').length;
+//  if(missing == 0 & duplicity_troubles ==0 & radios_check == all_radios)  
+//  {
+//    $("input[type=submit]").removeAttr('disabled');
+//  }
+//  else
+//  {
+//    $("input[type=submit]").attr("disabled", "true");
+//    $(this).after('<span style="position: absolute; left: 350px; top: ' + $(this).position().top + 'px; min-width: 200px;" class="err">Check for duplicates, missing tags or unchecked radio buttons!</span>');
+//  }
 });
 
 function leave_training(){
