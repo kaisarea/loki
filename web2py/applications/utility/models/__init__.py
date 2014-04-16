@@ -115,7 +115,8 @@ db.define_table('studies',
 db.define_table('experimental_assignments',
                 db.Field('condition', db.conditions),
                 db.Field('workerid', 'text'),
-                db.Field('phase', 'text'),
+                db.Field('study', db.studies),
+                db.Field('phase', 'integer'),
                 db.Field('time_assigned', 'datetime'))
 
 db.define_table('actions',
@@ -127,6 +128,7 @@ db.define_table('actions',
                 db.Field('time', 'datetime', default=now),
                 db.Field('ip', 'text'),
                 db.Field('condition', db.conditions),
+                db.Field('phase', 'integer'),
                 db.Field('other', 'text'),
                 #db.Field('cookieid', 'text'),
                 migrate=migratep, fake_migrate=fake_migratep)
@@ -309,24 +311,20 @@ def hit_finished(bonus_amount=None, do_redirect=True, pay_delay=None):
     if do_redirect: redirect(turk_submit_url())
 
 def record_action(action, other=None):
-    hit = request.hitid
-    if not hit or request.testing:
+    if not request.hitid or request.testing:
         return False
 
-    worker = request.workerid
-    ass = request.assid
-    ip = request.env.remote_addr
-    condition = get_condition(request.condition)
     if other: other = sj.dumps(other, sort_keys=True)
 
-    db.actions.insert(study=request.study,
-                      action=action,
-                      hitid=hit,
-                      workerid=worker,
-                      assid=ass,
-                      ip=ip,
-                      condition=condition,
-                      other=other)
+    db.actions.insert(study      = request.study,
+                      action     = action,
+                      hitid      = request.hitid,
+                      workerid   = request.workerid,
+                      assid      = request.assid,
+                      ip         = request.env.remote_addr,
+                      condition  = get_condition(request.condition),
+                      phase      = request.phase,
+                      other      = other)
 save_checkpoint = record_action
 save_action = record_action
 log_action = record_action
@@ -631,47 +629,51 @@ def choose_condition():
     soft_assert(request.assid!='ASSIGNMENT_ID_NOT_AVAILABLE',
                 "Can't call choose condition on preview.")
 
-    study_phase = None
-    if options.phase_change_time:
-        study_phase = int((now - request.study.launch_date).total_seconds()
-                          / options.phase_change_time)
-
     # if this assignment exists, return its condition
     action = db.actions(assid=request.assid)
     if action:
         request.condition = sj.loads(action.condition.json)
+        request.phase = action.phase
         log('Choosing existing assignment condition')
         return
 
-    # The string that marks this phase of the study
-    phase = ('study %s, phase %s' % (request.study.id, study_phase)) if study_phase else \
-            ('study %s' % request.study.id)
+    # Compute the phase of study
+    request.phase = (int((now - request.study.launch_date).total_seconds()
+                         / options.phase_change_time)
+                     if options.phase_change_time else None)
 
-    # if workerid already has a condition for phase, return it
-    c = db.experimental_assignments(workerid=request.workerid, phase=phase)
+    # If workerid already has a condition for this phase, return it
+    c = db.experimental_assignments(workerid=request.workerid, 
+                                    study=request.study,
+                                    phase=request.phase)
     if c:
         log('Choosing existing phase condition')
         request.condition = sj.loads(c.condition.json)
         return
 
-    # else make one, give it this date
-    num_choices_made = db((db.experimental_assignments.phase==phase)).count()
-    request.condition = condition_at_index(experimental_vars_vals(request.study),
+    # Else, let's make a new one.
+
+    # Choose a condition.  We'll grab the next one in round-robin fashion.
+    num_choices_made = db((db.experimental_assignments.phase==request.phase)
+                          &(db.experimental_assignments.study==request.study)).count()
+    request.condition = condition_by_index(experimental_vars_vals(request.study),
                                            num_choices_made)
 
-    # Now add the singleton variables back in... (need to make this
-    # more consistent between option variables and experimental
-    # variables)
+    # Now add the singleton variables back into the condition... (need
+    # to make this more consistent between singleton option variables
+    # and experimental variables from a list)
     for k, v in sj.loads(request.study.conditions).items():
         if is_singleton(v): request.condition[k] = v
 
+    # Insert this into the database
     log('Choosing a new available condition')
-    db.experimental_assignments.insert(phase=phase,
+    db.experimental_assignments.insert(study=request.study,
+                                       phase=request.phase,
                                        condition=get_condition(request.condition),
                                        workerid=request.workerid, time_assigned=now)
     
 
-def condition_at_index(conditions, index):
+def condition_by_index(conditions, index):
     '''Takes a dictionary of all conditions, that maps each variable to
        its possible values.  Returns a single choice of values for
        each variable.  Enumerates all choices in order, like:
@@ -768,11 +770,23 @@ def die_and_explode():
             log('###### GRRRRR we could not expire this hit %s!  Fix!!' % request.vars.hitId)
     redirect(URL(r=request, f='error'))
 
-def hits_done(workerid=None, study=None):
+def phase_begin(phase, study):
+    return study.launch_date + timedelta(seconds=options.phase_change_time * phase)
+def hits_done(workerid=None, study=None, phase='current'):
+    '''Set phase to 'current' or a number to limit this search to that
+       phase.  Set phase = None to get all phases.
+    '''
     workerid = workerid or request.workerid; study = study or request.study
-    return db((db.actions.workerid == workerid)
-          & (db.actions.study == study)
-          & (db.actions.action == 'finished')).count()
+    query = ((db.actions.workerid == workerid)
+             & (db.actions.study == study)
+             & (db.actions.action == 'finished'))
+
+    if phase == 'current': phase = request.phase
+    if phase:
+        query = query \
+                & (db.actions.time > phase_begin(phase,   study)) \
+                & (db.actions.time < phase_begin(phase+1, study))
+    return db(query).count()
 
 def alter_conditions(**new_conditions):
     '''
