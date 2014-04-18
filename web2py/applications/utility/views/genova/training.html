@@ -10,7 +10,7 @@
     <p><em>This picture can be tagged with "chessboard", 
         "chess pieces" (objects); "landscape" (orientation).</em></p><br>
     <img src="/static/genova/autumn.jpg" width="275" height="200" border="0">
-    <p><em>This photo could be tagged with "bank", "trees" (object), "landscape" (orientation), "autumn" (time)
+    <p><em>This photo could be tagged with "bench" (object), "landscape" (orientation), "autumn" (time)
         or "calm" (emotion).</em></p><br>
     <img src="/static/genova/pollination.jpg" width="275" height="200">
     <p><em>This photo can be tagged with "macro" (technique), "insect" (object), "flower" (object),
@@ -18,30 +18,43 @@
     </div>  
     <div style="width: 45%; float: left; max-width: 350px; margin: 0 10px;" class="column2">
     <ul>
-	<li><strong>Object</strong> - Most important part of every image is represented by objects.
-		<em>Chess pieces</em> appear in the first image on the left. A <em>bank</em>
-		surrounded with <em>leaves</em> in the second, <em>bee</em> pollinating
+	<li><strong>Object</strong> - The most important parts of every image are represented by objects.
+		<em>Chess pieces</em> appear in the first image on the left. A <em>bench</em>
+		surrounded by <em>leaves</em> in the second, and a <em>bee</em> pollinating
 		a <em>flower</em> in the third.
-        <li><strong>Orientation</strong> - Tags can describe whether the image is of a
-                <em>portrait</em> format or a <em>landscape</em> format.
-        <li><strong>Technique</strong> - How is the photo taken? How is the image drawn?
-                Is it a <em>high speed photography</em> where you can see the climax 
-                of an action? Is it a 
-                <em>motion blur photography</em> where the photo was taken over a long 
-                period of time? Is it a <em>collage</em> created by putting together
-                hundreds of smaller pictures?
-        <li><strong>Time</strong> - Was the picture taken in the <em>evening</em>? Is there a <em>sunset</em> 
-		or <em>sunrise</em>? Can you tell a season of the year? Do fallen leaves indicate <em>autumn</em>? 
-                Or do the clothes of the people indicate <em>summer</em> or <em>spring</em>?
-        <li><strong>Color</strong> - This may better apply to drawing rather than photos.
-                Some drawings use shades of the same color or maybe the colors were chosen
-                so that they show high degree of contrast? The colors may be sharp or fuzzy.
-        <li><strong>Emotion</strong> - Is the image evocative of certain emotion like <em>fear</em>
-                <em>anxiety</em> or <em>nausea</em>? Or does it seem to have a rather <em>calming</em> effect on 
-                you?
-        <li><strong>Artistic Genre</strong> - Is the style <em>dada</em>? Does it belong into the movement of
-                <em>impressionism</em>? Does it belong into Andy Warhol's visual art movement
-                <em>pop art</em>?
+
+        <li><strong>Orientation</strong> - Tags can describe whether the image is in a
+        <em>portrait</em> or <em>landscape</em> format.
+
+        <li><b>Technique</b> - How is the photo taken? Is it
+        a <i>high-speed photograph</i>, depicting an instantaneous
+        action? Is there <i>motion blur</i>?  Was the
+        photo <i>time-lapse</i> &mdash; taken over a long period of
+        time?  Is it a <i>collage</i> created by putting together
+        hundreds of smaller pictures?
+
+        <li><strong>Time</strong> - Was the picture taken in
+		  the <em>evening</em>? Is there a <em>sunset</em>
+		  or <em>sunrise</em>? Can you tell a season of the year? Do
+		  fallen leaves indicate <em>autumn</em>?  Or do the clothes of
+		  the people indicate <em>summer</em> or <em>spring</em>?
+
+        <li><strong>Color</strong> - What affect does the color have
+        on the photo?  Is the photo <i>black and white</i>?  Does it
+        give a melancholy feel by using a <i>blue</i> color scheme?
+        Are the colors bright, vivid, and <i>saturated</i>, or closer
+        to grey and <i>desaturated</i>?
+
+        <li><strong>Emotion</strong> - Does the image evoke emotions
+        like <i>fear</i>, <i>anxiety</i>, or <em>nausea</em>? Or does
+        it seem to have a <i>calming</i> effect on you?  Is
+        it <i>exciting</i>?
+
+        <li><strong>Artistic Genre</strong> - Is this a photo in the
+        style of <em>dada</em>? Does it belong into the movement
+        of <em>impressionism</em>? Does it belong into Andy Warhol's
+        visual art movement <em>pop art</em>?
+
     </ul>
    </div>
     <div {{ = "class=bonus" if training else "" }}>
@@ -89,7 +102,7 @@
       </div>
       <div style="float: left;">
         <ul style="list-style-type: none;">
-          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par6" {{ = "value=collage" if not training else "" }}>
+          <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par6" {{ = "value=technique" if not training else "" }}>
           <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par7" {{ = "value=emotion" if not training else "" }}>
           <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par8" {{ = "value=object" if not training else "" }}>
           <li style="position: relative;"><input name="empty" style="position: relative; left: 25px;" type="text" id="par9" {{ = "value=emotion" if not training else "" }}>

@@ -1,0 +1,27 @@
+{{ extend 'layout.html' }}
+{{ include 'genova/header.html' }}
+
+<div style="border: solid 2px #ccc; width: 560px; background-color: #e7e7e7; padding: 40px;">
+  <img width="70px" src="/static/genova/clock.png" style="opacity: .5; position: absolute;">
+
+  <div style="margin-left: 110px;">
+    <h1>Waiting for Images...</h1>
+
+    A new batch of images is becoming available for tagging.<br>
+
+    We estimate they will be ready
+
+{{ if until/60 > 0: }}
+    in approximately {{=until/60}} minutes.
+{{ else: }}
+    within a minute.
+{{ pass }}
+
+    <br>This page will reload automatically when they are ready.
+  </div>
+</div>
+
+<script>
+//setTimeout(function () {document.location.reload(true)},
+//           {{=until * 1000}})
+</script>

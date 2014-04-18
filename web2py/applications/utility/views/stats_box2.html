@@ -48,12 +48,23 @@
 		 </div>
 
 		 <div class="tab">
-			 <div class="stat">{{if hit_num!=0:}}{{=hits_left}}/{{pass}}{{=work_limit}}</div> Available
+			 <div class="stat">{{=availability.capitalize()}}</div> Availability
 			 <span class="details">
-                         <ul>
-			   <li>We have {{=hits_left}} {{if hit_num!=0:}}more{{pass}} HITs available for you today.
-			   <li>You have completed {{=hit_num}}/{{=work_limit}} so far.
-			   <li>The number of HITs available depends on the demands of the day.
+          <ul>
+
+{{ if availability == 'high': }}
+
+				<li>Our image queue is at full capacity.
+
+{{ else: }}
+
+            <li>You may experience periodic delays today, while our
+            client refills the image queue.
+
+{{ pass }}
+
+			   <li>A maximum of {{=work_limit}} HITs per worker are
+			   available per day.  You have {{=hits_left}} left today.
 			 </ul>
 			 </span>
 		 </div>

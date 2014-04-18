@@ -4,6 +4,7 @@
 <script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
 <link rel="stylesheet" href="/static/prisoner/css/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 <script type="text/javascript" src="/static/prisoner/jquery.fancybox.pack.js?v=2.1.5"></script>
+<link rel="stylesheet" href="/static/prisoner/css/prisoner.css" type="text/css" media="screen"/>
 
 {{ include 'stats_box.html' }}
 
@@ -91,6 +92,14 @@ delete params.left
 delete params.top
 $('.crime').tooltip(params);
 
+var test = 10
+var another_test = ''
+var overall = 10
+var misses1 = 10
+var misses2 = 10
+var letter1_matches = 0
+var letter2_matches = 0
+
 function show_training() {
     time_start_training = new Date();
     $('input[id=start_training]').val(time_start_training);
@@ -98,7 +107,7 @@ function show_training() {
     jQuery('#shadow').fadeIn()
       .find('button').click(function(e) {
             e.preventDefault();
-	         var pattern = /[0-9]+/g;
+	    var pattern = /[0-9]+/g;
             var myText1 = $('input[name=letter1]').val().match(pattern);
             var answers1 = new Array("5", "7", "8", "10");
             var myText2 = $('input[name=letter2]').val().match(pattern);
@@ -106,15 +115,17 @@ function show_training() {
             //var myText3 = $('input[name=letter3]').val().match(pattern);
 	    //var answers3 = new Array("3", "4", "6", "7", "8", "9", "10");
 	   
-	    var misses1 = $(answers1).not(myText1).length + $(myText1).not(answers1).length;
-	    var misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
+	    misses1 = $(answers1).not(myText1).length + $(myText1).not(answers1).length;
+	    misses2 = $(answers2).not(myText2).length + $(myText2).not(answers2).length;
 	    //var misses3 = $(answers3).not(myText3).length + $(myText3).not(answers3).length;
-	    var overall = misses1 + misses2 // + misses3
+	    overall = misses1 + misses2 // + misses3
 	if($('input[id=quiz_given]').val()=='0')
 	{
 		overall = 0
 	}
-	   // overall = 0  //This is for testing purposes only
+        //var another_test = 10
+        //test = 15
+	// overall = 0  //This is for testing purposes only
         if(overall == 0)
         {
 	    //$('.test').hide();
@@ -148,34 +159,37 @@ $("#letter1").on("change", function() {
 	explanations[4] = "The letter certainly does not encourage criminal activity. Learn the guidelines before you attempt to pass the quiz!";
 	explanations[6] = "No racial, ethnic, gender or obscene comments are present in the letter. Learn the guidelines before you do the test!";
 	explanations[9] = "If you read the instructions carefully you will know that this letter does not describe any illegal activity.";
-	jQuery('#err').remove();
+	//jQuery('.err').remove();
+        test = this
+        jQuery('#letter1').parent().find('.correctAnswer').remove();
+        jQuery('#letter1').parent().find('.err').remove();
 	var answers = new Array("5","7","8","10");
 	var pattern = /[0-9]+/g;
-	var matches = this.value.match(pattern);
-	matches = $.grep(matches, function(v, k){
-    		return $.inArray(v, matches) === k;
+	letter1_matches = this.value.match(pattern);
+	letter1_matches = $.grep(letter1_matches, function(v, k){
+    		return $.inArray(v, letter1_matches) === k;
 		});
-	if(matches.length!=4)
+	if(letter1_matches.length!=4)
 	{
-		$('#letter1').after('<div id="err">You have to enter 4 distinctive items violated in the letter! See the instructions to this quiz above.</div>')
+		$('#letter1').after('<div class="err">You have to enter 4 distinctive items violated in the letter! See the instructions to this quiz above.</div>')
 	}
 	else
 	{
-		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+		if(!($(answers).not(letter1_matches).length == 0 && $(letter1_matches).not(answers).length == 0))
 		{
 			var feasible_answers = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
-			if($(matches).not(feasible_answers).length == 0)
+			if($(letter1_matches).not(feasible_answers).length == 0)
 			{
-	  			$('#letter1').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+	  			$('#letter1').after('<div class="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(letter1_matches).not(answers)[0]] + ')</div>');
 			}
 			else
 			{
-				$('#letter1').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
+				$('#letter1').after('<div class="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
 			}
 		}
 		else
 		{
-			$('#letter1').after('<div id="cor">Well done!</div>');
+			$('#letter1').after('<div class="correctAnswer">Well done!</div>');
 		}
 	}
 });
@@ -186,34 +200,37 @@ $("#letter2").on("change", function() {
 	explanations[2] = "While the letter might seem little hazy at times it does not qualify as written in code.";
 	explanations[3] = "While the letter does encourage criminal activity, it actually encourages the prisoner to abandon the low-level violent activites in the pursuit of more sophisticated white-collar crimes.";
 	explanations[5] = "The letter takes the side of the prisoner and is attempting to provide an advise to the prisoner, however, misguided. There is certainly nothing rude or disrespectful in it.";
-	jQuery('#err').remove();
+	//jQuery('.err').remove();
+        jQuery('#letter2').parent().find('.correct_answer').remove();
+        jQuery('#letter2').parent().find('.err').remove();
+        another_test = this
 	var answers = new Array("4","6", "7","8","9", "10");
 	var pattern = /[0-9]+/g;
-	var matches = this.value.match(pattern);
-	matches = $.grep(matches, function(v, k){
-    		return $.inArray(v, matches) === k;
+	var letter2_matches = this.value.match(pattern);
+	letter2_matches = $.grep(letter2_matches, function(v, k){
+    		return $.inArray(v, letter2_matches) === k;
 		});
-	if(matches.length!=6)
+	if(letter2_matches.length!=6)
 	{
-		$('#letter2').after('<div id="err">You have to enter 6 items violated in the letter! Read the above quiz instructions more carefully.</div>');
+		$('#letter2').after('<div class="err">You have to enter 6 items violated in the letter! Read the above quiz instructions more carefully.</div>');
 	}
 	else
 	{
-		if(!($(answers).not(matches).length == 0 && $(matches).not(answers).length == 0))
+		if(!($(answers).not(letter2_matches).length == 0 && $(letter2_matches).not(answers).length == 0))
 		{
 			var feasible_answers = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
-			if($(matches).not(feasible_answers).length == 0)
+			if($(letter2_matches).not(feasible_answers).length == 0)
 			{
-	  			$('#letter2').after('<div id="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(matches).not(answers)[0]] + ')</div>');
+	  			$('#letter2').after('<div class="err">One or more of your answers is incorrect! (Hint: ' + explanations[$(letter2_matches).not(answers)[0]] + ')</div>');
 			}
 			else
 			{
-				$('#letter2').after('<div id="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
+				$('#letter2').after('<div class="err">Only items 1 through 10 are possible answers! Go back to the training guidelines and read them carefully.</div>');
 			}
 		}
 		else
 		{
-			$('#letter2').after('<div id="cor">Well done!</div>');
+			$('#letter2').after('<div class="correctAnswer">Well done!</div>');
 		}
 	}
 });

@@ -1,40 +1,6 @@
 {{ extend 'layout.html' }}
-<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
-<script type="text/javascript" src="/static/prisoner/jquery.easing.1.3.js"></script>
-<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
-<link rel="stylesheet" href="/static/prisoner/css/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
-<script type="text/javascript" src="/static/prisoner/jquery.fancybox.pack.js?v=2.1.5"></script>
-<link rel="stylesheet" href="/static/prisoner/css/prisoner.css" type="text/css" media="screen"/>
-<link rel="stylesheet" href="/static/genova/css/style.css" type="text/css" media="screen"/>
-<script type="text/javascript" src="/static/genova/training.js"></script>
-<script type="text/javascript" src="/static/genova/feedback.js"></script>
 
-{{ include 'stats_box.html' }}
-
-<style>
-.keyword {
-	position: absolute; 
-	left: 56px;
-	}  
-</style>
-
-
-{{ bonus_time = 60 }}
-
-{{ include 'genova/training.html' }}
-
-<h1>Tag Images</h1>
-
-{{ stats_box() }}
-
-<div style="max-width: 325px; margin-bottom: 175px" class="taskdetails">
-<p>
-You will be presented with a series of pictures. Provide 5 tags that most
-appropriately describe the content of these pictures.
-The pictures may contain content that some find disturbing (explicit sexual
-content, violence, racism, etc.).  
-</p>
-</div>
+{{ include 'genova/header.html' }}
 
 <table class="genova_image">
     <form action id="response" method="POST">
@@ -98,10 +64,10 @@ your participation!</p>
 {{ pass }}
 <tr>
 <td>
-<p class="error_message">Some of the tags you entered are bad. Go back and fix the problems highlighted in red.</p>
 <input id="submit" disabled type="submit" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 </td>
 <td colspan="2">
+<p class="error_message">Some of the tags you entered are bad. Go back and fix the problems highlighted in red.</p>
 </td>
 </tr>
 </form>
@@ -122,9 +88,13 @@ var radios_check = 0;
 var all_radios = $('tbody input:radio').length/2;
 
 $('#response').submit(function(f) {
+	missing = 0;
+	duplicity_troubles = 0;
+	radios_check = 0;
 	$('.error_message').hide();
 	$('p.tag_error').attr('class', 'image_tag');
 	$('input.input_error').attr('class', 'image_tag');
+	$('table.input_error').attr('class', 'radio');
   	radios_check = $('td input:radio:checked').length;
 
 	//$('p.error_message').hide();
@@ -165,6 +135,7 @@ $('#response').submit(function(f) {
                         	$(this).parent().parent().parent().parent().attr('class', 'input_error');
                 	}
        	 	});
+		$(':radio:checked').parent().parent().parent().parent().attr('class', 'radio')
 
 		$('tbody input:text[value=""]').each(function(){
 			$(this).attr('class', 'input_error');
