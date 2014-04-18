@@ -61,7 +61,7 @@ turk.AWS_SECRET_ACCESS_KEY = aws_secret_access_key
 
 # constants
 iframe_height = 650
-ass_duration = 60*60*1          # 1 hours
+ass_duration = 60*60*1          # 1 hour
 hit_lifetime = 60*60*24         # 24 hours
 
 # Set up logging
@@ -653,11 +653,17 @@ def choose_condition():
 
     # Else, let's make a new one.
 
-    # Choose a condition.  We'll grab the next one in round-robin fashion.
-    num_choices_made = db((db.experimental_assignments.phase==request.phase)
-                          &(db.experimental_assignments.study==request.study)).count()
-    request.condition = condition_by_index(experimental_vars_vals(request.study),
-                                           num_choices_made)
+    # Choose a condition.  First, give special conditions a shot
+    for probability, condition in options[request.task]['special_conditions'] or []:
+        if random.random() < probability:
+            request.condition = condition.copy()
+            break
+    # If none of them match, grab the next condition in round-robin fashion.
+    else:
+        num_choices_made = db((db.experimental_assignments.phase==request.phase)
+                              &(db.experimental_assignments.study==request.study)).count()
+        request.condition = condition_by_index(experimental_vars_vals(request.study),
+                                               num_choices_made)
 
     # Now add the singleton variables back into the condition... (need
     # to make this more consistent between singleton option variables
@@ -672,6 +678,13 @@ def choose_condition():
                                        condition=get_condition(request.condition),
                                        workerid=request.workerid, time_assigned=now)
     
+    # If this is a CHANGE of condition for the worker (because they
+    # were working in a prior phase), let's set a flag so that the
+    # view can tell the worker to pay attention to the difference
+    if db((db.experimental_assignments.phase < request.phase)
+          & (db.experimental_assignments.study == request.study)
+          & (db.experimental_assignments.workerid == request.workerid)).count() > 0:
+        request.new_phase = True
 
 def condition_by_index(conditions, index):
     '''Takes a dictionary of all conditions, that maps each variable to
@@ -876,7 +889,7 @@ def load_live_hit():
 
     # If this worker has passed the work limit, tell them they're done.
     work_limit = request.max_hits or request.work_limit
-    if work_limit and hits_done(request.workerid, request.study) >= work_limit:
+    if work_limit and hits_done() >= work_limit:
         request.controller, request.function = 'utiliscope','done'
         response.view = '%s/%s.%s' % (request.controller, request.function, 'html')
         record_action('work quota reached')
