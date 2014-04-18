@@ -1,40 +1,105 @@
 def index():
-    if request.disagreeable:
-        pics = pics_treatment
-    else:
-        pics = pics_control
-    pics = [Storage(p) for p in pics]
+    import time
+    hit_num = hits_done()
 
-    # Choose a random picture ordering for this worker
+    # Load this worker's genova progress
+    key = 'worker %s genova progress' % request.workerid
+    progress = db.store(key=key)
+    if progress:
+        progress = Storage(sj.loads(progress.value))
+    else:
+        log('There was nothing of key %s' % key)
+        progress = Storage(control=0, treatment=0, food=0)
+
+    # Set shuffle seed
     import random
     random.seed(request.workerid)
-    random.shuffle(pics)        # Shuffles all the pics in a set way
 
-    # Now the pictures are shuffled.  Let's give the worker a set of
-    # pictures.
-    hit_num = hits_done()
-    first_pic = hit_num * request.pics_per_task # The first of n pics
-    pics = pics[first_pic : first_pic + request.pics_per_task]
-    othervars = dict()
+    # Load and shuffle the pics
+    genova_pics = cache.ram('genova_pics', lambda: define_genova_pics(),
+                            time_expire=60)
+    random.shuffle(genova_pics.treatment)
+    random.shuffle(genova_pics.control)
+    random.shuffle(genova_pics.food)
     
-    # Now we have taken a snippet of pics out of the original shuffled pics
+    # Choose some disagreeable and control images
+    pics = []
+
+    def add_pic(type):
+        pics.append(genova_pics[type][progress[type]])
+        progress[type] += 1
+
+    for i in range(request.pics_per_task):
+        r = random.random()
+        if r < request.disagreeable/100.0:
+            log('r=%s so disagreeable'%r)
+            r = random.random();
+            if r < .1:
+                log('    ...r=%s so food'%r)
+                add_pic('food')
+            else:
+                log('    ...r=%s so not food'%r)
+                add_pic('treatment')
+        else:
+            log('r=%s so control'%r)
+            add_pic('control')
+
+
     # If this is a hit submission, then let's finish!
     image_tag = request.vars.image_tag
     if image_tag:
-        #othervars['review'] = review
+        if int(request.vars.netprog) != progress.treatment + progress.control + progress.food:
+            return 'Error.  You already submitted this hit!'
+
+        othervars = dict()
+        othervars['pics'] = pics
         othervars['tags'] = request.vars.image_tag
+	othervars['disturbingness'] = request.vars.disturbingness
+        othervars['request_vars'] = request.vars
         log_action('submit', othervars)
+        db.store(key=key).update_record(value=sj.dumps(progress))
         hit_finished() # Automatically exits this function
-  
-    # Otherwise, display the form
-    log_action('with pic')
+
+    # Now we know that we're displaying the HIT page.
+
+    # If there aren't any photos available, make the worker wait.
+    # Every `availability_period' seconds, photos will only be
+    # available for the first `availability_rate' percent of them.
+    availability_period = 60 * 1
+    availability_rate = .08
+    phase = (time.time() + 13) % availability_period
+    log('AVAIL: %.2f of %.2f: %s' % ((phase / availability_period), availability_rate,
+                                     (phase / availability_period > availability_rate)))
+    if (request.availability == 'low'
+        and (phase / availability_period > availability_rate)):
+        log('AVAIL: delaying!!!')
+
+        delay_time = int(availability_period - phase) + 2
+        response.view = 'genova/wait.html'
+        return dict(hit_num=hit_num,
+                    hits_left= request.work_limit - hit_num,
+                    disagreeable=request.disagreeable,
+                    training=request.training,
+                    improbability_rate=request.improbability_rate,
+                    availability=request.availability,
+                    work_limit=request.work_limit,
+                    until=delay_time)
+
+
+    # Ok, let's proceed with the regular task!
+
+    # Now we have taken a snippet of pics out of the original shuffled pics.
+    # Display the form.
+    log_action('with pic', other=pics)
     return dict(hit_num=hit_num,
                 hits_left= request.work_limit - hit_num,
 		pics=pics,
 		disagreeable=request.disagreeable,
                 training=request.training,
                 improbability_rate=request.improbability_rate,
-                work_limit=request.work_limit)
+                availability=request.availability,
+                work_limit=request.work_limit,
+                net_progress=progress.control + progress.treatment + progress.food)
 
 
 def results():
@@ -91,6 +156,11 @@ def results():
                 results=sorted([worker_results(w) for w in workers],
                                key=lambda w: now-w.latest),
                 format=plaintext2html)
+
+def track_error_submit():
+    log_action('error submit', other=request.vars)
+    log('Tracking Error submit! vars are %s' % sj.dumps(request.vars))
+    return 'Good thanks for that'
 
 def preview(): return {}
 def first_time():
