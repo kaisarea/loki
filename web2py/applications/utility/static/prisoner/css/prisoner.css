@@ -44,24 +44,14 @@ h1 {
     margin: 3px;
 }
 
-.train_info {
-        max-width: 302px;
-        background: #e5e5e5;
-        position: relative;
-    z-index: 20;
-        left: 245px;
-        top: 0px;
-        box-shadow: 2px 2px 0px 0px #888888;
-        padding: 19px;
-}
 
 
 .train_info_hidden {
         visibility: hidden;
         max-width: 302px;
         background: #e5e5e5;
-        position: relative;
-    z-index: 20;
+        position: absolute;
+        z-index: 0;
         left: 245px;
         top: 0px;
         box-shadow: 2px 2px 0px 0px #888888;
@@ -101,15 +91,22 @@ h1 {
     left: 3em;
     top: -5px;
 }
-#cor {
+
+.correctAnswer {
     color: black;
     margin: 15px;
     position: relative;
+    border-style: solid;
+    border-width: 2px;
+    text-align: center;
+    border-color: green;
+    width: 100px;
     clear: both;
     font: monospace;
     font-style: italic;
     left: 100px;
 }
+
 .cor{
        color: black;
         margin: 15px;
@@ -118,12 +115,14 @@ h1 {
         clear: both;
         font: monospace;
         border-width: 2px;
-        width: 70px;
+        width: 70px; 
         text-align: center;
         border-color: green;
         font-style: italic;
         left: 100px;
 }
+
+
 
 /* test */
 #constancy

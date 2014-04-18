@@ -13,7 +13,8 @@
   </td>
 <tr>
   <td colspan="3">
-  <img class="genova_image" src={{ = pics[i].url }}>
+  <img class="genova_image" src={{ = pics[i] }}>
+  <input name="image_{{=i}}" type="hidden" value="{{=pics[i]}}">
   </td>
 </tr>
 <tr>
@@ -25,7 +26,7 @@
 {{ id = "keyword" + str(i*5+j) }}
 <tr>
   <td><p class="image_tag">Tag {{=j}}: </p></td>
-  <td><input {{ = "disabled" if hit_num == 0 else "" }} name="image_tag" type="text" id={{=id}} class="keyword"></td>
+  <td> <input {{ = "disabled" if hit_num == 0 else "" }} name="image_tag_{{=i}}_{{=j}}" type="text" id={{=id}} class="keyword"> </td>
 {{ if j == 1: }}
 <td rowspan="5">
 {{ if hit_num == 0: }}  
@@ -70,6 +71,7 @@ your participation!</p>
 <p class="error_message">Some of the tags you entered are bad. Go back and fix the problems highlighted in red.</p>
 </td>
 </tr>
+<input type="hidden" name="netprog" value="{{=net_progress}}">
 </form>
 </table>
 
@@ -143,6 +145,7 @@ $('#response').submit(function(f) {
 		});
 
 		$('p.error_message').show();
+		$.post('/genova/track_error_submit', $('#response').serialize())
 		f.preventDefault();
 	}
 
