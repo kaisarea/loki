@@ -51,6 +51,7 @@ function check_submit() {
             // ... it should give this checkbox a red border
 
         });
+	$('input:radio:checked').parents('table.input_error').attr('class', 'radio');
 	$('p.error_message').show();
       }
 }

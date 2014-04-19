@@ -112,7 +112,7 @@ db.define_table('studies',
                 db.Field('publish', 'boolean', default=False),
                 migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('experimental_assignments',
+db.define_table('condition_choices',
                 db.Field('condition', db.conditions),
                 db.Field('workerid', 'text'),
                 db.Field('study', db.studies),
@@ -643,9 +643,9 @@ def choose_condition():
                      if options.phase_change_time else None)
 
     # If workerid already has a condition for this phase, return it
-    c = db.experimental_assignments(workerid=request.workerid, 
-                                    study=request.study,
-                                    phase=request.phase)
+    c = db.condition_choices(workerid=request.workerid, 
+                             study=request.study,
+                             phase=request.phase)
     if c:
         log('Choosing existing phase condition')
         request.condition = sj.loads(c.condition.json)
@@ -653,37 +653,38 @@ def choose_condition():
 
     # Else, let's make a new one.
 
-    # Choose a condition.  First, give special conditions a shot
+    # First we'll choose the stuff we want in the condition.
     for probability, condition in options[request.task]['special_conditions'] or []:
+        # First, give special conditions a shot
         if random.random() < probability:
             request.condition = condition.copy()
             break
-    # If none of them match, grab the next condition in round-robin fashion.
     else:
-        num_choices_made = db((db.experimental_assignments.phase==request.phase)
-                              &(db.experimental_assignments.study==request.study)).count()
+        # If none of them match, grab the next condition possible in round-robin fashion.
+        next_index = db((db.condition_choices.phase==request.phase)
+                        &(db.condition_choices.study==request.study)).count()
         request.condition = condition_by_index(experimental_vars_vals(request.study),
-                                               num_choices_made)
+                                               next_index)
 
-    # Now add the singleton variables back into the condition... (need
-    # to make this more consistent between singleton option variables
-    # and experimental variables from a list)
+    # Now add the singleton variables back into the condition...
+    # (TODO: need to make this more consistent between singleton
+    # option variables and experimental variables from a list)
     for k, v in sj.loads(request.study.conditions).items():
         if is_singleton(v): request.condition[k] = v
 
-    # Insert this into the database
+    # Insert this choice into the database
     log('Choosing a new available condition')
-    db.experimental_assignments.insert(study=request.study,
-                                       phase=request.phase,
-                                       condition=get_condition(request.condition),
-                                       workerid=request.workerid, time_assigned=now)
+    db.condition_choices.insert(study=request.study,
+                                phase=request.phase,
+                                condition=get_condition(request.condition),
+                                workerid=request.workerid, time_assigned=now)
     
     # If this is a CHANGE of condition for the worker (because they
     # were working in a prior phase), let's set a flag so that the
     # view can tell the worker to pay attention to the difference
-    if db((db.experimental_assignments.phase < request.phase)
-          & (db.experimental_assignments.study == request.study)
-          & (db.experimental_assignments.workerid == request.workerid)).count() > 0:
+    if db((db.condition_choices.phase < request.phase)
+          & (db.condition_choices.study == request.study)
+          & (db.condition_choices.workerid == request.workerid)).count() > 0:
         request.new_phase = True
 
 def condition_by_index(conditions, index):

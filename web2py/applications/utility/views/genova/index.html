@@ -4,44 +4,46 @@
 
 <table class="genova_image">
     <form action id="response" method="POST">
-    {{ i = 0 }}
-    {{ while i < len(pics): }}
-<tbody class="key_inputs">
-<tr>
-  <td colspan="3">
-  <h2 class="genova_subtitle">Image</h2>
-  </td>
-<tr>
-  <td colspan="3">
-  <img class="genova_image" src={{ = pics[i] }}>
-  <input name="image_{{=i}}" type="hidden" value="{{=pics[i]}}">
-  </td>
-</tr>
-<tr>
-  <td colspan="3">
-  <h2 class="genova_subtitle">Submit your Tags</h2>
-  </td>
-</tr>
-{{ for j in [1, 2, 3, 4, 5]: }}
-{{ id = "keyword" + str(i*5+j) }}
-<tr>
-  <td><p class="image_tag">Tag {{=j}}: </p></td>
-  <td> <input {{ = "disabled" if hit_num == 0 else "" }} name="image_tag_{{=i}}_{{=j}}" type="text" id={{=id}} class="keyword"> </td>
-{{ if j == 1: }}
-<td rowspan="5">
-{{ if hit_num == 0: }}  
-<p class="train_info">You must complete <a class="training" href="#training">image tagging training</a>
-                 before working.</p>
-{{ pass }}
-{{ if hit_num == work_limit: }}
-<p class="train_info">You have finished all the HITs available. There is no more work to be done. Thank you for 
-your participation!</p>
-{{ pass }}
-{{ pass }}
-</td>
-</tr>
-{{ pass }}
-</tbody>
+
+    {{ for i,pic_file in enumerate(pics): }}
+    <tbody class="key_inputs">
+      <tr><td colspan="3"><h2 class="genova_subtitle">
+        Image
+      </h2></td></tr>
+      <tr><td colspan="3">
+        <img class="genova_image" src="{{= pic_file}}">
+        <input name="image_{{=i}}" type="hidden" value="{{=pic_file}}">
+      </td></tr>
+      <tr><td colspan="3"><h2 class="genova_subtitle">
+        Submit your Tags
+      </h2></td></tr>
+
+      {{ for j in range(5): }}
+        {{ id = "keyword" + str(i*5+j) }}
+        <tr>
+          <td><p class="image_tag">Tag {{=j+1}}:</p></td>
+          <td><input {{= "disabled" if hit_num == 0 else "" }}
+          name="image_tag_{{=i}}_{{=j}}" type="text" id={{=id}}
+          class="keyword"> </td>
+        {{ if j == 0: }}
+          <td rowspan="5">
+          {{ if hit_num == 0: }}  
+          <p class="train_info">You must complete <a class="training"
+          href="#training">image tagging training</a> before
+          working.</p>
+          {{ pass }}
+
+          {{ if hit_num == work_limit: }}
+          <p class="train_info">You have finished all the HITs
+          available. There is no more work to be done. Thank you for
+          your participation!</p>
+          {{ pass }}
+
+      {{ pass }}
+    </td>
+    </tr>
+    {{ pass }}
+  </tbody>
 <tr>
 <td colspan="3">
 <table class="radio">
@@ -51,7 +53,7 @@ your participation!</p>
   {{ radio_id = "disturbingness" + str(i) }}
   <input {{ = "disabled" if hit_num == 0 else "" }} type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="0">&nbsp;&nbsp;appropriate
   </td>
-  <td style="text-align: left;" rowspan="2">for a PG audience.</td>
+  <td style="text-align: left;" rowspan="2">for a general audience.</td>
 </tr>
 <tr class="genova_radio">
   <td>
@@ -61,7 +63,6 @@ your participation!</p>
 </table>
 </td>
 </tr>
-{{ i += 1 }}
 {{ pass }}
 <tr>
 <td>
@@ -74,101 +75,3 @@ your participation!</p>
 <input type="hidden" name="netprog" value="{{=net_progress}}">
 </form>
 </table>
-
-
-<script>
-
-var missing = $('tbody.key_inputs input:text').length;
-var total_inputs = 0;
-var unique_count = 0;
-var values = new Array();
-var debug1 = "";
-var debug2 = "";
-var fivetuple_keywords = new Array();
-var duplicity_troubles = 0;
-var radios_check = 0;
-var all_radios = $('tbody input:radio').length/2;
-
-$('#response').submit(function(f) {
-	missing = 0;
-	duplicity_troubles = 0;
-	radios_check = 0;
-	$('.error_message').hide();
-	$('p.tag_error').attr('class', 'image_tag');
-	$('input.input_error').attr('class', 'image_tag');
-	$('table.input_error').attr('class', 'radio');
-  	radios_check = $('td input:radio:checked').length;
-
-	//$('p.error_message').hide();
-	
-	$('input[class=keyword]').each(function(i) {
- 		values[$(this).id] = $(this).val();
-        	total_inputs = total_inputs+1;
-        	if(values[$(this).id] == "")
-        	{
-                	missing = missing + 1;
-        	}
-	});
-
-
-	jQuery('tbody.key_inputs').each(function(k) {
-        	fivetuple_keywords = new Array();
-        	for(var m = 0; m < 5; m++)
-        	{
-                	fivetuple_keywords.push($(this).find('input')[m].value);
-        	}
-        	unique_ans = jQuery.unique(fivetuple_keywords);
-        	if(unique_ans.length != 5)
-        	{
-                	duplicity_troubles = duplicity_troubles + 1;
-        	}
-
-	});
-
-	if(missing == 0 & duplicity_troubles == 0 & radios_check == all_radios)
-  	{
-		return;
-  	}
-	else
-	{
-		$('input:radio').each(function(){
-                	if(!$('#' + $(this).attr('name')).is(':checked'))
-                	{
-                        	$(this).parent().parent().parent().parent().attr('class', 'input_error');
-                	}
-       	 	});
-		$(':radio:checked').parent().parent().parent().parent().attr('class', 'radio')
-
-		$('tbody input:text[value=""]').each(function(){
-			$(this).attr('class', 'input_error');
-			$(this).parent().parent().find('p.image_tag').attr('class', 'tag_error');
-		});
-
-		$('p.error_message').show();
-		$.post('/genova/track_error_submit', $('#response').serialize())
-		f.preventDefault();
-	}
-
-});
-    
-
-     
-
-function leave_training(){
-  window.scroll(0,0);
-  $('#shadow').fadeOut();
-}
-
-function hide_training() {
-  window.scroll(0,0);
-  $('#shadow').fadeOut();
-  $('.congrats').fadeOut();
-}
-
-$(".training").bind('click', show_training);
-$('.leave_training').bind('click', hide_training);    
-$(".cancel_training").bind('click', leave_training);
-
-
-$(document).on('click', 'a.training', show_training);    
-</script>

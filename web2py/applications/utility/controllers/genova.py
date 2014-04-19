@@ -1,48 +1,48 @@
 def index():
-    import time
+    import time, random
     hit_num = hits_done()
 
-    # Load this worker's genova progress
+    # Kludgey redirect for the first_time hit that pays $.50
+    if not request.testing and db((db.actions.workerid == request.workerid)
+                                  & (db.actions.action == 'finished')).count() < 1:
+        response.view = 'first_time.html'
+        return {}
+
+    # Load this worker's genova progress.  I store progress in the
+    # key-value store, as a triplet of the number of pictures used out
+    # of each queue.
     key = 'worker %s genova progress' % request.workerid
     progress = db.store(key=key)
-    if progress:
+    if progress:                
+        # If we've already got it in the DB
         progress = Storage(sj.loads(progress.value))
     else:
-        log('There was nothing of key %s' % key)
+        # Else, initialize from zero
+        log('There was nothing of key %s' % key) 
         progress = Storage(control=0, treatment=0, food=0)
 
-    # Set shuffle seed
-    import random
-    random.seed(request.workerid)
 
     # Load and shuffle the pics
+    random.seed(request.workerid)
     genova_pics = cache.ram('genova_pics', lambda: define_genova_pics(),
                             time_expire=60)
     random.shuffle(genova_pics.treatment)
     random.shuffle(genova_pics.control)
     random.shuffle(genova_pics.food)
     
-    # Choose some disagreeable and control images
+    # Choose 5 images from the 3 queues, depeding on how disagreeable we want it
     pics = []
-
-    def add_pic(type):
-        pics.append(genova_pics[type][progress[type]])
-        progress[type] += 1
-
     for i in range(request.pics_per_task):
+        def add_pic(type):
+            pics.append(genova_pics[type][progress[type]])
+            progress[type] += 1
+
         r = random.random()
         if r < request.disagreeable/100.0:
-            log('r=%s so disagreeable'%r)
             r = random.random();
-            if r < .1:
-                log('    ...r=%s so food'%r)
-                add_pic('food')
-            else:
-                log('    ...r=%s so not food'%r)
-                add_pic('treatment')
-        else:
-            log('r=%s so control'%r)
-            add_pic('control')
+            if r < .1:  add_pic('food')
+            else:       add_pic('treatment')
+        else:           add_pic('control')
 
 
     # If this is a hit submission, then let's finish!

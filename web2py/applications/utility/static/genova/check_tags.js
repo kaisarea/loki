@@ -1,4 +1,5 @@
 
+
 var missing = $('tbody.key_inputs input:text').length;
 var total_inputs = 0;
 var unique_count = 0;

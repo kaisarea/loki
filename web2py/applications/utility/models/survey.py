@@ -36,17 +36,21 @@ def announce_survey(study):
 
     for worker in workers:
         message_body =  '''Dear Mechanical Turk worker,
-		
-		We are working to improve our HITs and make them more attractive to
-		workers like you.
 
-		If you fill out the survey using the link below you will receive $%.2f and 
-		our undying gratitude...
+Thank you for looking at one of our HITs. We are a new outfit and
+have a slightly different way of running our HITs than the other
+guys. It is very important for us to improve our HITs and make them 
+more attractive to workers like you.
 
-		The survey should take no more than 2 minutes to complete.
+If you fill out the brief survey using the link below you will 
+receive $%.2f and our undying gratitude...
 
-		Link to survey: https://yuno.us/survey?workerid=%s&s=%s \
+The survey should take no more than 2 minutes to complete.
+
+Link to survey: https://yuno.us/survey?workerid=%s&s=%s \
 		''' % (survey_pay, workerid, study.id)
+
+        #The CrowdClearingHouse crew
 
         subject_line =  '''\
 		Help us improve our HITs on Mechanical Turk and receive $%.2f \
