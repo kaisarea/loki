@@ -63,63 +63,55 @@ function show_training() {
 
 
 
+$(function () {
 
-
-
-
-
-
-
-$('.quiz input:text').on("change", function() { 
+    $('.quiz input:text').on("change", function() { 
         /* ... */ 
-  possible_answers = new Array("object", "orientation", "emotion", "technique", "time", "color",
-        "emotion", "artistic genre");
-  user_answer = new Array(this.value.toLowerCase());
-  if($(user_answer).not(possible_answers).length != 0)
-  {
-             if($(this).attr('id').length==4)
+        possible_answers = new Array("object", "orientation", "emotion", "technique", "time", "color",
+                                     "emotion", "artistic genre");
+        user_answer = new Array(this.value.toLowerCase().trim());
+        if($(user_answer).not(possible_answers).length != 0)
         {
-          multiplier = $(this).attr('id')[3];
+            if($(this).attr('id').length==4)
+            {
+                multiplier = $(this).attr('id')[3];
+            }
+            else
+            {
+                multiplier = $(this).attr('id')[3] + $(this).attr('id')[4];
+            }
+
+            if(multiplier < 6)
+            {
+                my_top = (multiplier-1.1)*23;
+            }
+            else if(multiplier < 11)
+            {
+                my_top = (multiplier-6.1)*23;
+            }
+            else
+            {
+                my_top = (multiplier-11.1)*23;
+            }
+            $(this).after('<span style="position: absolute; left: 200px; min-width: 200px; top: ' + my_top + 'px;" class="err">Not a possible answer!</span>');
+            $(this).attr("name", "incorrect");
         }
         else
         {
-          multiplier = $(this).attr('id')[3] + $(this).attr('id')[4];
-        }
-
-          if(multiplier < 6)
-          {
-          my_top = (multiplier-1.1)*23;
-        }
-        else if(multiplier < 11)
-        {
-          my_top = (multiplier-6.1)*23;
-        }
-        else
-        {
-          my_top = (multiplier-11.1)*23;
-        }
-        $(this).after('<span style="position: absolute; left: 200px; min-width: 200px; top: ' + my_top + 'px;" class="err">Not a possible answer!</span>');
-        $(this).attr("name", "incorrect");
-  }
-  else
-  {
-    $(this).parent().find('.err').remove();
-    position_input = $('.quiz input:text').index($(this));
-    correct_answers = new Array("orientation", "time", "technique", 
-          "emotion", "artistic genre", "technique", "emotion", "object",
-          "emotion", "object", "time", "color", "emotion",
-          "technique", "artistic genre");
-    if (correct_answers[position_input]==user_answer)
-    {
-        this.name="correct";
-    }
-    else
-    {
-        $(this).attr("name", "incorrect");
-    }
-  }        
-    });
-
-
-
-
+            $(this).parent().find('.err').remove();
+            position_input = $('.quiz input:text').index($(this));
+            correct_answers = new Array("orientation", "time", "technique", 
+                                        "emotion", "artistic genre", "technique", "emotion", "object",
+                                        "emotion", "object", "time", "color", "emotion",
+                                        "technique", "artistic genre");
+            if (correct_answers[position_input]==user_answer)
+            {
+                this.name="correct";
+            }
+            else
+            {
+                $(this).attr("name", "incorrect");
+            }
+        }        
+    })
+})
