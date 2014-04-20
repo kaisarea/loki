@@ -18,17 +18,15 @@ def index():
         progress = Storage(sj.loads(progress.value))
     else:
         # Else, initialize from zero
-        log('There was nothing of key %s' % key) 
         progress = Storage(control=0, treatment=0, food=0)
 
 
     # Load and shuffle the pics
-    random.seed(request.workerid)
-    genova_pics = cache.ram('genova_pics', lambda: define_genova_pics(),
-                            time_expire=60)
+    random.seed(request.workerid + str(progress))
+    genova_pics = define_genova_pics()
     random.shuffle(genova_pics.treatment)
     random.shuffle(genova_pics.control)
-    random.shuffle(genova_pics.food)
+    #random.shuffle(genova_pics.food)
     
     # Choose 5 images from the 3 queues, depeding on how disagreeable we want it
     pics = []
@@ -39,21 +37,21 @@ def index():
 
         r = random.random()
         if r < request.disagreeable/100.0:
-            r = random.random();
-            if r < .1:  add_pic('food')
-            else:       add_pic('treatment')
-        else:           add_pic('control')
+            #r = random.random();
+            #if r < .1:  add_pic('food')
+            #else:       add_pic('treatment')
+            add_pic('treatment')
+        else:
+            add_pic('control')
 
 
     # If this is a hit submission, then let's finish!
-    image_tag = request.vars.image_tag
-    if image_tag:
+    if 'image_1_1' in request.vars:
         if int(request.vars.netprog) != progress.treatment + progress.control + progress.food:
             return 'Error.  You already submitted this hit!'
 
         othervars = dict()
         othervars['pics'] = pics
-        othervars['tags'] = request.vars.image_tag
 	othervars['disturbingness'] = request.vars.disturbingness
         othervars['request_vars'] = request.vars
         log_action('submit', othervars)
@@ -68,11 +66,11 @@ def index():
     availability_period = 60 * 1
     availability_rate = .08
     phase = (time.time() + 13) % availability_period
-    log('AVAIL: %.2f of %.2f: %s' % ((phase / availability_period), availability_rate,
-                                     (phase / availability_period > availability_rate)))
+    #log('AVAIL: %.2f of %.2f: %s' % ((phase / availability_period), availability_rate,
+    #                                 (phase / availability_period > availability_rate)))
     if (request.availability == 'low'
         and (phase / availability_period > availability_rate)):
-        log('AVAIL: delaying!!!')
+        #log('AVAIL: delaying!!!')
 
         delay_time = int(availability_period - phase) + 2
         response.view = 'genova/wait.html'
