@@ -36,6 +36,12 @@ p.image_tag {
 	margin: 0px;
 }
 
+input.keyword {
+	position: absolute; 
+	left: 80px;
+}  
+
+
 table.radio td {
 	border: 0px;
 	padding-right: 15px;
@@ -66,23 +72,18 @@ tr.genova_radio td {
 .train_info {
 	max-width: 300px;
 	background: #e5e5e5;
-	position: relative;
-	top: 0px;
-	left: 0px;
+	position: absolute;
+	left: 300px;
 	box-shadow: 2px 2px 0px 0px #888888;
-	margin: 15px;
 	padding: 25px;
 }
 
 p.error_message {
-	max-width: 330px;
+	max-width: 380px;
 	background: #e5e5e5;
-	position: relative;
-	top: 0px;
-	left: 0px;
 	display: none;
 	box-shadow: 2px 2px 0px 0px #888888;
-	margin: 15px;
+	margin: 15px 0;
 	padding: 25px;
 	border: 2px solid red;
 }
@@ -91,22 +92,14 @@ h2.genova_subtitle {
 	margin-top: 35px;
 }
 
-.tag_error {
+p.error {
 	font-weight: bold;
 	color: red;
-	margin: 0px;
-	padding: 0px;
 }
-
-p.tag_error {
-	margin: 0px;
-	padding: 0px;
-}
-
-.input_error {
+.error input.keyword, .radio.error {
 	border-color: red;
 	background-color: #fee;
 	border: 2px solid red;
+	color: black;
 }
-
 
