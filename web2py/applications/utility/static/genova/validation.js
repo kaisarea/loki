@@ -6,21 +6,13 @@ function validate (event) {
     // First, downcase and trim whitespace from all tags
     $('input.keyword').each(function () {$(this).val($(this).val().toLowerCase().trim())})
 
-    // Compute the duplicates
-    var duplicates = Object();
-    var keywords = 'input.keyword';
-    //duplicates[''] = true; // So that you can't "duplicate" the empty string :)
-    //var keywords = 'input[class=keyword]';
-
     // Go through each image's set of 5 tags
 	sets = '.image_set';
 	$(sets).each(function() {
         var $curr_set = $(this)
 
         // Highlight all duplicate and blank tags in this set
-		$curr_set.find(keywords).each(function() {
-            console.log('Dupes:', $(this).val(), $curr_set.find('input.keyword:text[value="'
-                                                                + $(this).val() + '"]').length)
+		$curr_set.find('input.keyword').each(function() {
 			has_duplicate = $curr_set.find('input.keyword:text[value="'
                                            + $(this).val() + '"]').length > 1
             is_empty = $(this).val() == ''
