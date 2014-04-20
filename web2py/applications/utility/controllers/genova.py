@@ -11,8 +11,8 @@ def index():
     # Load this worker's genova progress.  I store progress in the
     # key-value store, as a triplet of the number of pictures used out
     # of each queue.
-    key = 'worker %s genova progress' % request.workerid
-    progress = db.store(key=key)
+    progress_key = 'worker %s genova progress' % request.workerid
+    progress = db.store(key=progress_key)
     if progress:                
         # If we've already got it in the DB
         progress = Storage(sj.loads(progress.value))
@@ -46,7 +46,7 @@ def index():
 
 
     # If this is a hit submission, then let's finish!
-    if 'image_1_1' in request.vars:
+    if 'keyword_1' in request.vars:
         if int(request.vars.netprog) != progress.treatment + progress.control + progress.food:
             return 'Error.  You already submitted this hit!'
 
@@ -55,7 +55,7 @@ def index():
 	othervars['disturbingness'] = request.vars.disturbingness
         othervars['request_vars'] = request.vars
         log_action('submit', othervars)
-        db.store(key=key).update_record(value=sj.dumps(progress))
+        db.store(key=progress_key).update_record(value=sj.dumps(progress))
         hit_finished() # Automatically exits this function
 
     # Now we know that we're displaying the HIT page.
