@@ -46,7 +46,8 @@ def index():
 
 
     # If this is a hit submission, then let's finish!
-    if 'keyword_1' in request.vars:
+    if request.vars.netprog != None:
+	log('Somebody submitted some tags!')
         if int(request.vars.netprog) != progress.treatment + progress.control + progress.food:
             return 'Error.  You already submitted this hit!'
 
@@ -55,7 +56,8 @@ def index():
 	othervars['disturbingness'] = request.vars.disturbingness
         othervars['request_vars'] = request.vars
         log_action('submit', othervars)
-        db.store(key=progress_key).update_record(value=sj.dumps(progress))
+        if (db.store(key=progress_key)): db.store(key=progress_key).update_record(value=sj.dumps(progress))
+        else:                            db.store.insert(key=progress_key, value=sj.dumps(progress))
         hit_finished() # Automatically exits this function
 
     # Now we know that we're displaying the HIT page.
