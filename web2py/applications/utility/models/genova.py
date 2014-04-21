@@ -15,7 +15,7 @@ options.genova = {'price' : [.05, .10, .15, .20, .25, .30, .35, .40, .45, .50],
 		  'pics_per_task': 5,
                   'mystery_task': True,
                   'work_limit' : 50,
-                  'pay_delay' : 120 * 60,
+                  'pay_delay' : 90 * 60,
                   'first_time_bonus' : 0.50,
                   'phase_change_time' : 24 * 60 * 60,
 
