@@ -1,27 +1,33 @@
-options.genova = {'price' : [.05, .10, .15, .20, .25, .30, .35, .40, .45, .50, .55, .60],
+options.genova = {'price' : [.05, .10, .15, .20, .25, .30, .35, .40, .45, .50],
 		  'disagreeable' : [0, 12.5, 25, 50, 75, 100],
                   'training' : [False, True],
                   'improbability_rate' : [93, 56],
-                  'availability' : ['high', 'low'],
+                  'availability' : ['high'],
+
+                  'special_conditions' : [(
+                       .07, {'price' : .25,
+                             'disagreeable' : 0,
+                             'training' : True,
+                             'improbability_rate' : 93,
+                             'availability' : 'low'}
+                      )],
 
 		  'pics_per_task': 5,
                   'mystery_task': True,
                   'work_limit' : 50,
-                  'pay_delay' : 13 * 60,
+                  'pay_delay' : 120 * 60,
                   'first_time_bonus' : 0.50,
+                  'phase_change_time' : 24 * 60 * 60,
 
-                  'special_conditions' : [(
-                       .07, {'price' : .25,
-                             'disagreeable' : False,
-                             'training' : True,
-                             'improbability_rate' : 56,
-                             'availability' : 'low'}
-                      )]
+                  'hit_params' : {'title' : 'Clearing House - Different Task Each Day! (Pays Bonus)',
+                                  'description' : 'We aggregate tasks from many clients.  Tasks and task details change each day.  View today\'s HIT to see it and decide if you like it.',
+                                  'keywords' : 'CrowdClearinghouse, Clearing House, Clearinghouse, random, bonus',
+                                  'block_india' : True}
 }
 
 
 # This is how we load pictures
-def define_genova_pics():
+def load_genova_pics():
     """
     For treatment we will later do analogous code as for the control
     where directory will be crawled and all the content read
@@ -41,3 +47,17 @@ def define_genova_pics():
     genova_pics.treatment = list(cache.ram('treatment pics', lambda: load_pics('treatment'), time_expire=60))
     #genova_pics.food      = load_pics('food')
     return genova_pics
+
+
+def randomize_pay(pay, expected_rate_of_success, num_tags):
+    rate_of_failure = 1.0 - expected_rate_of_success
+    rate_of_failure /= 2.0  # Let's diminish it, be nicer
+    rate_of_success = 1 - random.random() * rate_of_failure
+    good_tags = round(num_tags * rate_of_success)
+    pay = pay * (good_tags/float(num_tags))
+    log('With noise, we want to pay %.4f' % pay)
+    pay = round(pay * 100.0)/100.0
+    log('When rounded, are actually paying %.3f' % pay)
+    return (pay, int(good_tags))
+
+#(rate_of_success / 100.0)  float(request.price)

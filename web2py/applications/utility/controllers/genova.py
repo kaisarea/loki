@@ -1,34 +1,23 @@
 def index():
     import time, random
+    num_tags = request.pics_per_task * 5         # 5 tags per pic
     hit_num = hits_done()
-
-    # Kludgey redirect for the first_time hit that pays $.50
-    if not request.testing and db((db.actions.workerid == request.workerid)
-                                  & (db.actions.action == 'finished')).count() < 1:
-        response.view = 'first_time.html'
-        return {}
 
     # Load this worker's genova progress.  I store progress in the
     # key-value store, as a triplet of the number of pictures used out
     # of each queue.
     progress_key = 'worker %s genova progress' % request.workerid
-    progress = db.store(key=progress_key)
-    if progress:                
-        # If we've already got it in the DB
-        progress = Storage(sj.loads(progress.value))
-    else:
-        # Else, initialize from zero
-        progress = Storage(control=0, treatment=0, food=0)
-
+    progress = Storage(store_get(progress_key)
+                       or dict(control=0, treatment=0, food=0))
 
     # Load and shuffle the pics
     random.seed(request.workerid + str(progress))
-    genova_pics = define_genova_pics()
+    genova_pics = load_genova_pics()
     random.shuffle(genova_pics.treatment)
     random.shuffle(genova_pics.control)
     #random.shuffle(genova_pics.food)
     
-    # Choose 5 images from the 3 queues, depeding on how disagreeable we want it
+    # Choose 5 images from the 2 queues, depeding on how disagreeable we want it
     pics = []
     for i in range(request.pics_per_task):
         def add_pic(type):
@@ -37,16 +26,14 @@ def index():
 
         r = random.random()
         if r < request.disagreeable/100.0:
-            #r = random.random();
-            #if r < .1:  add_pic('food')
-            #else:       add_pic('treatment')
             add_pic('treatment')
         else:
             add_pic('control')
 
-
     # If this is a hit submission, then let's finish!
     if request.vars.netprog != None:
+        store_set(progress_key, progress)
+
 	log('Somebody submitted some tags!')
         if int(request.vars.netprog) != progress.treatment + progress.control + progress.food:
             return 'Error.  You already submitted this hit!'
@@ -55,18 +42,31 @@ def index():
         othervars['pics'] = pics
 	othervars['disturbingness'] = request.vars.disturbingness
         othervars['request_vars'] = request.vars
-        log_action('submit', othervars)
-        if (db.store(key=progress_key)): db.store(key=progress_key).update_record(value=sj.dumps(progress))
-        else:                            db.store.insert(key=progress_key, value=sj.dumps(progress))
-        hit_finished() # Automatically exits this function
+
+        # Calculate a random amount to pay them, pretending that they
+        # only did so well.
+        pay, good_tags = randomize_pay(request.price,
+                                       request.improbability_rate/100.0,
+                                       num_tags)
+        othervars['actual_price'] = pay
+
+        bonus_message = '''Thank you for working on our HIT today. We approved %d of your 25 tags, which earns you $%.2f of the possible $%.2f for this HIT.
+
+By paying in bonus, we are able to approve every honest HIT you submit, and increase your Approval Rating.
+
+We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.price)
+
+        hit_finished(bonus_amount=pay,
+                     bonus_message=bonus_message,
+                     extra_data=othervars) # Automatically exits this function
 
     # Now we know that we're displaying the HIT page.
 
     # If there aren't any photos available, make the worker wait.
     # Every `availability_period' seconds, photos will only be
     # available for the first `availability_rate' percent of them.
-    availability_period = 60 * 1
-    availability_rate = .08
+    availability_period = 43 * 60 # 43 minutes
+    availability_rate = .28
     phase = (time.time() + 13) % availability_period
     #log('AVAIL: %.2f of %.2f: %s' % ((phase / availability_period), availability_rate,
     #                                 (phase / availability_period > availability_rate)))
@@ -100,6 +100,20 @@ def index():
                 availability=request.availability,
                 work_limit=request.work_limit,
                 net_progress=progress.control + progress.treatment + progress.food)
+
+
+def wait():
+    hit_num = hits_done()
+    delay_time = 3 * 60
+    response.view = 'genova/wait.html'
+    return dict(hit_num=hit_num,
+                hits_left= request.work_limit - hit_num,
+                disagreeable=request.disagreeable,
+                training=request.training,
+                improbability_rate=request.improbability_rate,
+                availability=request.availability,
+                work_limit=request.work_limit,
+                until=delay_time)
 
 
 def results():

@@ -2,26 +2,21 @@
 {{ include 'genova/header.html' }}
 
 <div style="border: solid 2px #ccc; width: 560px; background-color: #e7e7e7; padding: 40px;">
-  <img width="70px" src="/static/genova/clock.png" style="opacity: .5; position: absolute;">
+  <img src="/static/genova/clock.png" style="opacity: .5; position: absolute; width: 70px; margin-left: -10px;">
 
-  <div style="margin-left: 110px;">
+  <div style="margin-left: 90px;">
     <h1>Waiting for Images...</h1>
 
-    A new batch of images is becoming available for tagging.<br>
+    <p>A new batch of images is becoming available for tagging.
 
-    We estimate they will be ready
-
-{{ if until/60 > 0: }}
-    in approximately {{=until/60}} minutes.
-{{ else: }}
-    within a minute.
-{{ pass }}
-
-    <br>This page will reload automatically when they are ready.
+    <p>This page will reload automatically when they are ready.
   </div>
 </div>
 
 <script>
   setTimeout(function () {document.location.reload(true)},
              {{=until * 1000}})
+  var a = $('a.training')
+  a.removeClass('training')
+  a.css({color: '#555'})
 </script>

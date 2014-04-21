@@ -249,6 +249,23 @@ db.define_table('store',
                 db.Field('key', 'text', unique=True),
                 db.Field('value', 'text'))
 
+# Database helpers
+def store_get(key):
+    r = db(db.store.key==key).select().first()
+    return r and sj.loads(r.value)
+def store_set(key, value):
+    # update_or_insert doesn't work in old web2pys... cause of a bug...
+    #return db.store.update_or_insert(key=key, value=sj.dumps(value))
+    # So I wrote my own:
+    value = sj.dumps(value)
+    record = db.store(db.store.key==key)
+    return record.update_record(value=value) \
+        if record else db.store.insert(key=key, value=value)
+def store_append(key, value):
+    x = store_get(key) or []; x.append(value)
+    store_set(key, x)
+
+
 # Load the options variable from each hit file... this will fail (like
 # settings) if compiled
 options = Storage()
@@ -258,7 +275,9 @@ options = Storage()
 options.fail = { 'price' : 0 }
 
 # Define the API that hit controllers can use
-def hit_finished(bonus_amount=None, do_redirect=True, pay_delay=None):
+def hit_finished(bonus_amount=None, do_redirect=True,
+                 pay_delay=None, bonus_message='Thanks!',
+                 extra_data=None):
     log('Hit finished!')
     if request.live:
         status = db.hits(hitid = request.vars.hitId).status
@@ -286,7 +305,7 @@ def hit_finished(bonus_amount=None, do_redirect=True, pay_delay=None):
                & (db.actions.assid == request.assid)
                & (db.actions.action == 'finished')).count()
         if existing_finishes == 0:
-            record_action('finished')
+            record_action('finished', extra_data)
             if not bonus_amount: bonus_amount = request.price
 
             if not request.testing:
@@ -296,7 +315,7 @@ def hit_finished(bonus_amount=None, do_redirect=True, pay_delay=None):
                               request.assid,
                               request.hitid,
                               request.study,
-                              reason='Thanks!',
+                              reason=bonus_message,
                               delay=pay_delay)
 
                 update_ass(assid=request.assid,
@@ -666,11 +685,9 @@ def choose_condition():
         request.condition = condition_by_index(experimental_vars_vals(request.study),
                                                next_index)
 
-    # Now add the singleton variables back into the condition...
-    # (TODO: need to make this more consistent between singleton
-    # option variables and experimental variables from a list)
+    # Now add the non-experimental variables back into the condition...
     for k, v in sj.loads(request.study.conditions).items():
-        if is_singleton(v): request.condition[k] = v
+        if not isinstance(v, list): request.condition[k] = v
 
     # Insert this choice into the database
     log('Choosing a new available condition')
@@ -786,7 +803,7 @@ def die_and_explode():
 
 def phase_begin(phase, study):
     return study.launch_date + timedelta(seconds=options.phase_change_time * phase)
-def hits_done(workerid=None, study=None, phase='current'):
+def hits_done(workerid=None, study=None, phase='current', ignore_first_time=True):
     '''Set phase to 'current' or a number to limit this search to that
        phase.  Set phase = None to get all phases.
     '''
@@ -800,7 +817,14 @@ def hits_done(workerid=None, study=None, phase='current'):
         query = query \
                 & (db.actions.time > phase_begin(phase,   study)) \
                 & (db.actions.time < phase_begin(phase+1, study))
-    return db(query).count()
+    result = db(query).count()
+
+    # Subtract the first_time hit if it's in this set
+    if ignore_first_time:
+        first = db(query).select(limitby=(0,1), orderby=db.actions.time).first()
+        if first and db.actions(assid=first.assid, action='first time'):
+            result -= 1
+    return result
 
 def alter_conditions(**new_conditions):
     '''
@@ -870,7 +894,7 @@ def load_live_hit():
     if not request.vars.ajax:
         copy = request.condition.copy()
         if 'hit_params' in copy: copy['hit_params'] = None
-        log('Sampled %s' % copy)
+        #log('Sampled %s' % copy)
     for k,v in request.condition.items():
         request[k] = v
     request.condition_id = get_condition(request.condition)
@@ -899,6 +923,14 @@ def load_live_hit():
             turk.expire_hit(request.hitid)
         except TurkAPIError as e:
             logger.error(str(e.value))
+        return
+
+    # If this is a first-time worker, and we're giving them bonus hits, do that
+    if options['first_time_bonus'] != None \
+            and db((db.actions.workerid == request.workerid)
+                   & (db.actions.action == 'finished')).count() < 1:
+        response.view = 'first_time.html'
+        record_action('first time')
         return
 
     return
@@ -931,7 +963,13 @@ def load_testing_hit():
     for k,v in task_options.items():
         if k in request.vars:
             # Then look for the value of it in there, and grab that
-            request.condition[k] = next(x for x in v if str(x) == request.vars[k])
+            #request.condition[k] = next(x for x in v if str(x) == request.vars[k])
+            matching = [x for x in v if str(x) == request.vars[k]]
+            if len(matching) > 0:
+                request.condition[k] = matching[0]
+            else:
+                request.condition[k] = request.vars[k]
+
 
     # Now make them accessible
     for k,v in request.condition.items():

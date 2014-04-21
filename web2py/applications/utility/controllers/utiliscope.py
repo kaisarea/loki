@@ -57,6 +57,32 @@ def prep_test(as_preview=False):
                   and isinstance(options[request.task], dict)
                   and options[request.task]) or {}
 
+    # Incorporate special_conditions into the conditions
+    for special_condition in ('special_conditions' in conditions and conditions['special_conditions']) or []:
+        for k,v in special_condition[1].items():
+            # log('Putting %s, %s into conditions. Right now it\'s %s' % (k,v, conditions[k]))
+            # log('Is k in conditions? %s' % (k in conditions))
+            # log('Isinstance conditions[k] is %s, and v=%s in conditions[k]=%s is %s' %
+            #     (isinstance(conditions[k], list),
+            #      v,
+            #      conditions[k],
+            #      v in conditions[k]))
+            if isinstance(conditions[k], list) and v in conditions[k]:
+                continue
+
+            if k in conditions:
+                soft_assert(is_singleton(v))
+                if isinstance(conditions[k], list):
+                    # log('It\'s a list')
+                    conditions[k].append(v)
+                else:
+                    # log('It\'s not a list')
+                    soft_assert(is_singleton(conditions[k]))
+                    conditions[k] = [conditions[k], v]
+            else:
+                conditions[k] = v
+            # log('And now it\'s %s' % conditions[k])
+
     return locals()
 def test():
     return prep_test(as_preview=False)

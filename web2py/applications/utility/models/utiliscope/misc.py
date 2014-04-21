@@ -17,20 +17,6 @@ for table in db.tables:
     t.all = types.MethodType(all, t)
     # Count causing an error
     #t.count = types.MethodType(count, t)
-def store_get(key):
-    r = db(db.store.key==key).select().first()
-    return r and sj.loads(r.value)
-def store_set(key, value):
-    # update_or_insert doesn't work in old web2pys... cause of a bug...
-    #return db.store.update_or_insert(key=key, value=sj.dumps(value))
-    # So I wrote my own:
-    value = sj.dumps(value)
-    record = db.store(db.store.key==key)
-    return record.update_record(value=value) \
-        if record else db.store.insert(key=key, value=value)
-def store_append(key, value):
-    x = store_get(key) or []; x.append(value)
-    store_set(key, x)
 
 # =========
 def get_one(query):

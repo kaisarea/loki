@@ -2,6 +2,8 @@
 
 {{ include 'genova/header.html' }}
 
+{{ maybe_disabled = "disabled" if hit_num==0 else "" }}
+
 <div class="images">
   <form action id="response" method="POST">
 
@@ -20,9 +22,8 @@
     {{ for j in range(5): }}
       {{ id = "keyword" + str(i*5+j) }}
       <p class="image_tag">
-        <input {{= "disabled" if hit_num == 0 else "" }}
-                name="image_tag_{{=i}}_{{=j}}" type="text" id={{=id}}
-                class="keyword">
+        <input {{= maybe_disabled}} class="keyword"
+                name="image_tag_{{=i}}_{{=j}}" type="text" id={{=id}}>
         Tag {{=j+1}}:
 		</p>
     {{ pass }}
@@ -33,7 +34,7 @@
       <td>
         {{ radio_id = "disturbingness" + str(i) }}
 
-      <input {{ = "disabled" if hit_num == 0 else "" }} type="radio"
+      <input {{= maybe_disabled}} type="radio"
       name={{ = radio_id }} id={{ = radio_id }}
       value="0">&nbsp;&nbsp;appropriate
 
@@ -42,7 +43,7 @@
     </tr>
     <tr class="genova_radio">
       <td>
-      <input {{ = "disabled" if hit_num == 0 else "" }} type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="1">&nbsp;&nbsp;inappropriate
+      <input {{= maybe_disabled}} type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="1">&nbsp;&nbsp;inappropriate
       </td>
     </tr>
     </table>
@@ -55,7 +56,7 @@
 <p class="error_message">Some of the tags you entered are bad or
 duplicated. Go back and fix the problems highlighted in red.</p>
 
-<input id="submit" disabled type="submit" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
+<input id="submit" {{= maybe_disabled}} type="submit" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
 
 <input type="hidden" name="netprog" value="{{=net_progress}}">
 </form>

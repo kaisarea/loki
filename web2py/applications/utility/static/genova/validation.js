@@ -3,8 +3,9 @@ function validate (event) {
 	$('.error_message').hide();
     $.post('/genova/track_error_submit', $('#response').serialize());
     
-    // First, downcase and trim whitespace from all tags
-    $('input.keyword').each(function () {$(this).val($(this).val().toLowerCase().trim())})
+    // First, downcase and trim whitespace from all tags and remove quotes
+    $('input.keyword').each(function () {$(this).val(
+        $(this).val().toLowerCase().trim().replace("'", "").replace('"', ''))})
 
     // Go through each image's set of 5 tags
 	sets = '.image_set';
@@ -13,6 +14,9 @@ function validate (event) {
 
         // Highlight all duplicate and blank tags in this set
 		$curr_set.find('input.keyword').each(function() {
+            // console.log('Duplicates for ', $(this).val(), 'is', 
+            //             $curr_set.find('input.keyword:text[value="' + $(this).val() + '"]'))
+
 			has_duplicate = $curr_set.find('input.keyword:text[value="'
                                            + $(this).val() + '"]').length > 1
             is_empty = $(this).val() == ''
@@ -28,7 +32,7 @@ function validate (event) {
 	})
 
     if ($('.error').length > 0) {
-        event.preventDefault()
+        event.preventDefault()  // Stops submit from happening
 	    $('p.error_message').show();
         // And now scroll the error message into view
         $('html, body').animate({scrollTop: $(document).height()}, 'slow');

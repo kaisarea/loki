@@ -34,13 +34,12 @@
 			 <ul>
 
 			   <li>Our staff will approve or reject your work in roughly
-			   {{=bonus_time}} minutes.
+			   {{=request.pay_delay / 60}} minutes.
 
-				<li>Today they have been approving {{=improbability_rate}}%
-			   of submissions.
-
-		      <li>You must do the <a class="training"
-		      href="#training">training</a> before working.
+				<li>Today they have been approving around {{=improbability_rate}}%
+			   of submitted tags.
+			   
+			   <li>Your pay is proportional to the number of your tags approved.
 
 			</ul>
 
@@ -54,12 +53,18 @@
 
 {{ if availability == 'high': }}
 
-				<li>Our image queue is at full capacity.
+            <li>There is a high availability of pictures today.
+		<!--		<li>Images are loaded into HITs as fast as our database server responds. -->
+			
 
 {{ else: }}
 
-            <li>You may experience periodic delays today, while our
-            client refills the image queue.
+            <li>You may experience delays today.
+            <li>If you see no pictures, we are busy uploading additional ones.
+    
+<!--    	    <li>Images are loaded into HITs as fast as our database server responds.
+            <li>You may experience periodic delays when the database server receives too requests.
+-->
 
 {{ pass }}
 
