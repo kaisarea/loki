@@ -556,9 +556,9 @@ def checkpoint(what, do_total_time=False):
 
 def soft_assert(pred, error_message=None):
     if not pred:
-        send_me_mail('ASSERT FAIL ' + error_message)
-        log('ASSERT FAIL: ' + str(error_message))
-        logger.error('ASSERT FAIL: ' + str(error_message))
+        send_me_mail('ASSERT FAIL %s' % error_message)
+        log('ASSERT FAIL: %s' % str(error_message))
+        logger.error('ASSERT FAIL: %s' % str(error_message))
 def enqueue_bonus(workerid, amount,
                   assid=None, hitid=None, study=None,
                   reason=None, delay=None):
