@@ -50,7 +50,8 @@ def index():
                                        num_tags)
         othervars['actual_price'] = pay
 
-        bonus_message = '''Thank you for working on our HIT today. We approved %d of your 25 tags, which earns you $%.2f of the possible $%.2f for this HIT.
+        bonus_message = '''
+Thank you for working on our HIT today. We approved %d of your 25 tags, which earns you $%.2f of the possible $%.2f for this HIT.
 
 By paying in bonus, we are able to approve every honest HIT you submit, and increase your Approval Rating.
 
