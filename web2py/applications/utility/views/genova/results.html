@@ -1,0 +1,36 @@
+<script src="/static/js/jquery.js"></script>
+<style>
+.result {
+	margin: 20px;
+	padding: 10px;
+	background-color: #eee;
+	font-size: 13px;
+}
+</style>
+{{ from gluon.tools import prettydate }}
+
+<h1>Results for Study {{=', '.join([str(s.id) for s in studies])}}</h1>
+
+Download CSV data for study: 
+{{for s in studies:}}
+<a class="csv" href="#" study="{{=s.id}}">{{=s.id}}</a>
+{{pass}}
+
+<br><br>
+
+{{for s in studies:}}
+<iframe src="/stats/{{=s.id}}"></iframe>
+{{pass}}
+
+
+{{ for worker in results: }}
+<h2>Worker {{=worker.worker}}</h2>
+Conditions: {{=worker.condition}}<br>
+<i>Latest submission: {{=prettydate(worker.latest)}}</i>
+{{ pass }}
+
+<script>
+$('.csv').on('click', function () {
+  	$(this).load('/study_csv/' + $(this).attr('study'));
+});
+</script>

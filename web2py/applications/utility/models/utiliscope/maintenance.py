@@ -131,6 +131,97 @@ def update_ass_conditions():
                 print 'foo', len(actions), actions[0].condition if len(actions) == 1 else ''
 
 
+# ============== Database Consistency Checks =============
+def hits_with_multiple_finishes(study=''):
+    study_clause = ('and actions.study=%d' % study.id) if study else ''
+    query = """select actions.study, actions.hitid, count(actions.hitid)
+               from actions where actions.action = 'finished' %s
+               group by actions.study, actions.hitid
+               having count(*) > 1
+            """ % study_clause
+    return db.executesql(query)
+
+def hits_with_multiple_finishes2(study=None):
+    study = (db.actions.study == study) if study else (db.actions.study > 0)
+    return db((db.actions.action == 'finished') & study).select(
+        db.actions.study, db.actions.hitid, db.actions.hitid.count(),
+        groupby=(db.actions.study, db.actions.hitid),
+        having=(db.actions.hitid.count() > 1)
+        )
+
+def hits_with_multiple_asses(study=None):
+    study_clause = ('and actions.study=%d' % study.id) if study else ''
+
+    query = """select actions.study, actions.hitid, count(distinct(actions.assid))
+               from actions where assid != 'ASSIGNMENT_ID_NOT_AVAILABLE' %s
+               group by actions.study, actions.hitid
+               having count(distinct(actions.assid)) > 1
+            """ % study_clause
+    return db.executesql(query)
+
+def asses_with_multiple_finishes(study=None):
+    study_clause = ('and actions.study=%d' % study.id) if study else ''
+    query = """select actions.study, actions.assid, count(*)
+               from actions where actions.action = 'finished' %s
+               group by actions.study, actions.assid
+               having count(*) > 1
+            """ % study_clause
+    return db.executesql(query)
+
+def asses_with_multiple_workers(study=None):
+    study_clause = ('and actions.study=%d' % study.id) if study else ''
+
+    query = """select actions.study, actions.assid, count(distinct(actions.workerid))
+               from actions where assid != 'ASSIGNMENT_ID_NOT_AVAILABLE' %s
+               group by actions.study, actions.assid
+               having count(distinct(actions.workerid)) > 1
+            """ % study_clause
+    return db.executesql(query)
+
+def asses_with_multiple_hits(study=None):
+    study_clause = ('and actions.study=%d' % study.id) if study else ''
+
+    query = """select actions.study, actions.assid, count(distinct(actions.hitid))
+               from actions where assid != 'ASSIGNMENT_ID_NOT_AVAILABLE' %s
+               group by actions.study, actions.assid
+               having count(distinct(actions.hitid)) > 1
+            """ % study_clause
+    return db.executesql(query)
+
+def thingthings_with_multiple_things(thing1, thing2, thing3, study):
+    study_clause = ('and actions.study=%d' % study.id) if study else ''
+
+    query = """select actions.study, actions.%(thing1)sid, actions.%(thing2)sid, count(distinct(actions.%(thing3)sid))
+               from actions where workerid != 'WORKER_ID_NOT_AVAILABLE' and assid != 'ASSIGNMENT_ID_NOT_AVAILABLE' %(study)s
+               group by actions.study, actions.%(thing1)sid, actions.%(thing2)sid
+               having count(distinct(actions.%(thing3)sid)) > 1
+            """ % {'study': study_clause,
+                   'thing1': thing1,
+                   'thing2': thing2,
+                   'thing3': thing3}
+    return db.executesql(query)
+
+def workerhits_with_multiple_asses(study=None):
+    return thingthings_with_multiple_things('worker', 'hit', 'ass', study)
+def asshits_with_multiple_workers(study=None):
+    return thingthings_with_multiple_things('ass', 'hit', 'worker', study)
+def workerasses_with_multiple_hits(study=None):
+    return thingthings_with_multiple_things('worker', 'ass', 'hit', study)
+
+all_consistency_funcs = '''hits_with_multiple_finishes
+    hits_with_multiple_asses
+    asses_with_multiple_finishes
+    asses_with_multiple_workers
+    asses_with_multiple_hits
+    workerhits_with_multiple_asses
+    asshits_with_multiple_workers
+    workerasses_with_multiple_hits'''.split()
+
+def check_database_constraints(study=None):
+    for func in all_consistency_funcs:
+        exec('tmp = %s(study)' % func)
+        print ('Found %s %s' % (len(tmp), func.replace('_', ' ')))
+
 # ============== From When Shit Hit Fans =============
 def pay_worker_extra(workerid, amount, reason):
     '''	Finds a recent assignment that the worker completed and pays                         
