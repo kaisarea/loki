@@ -54,6 +54,10 @@ def send_email(to, subject, message):
         mail.send(to, subject, message)
     debug_t('Sent!')
 
+@log_scheduler_errors
+def message_turk_worker(worker, subject_line, message_body):
+    turk.message_worker(worker, subject_line, message_worker)
+
 
 # Initial Setup, Periodic Maintenance
 @log_scheduler_errors
@@ -246,6 +250,25 @@ def schedule_hit(launch_date, study, task, othervars):
                    task = task,
                    othervars = sj.dumps(othervars))
     db.commit()
+
+
+def launch_test_study(task, num_hits=1, nonce=None):
+    study_name = 'teststudy %s' % task
+    if nonce: study_name += ' %s' % nonce
+    launch_study(num_hits, task, study_name, " ... test ...")
+
+
+def launch_pinger(num_hits, seconds_until_complete, study_id):
+    time = datetime.now()
+    delay = timedelta(seconds = float(seconds_until_complete) / num_hits)
+    log('Launching %s hits, with %s in between, for a total of %.2f hours'
+        % (num_hits, delay, seconds_until_complete / 60.0 / 60.0))
+    for i in range(num_hits):
+        time = time + delay
+        #log('Scheduling at %s' % time)
+        schedule_hit(time, study_id, db.studies(study_id).task, {})
+    db.commit()
+
 def launch_study(num_hits, task, name, description, hit_params=None):
     # Hit params default to what's in options, but can be overridden here
     params = task in options and 'hit_params' in options[task] and options[task]['hit_params'] or {}
@@ -263,20 +286,6 @@ def launch_study(num_hits, task, name, description, hit_params=None):
 
     for i in range(num_hits):
         schedule_hit(datetime.now(), study.id, task, {})
-    db.commit()
-def launch_test_study(task, num_hits=1, nonce=None):
-    study_name = 'teststudy %s' % task
-    if nonce: study_name += ' %s' % nonce
-    launch_study(num_hits, task, study_name, " ... test ...")
-
-
-def launch_pinger(num_hits, delay_seconds, study_id, task):
-    time = datetime.now()
-    delay = timedelta(seconds=delay_seconds)
-    for i in range(num_hits):
-        time = time + delay
-        log('Scheduling at %s' % time)
-        schedule_hit(time, study_id, task, {})
     db.commit()
 
 

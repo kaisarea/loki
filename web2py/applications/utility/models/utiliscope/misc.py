@@ -1,22 +1,24 @@
 import types
 
 # ============== Database Helpers =============
-for table in db.tables:
-    def first(self):
-        return db(self.id>0).select(orderby=self.id, limitby=(0,1)).first()
-    def last(self, N=1):
-        rows = db(self.id>0).select(orderby=~self.id, limitby=(0,N))
-        return rows.first() if N==1 else rows
-    def all(self, *cols, **rest):
-        return db(self.id>0).select(*cols, **rest)
-    def count(self):
-        return db(self.id>0).count()
-    t = db[table]
-    t.first = types.MethodType(first, t)
-    t.last = types.MethodType(last, t)
-    t.all = types.MethodType(all, t)
-    # Count causing an error
-    #t.count = types.MethodType(count, t)
+def create_table_helpers():
+    for table in db.tables:
+        def first(self):
+            return db(self.id>0).select(orderby=self.id, limitby=(0,1)).first()
+        def last(self, N=1):
+            rows = db(self.id>0).select(orderby=~self.id, limitby=(0,N))
+            return rows.first() if N==1 else rows
+        def all(self, *cols, **rest):
+            return db(self.id>0).select(*cols, **rest)
+        def count(self):
+            return db(self.id>0).count()
+        t = db[table]
+        t.first = types.MethodType(first, t)
+        t.last = types.MethodType(last, t)
+        t.all = types.MethodType(all, t)
+        # Count causing an error
+        #t.count = types.MethodType(count, t)
+create_table_helpers()
 
 # =========
 def get_one(query):
@@ -42,6 +44,20 @@ def update_or_insert_one(table, column, equalto, values):
         values[column] = equalto
         table.insert(**values)
 
+# ============== Toggle Sandbox =============
+
+# This is only designed to work at the shell so far.  ... I haven't
+# thought through what it would take for it to toggle the sandbox
+# variable on a live running server.
+
+def toggle_sandbox():
+    global sandboxp
+    sandboxp = not sandboxp
+    turk.SANDBOXP = not turk.SANDBOXP
+    define_database()
+    create_table_helpers()
+    turk.define_database()
+    print ('Now, sandboxp is %s' % str(sandboxp).upper())
 
 # ============== Turk Fees and Price Calculation =============
 def add_turk_fees(hit_price):

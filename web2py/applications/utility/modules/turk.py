@@ -510,34 +510,179 @@ def add_turk_fees(hit_price):
 # ==================================
 #now=datetime.now()
 
-database = 'hits.db' if SANDBOXP else 'hits-sandbox.db'
-db = DAL('sqlite://' + database)
+def define_database():
+    global db, Hits, Assignments
+    database = 'hits.db' if SANDBOXP else 'hits-sandbox.db'
+    db = DAL('sqlite://' + database)
 
-db.define_table('hits',
-                db.Field('hitid', 'text'),
-                db.Field('status', 'text', default='open'),
-                db.Field('xmlcache', 'text'), # Local copy of mturk xml
-                db.Field('launch_date', 'datetime'),
-                db.Field('other', 'text')) # Not used yet...
+    db.define_table('hits',
+                    db.Field('hitid', 'text'),
+                    db.Field('status', 'text', default='open'),
+                    db.Field('xmlcache', 'text'), # Local copy of mturk xml
+                    db.Field('launch_date', 'datetime'),
+                    db.Field('other', 'text')) # Not used yet...
 
-db.define_table('assignments',
-                db.Field('assid', 'text'),
-                db.Field('hitid', 'text'),
-                db.Field('workerid', 'text'),
-                db.Field('ip', 'text'),
-                db.Field('status', 'text'),
-                db.Field('xmlcache', 'text'),
-                # How did I use this flag?  Don't recall.
-                #db.Field('cache_dirty', 'boolean', default=True),
-                db.Field('accept_time', 'datetime'),
-                # Need to update 'paid' to include the amount paid in
-                # NON-BONUS rewards. My code only paid in bonus.
-                db.Field('paid', 'double', default=0.0),
-                db.Field('other', 'text', default=''))
+    db.define_table('assignments',
+                    db.Field('assid', 'text'),
+                    db.Field('hitid', 'text'),
+                    db.Field('workerid', 'text'),
+                    db.Field('ip', 'text'),
+                    db.Field('status', 'text'),
+                    db.Field('xmlcache', 'text'),
+                    # How did I use this flag?  Don't recall.
+                    #db.Field('cache_dirty', 'boolean', default=True),
+                    db.Field('accept_time', 'datetime'),
+                    # Need to update 'paid' to include the amount paid in
+                    # NON-BONUS rewards. My code only paid in bonus.
+                    db.Field('paid', 'double', default=0.0),
+                    db.Field('other', 'text', default=''))
 
-db.define_table('store',
-                db.Field('key', 'text', unique=True),
-                db.Field('value', 'text'))
+    db.define_table('store',
+                    db.Field('key', 'text', unique=True),
+                    db.Field('value', 'text'))
+
+    # ==================================
+    #  Boilerplate database helper functions I use in every DAL
+    # ==================================
+
+    # These are some helpers I like in every web2py DAL project
+    import types
+    for table in db.tables:
+        def first(self):
+            return db(self.id>0).select(orderby=self.id, limitby=(0,1)).first()
+        def last(self, n=1):
+            rows = db(self.id>0).select(orderby=~self.id, limitby=(0,n))
+            if n==1: return rows.first()
+            return rows
+        def all(self, *stuff, **rest):
+            return db(self.id>0).select(*stuff, **rest)
+        t = db[table]
+        t.first = types.MethodType(first, t)
+        t.last = types.MethodType(last, t)
+        t.all = types.MethodType(all, t)
+
+    def lazy(f):
+       def g(self,f=f):
+           import copy
+           self=copy.copy(self)
+           return lambda *a,**b: f(self,*a,**b)
+       return g
+
+    def extra_db_methods_vf(clss):
+       ''' This decorator clears virtualfields on the table and replaces
+           them with the methods on this class.
+       '''
+       # First let's make the methods lazy
+       for k in clss.__dict__.keys():
+          if type(getattr(clss, k)).__name__ == 'instancemethod':
+             setattr(clss, k, lazy(getattr(clss, k)))
+
+       tablename = clss.__name__.lower()
+       if not tablename in db:
+          raise Error('There is no `%s\' table to put virtual methods in' % tablename)
+       del db[tablename].virtualfields[:] # We clear virtualfields each time
+       db[tablename].virtualfields.append(clss())
+       return clss
+
+    def store_get(key):
+        r = db(db.store.key==key).select().first()
+        return r and json.loads(r.value)
+    def store_set(key, value):
+        value = json.dumps(value); record = db.store(db.store.key==key)
+        result = record.update_record(value=value) \
+            if record else db.store.insert(key=key, value=value)
+        db.commit()
+        return result
+    def store_append(key, value, max_length=None):
+        x = store_get(key) or []; x.append(value)
+        if max_length and len(x) > max_length:
+            x = x[-max_length:]
+        return store_set(key, x)
+
+    # ==================================
+    #  DB helper methods
+    # ==================================
+
+    class Hits():
+        def open(self):
+            openhit(xmlify(self.hits.xmlcache))
+    Hits = extra_db_methods_vf(Hits)
+
+    class Assignments():
+        def get_status(self):
+            return assignment_status(self.assignments.assid,
+                                     self.assignments.hitid)
+        def approve(self):
+            if self.assignments.status == u'Rejected':
+                print 'Rejected this guy'
+                return 'Rejected'
+            if self.assignments.status == u'Approved':
+                return 'Done'
+            try:
+                result = approve_assignment(self.assignments.assid)
+                return result
+            except TurkAPIError, e:
+                status = self.assignments.get_status()
+                if status == u'Approved':
+                    self.assignments.update_record(status=status)
+                    db.commit()
+                    return 'Already done'
+                else:
+                    print e
+                    print 'Status is %s' % self.assignments.get_status()
+                    return 'Error... bla'
+        def reject(self):
+            if self.assignments.status == u'Rejected':
+                return 'Done'
+            if self.assignments.status == u'Approved':
+                print 'Approved this guy'
+                return 'Approved'
+            try:
+                result = reject_assignment(self.assignments.assid)
+                return result
+            except TurkAPIError, e:
+                status = self.assignments.get_status()
+                if status == u'Rejected':
+                    self.assignments.update_record(status=status)
+                    db.commit()
+                    return 'Already done'
+                else:
+                    print e
+                    print 'Status is %s' % self.assignments.get_status()
+                    return 'Error... bla'
+
+        def bonus_up_to(self, amount, reason):
+            if self.assignments.paid < amount:
+                val = give_bonus_up_to(self.assignments.assid,
+                                       self.assignments.workerid,
+                                       amount, reason)
+                self.assignments.update_record(paid = amount)
+                db.commit()
+                return val
+            else:
+                return 'Already paid this ass $%s' % amount
+
+        def amount_paid(self):
+            result = 0.0
+            # Get approval amount
+            if self.assignments.status == u'Approved':
+                hit = db.hits(hitid=self.assignments.hitid)
+                result += add_turk_fees(float(get(xmlify(hit.xmlcache), 'Amount')))
+            # Add in bonus amount
+            if self.assignments.paid > 0.0:
+                result += add_turk_fees(self.assignments.paid)
+
+            return result
+
+    Assignments = extra_db_methods_vf(Assignments)
+
+    db.assignments.total_paid = \
+        types.MethodType(lambda table: sum([x.amount_paid() for x in table.all()]),
+                         db.assignments)
+
+define_database()
+
+
 
 def update_hit(xml=None, hitid=None):
     if xml:
@@ -630,143 +775,3 @@ def fetch_from_amazon(n=None):
             else:
                 db.assignments.insert(**params)
             db.commit()
-    
-
-# ==================================
-#  Boilerplate database helper functions I use in every DAL
-# ==================================
-
-# These are some helpers I like in every web2py DAL project
-import types
-for table in db.tables:
-    def first(self):
-        return db(self.id>0).select(orderby=self.id, limitby=(0,1)).first()
-    def last(self, n=1):
-        rows = db(self.id>0).select(orderby=~self.id, limitby=(0,n))
-        if n==1: return rows.first()
-        return rows
-    def all(self, *stuff, **rest):
-        return db(self.id>0).select(*stuff, **rest)
-    t = db[table]
-    t.first = types.MethodType(first, t)
-    t.last = types.MethodType(last, t)
-    t.all = types.MethodType(all, t)
-
-def lazy(f):
-   def g(self,f=f):
-       import copy
-       self=copy.copy(self)
-       return lambda *a,**b: f(self,*a,**b)
-   return g
-
-def extra_db_methods_vf(clss):
-   ''' This decorator clears virtualfields on the table and replaces
-       them with the methods on this class.
-   '''
-   # First let's make the methods lazy
-   for k in clss.__dict__.keys():
-      if type(getattr(clss, k)).__name__ == 'instancemethod':
-         setattr(clss, k, lazy(getattr(clss, k)))
-
-   tablename = clss.__name__.lower()
-   if not tablename in db:
-      raise Error('There is no `%s\' table to put virtual methods in' % tablename)
-   del db[tablename].virtualfields[:] # We clear virtualfields each time
-   db[tablename].virtualfields.append(clss())
-   return clss
-
-def store_get(key):
-    r = db(db.store.key==key).select().first()
-    return r and json.loads(r.value)
-def store_set(key, value):
-    value = json.dumps(value); record = db.store(db.store.key==key)
-    result = record.update_record(value=value) \
-        if record else db.store.insert(key=key, value=value)
-    db.commit()
-    return result
-def store_append(key, value, max_length=None):
-    x = store_get(key) or []; x.append(value)
-    if max_length and len(x) > max_length:
-        x = x[-max_length:]
-    return store_set(key, x)
-
-# ==================================
-#  DB helper methods
-# ==================================
-
-class Hits():
-    def open(self):
-        openhit(xmlify(self.hits.xmlcache))
-Hits = extra_db_methods_vf(Hits)
-
-class Assignments():
-    def get_status(self):
-        return assignment_status(self.assignments.assid,
-                                 self.assignments.hitid)
-    def approve(self):
-        if self.assignments.status == u'Rejected':
-            print 'Rejected this guy'
-            return 'Rejected'
-        if self.assignments.status == u'Approved':
-            return 'Done'
-        try:
-            result = approve_assignment(self.assignments.assid)
-            return result
-        except TurkAPIError, e:
-            status = self.assignments.get_status()
-            if status == u'Approved':
-                self.assignments.update_record(status=status)
-                db.commit()
-                return 'Already done'
-            else:
-                print e
-                print 'Status is %s' % self.assignments.get_status()
-                return 'Error... bla'
-    def reject(self):
-        if self.assignments.status == u'Rejected':
-            return 'Done'
-        if self.assignments.status == u'Approved':
-            print 'Approved this guy'
-            return 'Approved'
-        try:
-            result = reject_assignment(self.assignments.assid)
-            return result
-        except TurkAPIError, e:
-            status = self.assignments.get_status()
-            if status == u'Rejected':
-                self.assignments.update_record(status=status)
-                db.commit()
-                return 'Already done'
-            else:
-                print e
-                print 'Status is %s' % self.assignments.get_status()
-                return 'Error... bla'
-        
-    def bonus_up_to(self, amount, reason):
-        if self.assignments.paid < amount:
-            val = give_bonus_up_to(self.assignments.assid,
-                                   self.assignments.workerid,
-                                   amount, reason)
-            self.assignments.update_record(paid = amount)
-            db.commit()
-            return val
-        else:
-            return 'Already paid this ass $%s' % amount
-
-    def amount_paid(self):
-        result = 0.0
-        # Get approval amount
-        if self.assignments.status == u'Approved':
-            hit = db.hits(hitid=self.assignments.hitid)
-            result += add_turk_fees(float(get(xmlify(hit.xmlcache), 'Amount')))
-        # Add in bonus amount
-        if self.assignments.paid > 0.0:
-            result += add_turk_fees(self.assignments.paid)
-
-        return result
-
-Assignments = extra_db_methods_vf(Assignments)
-
-db.assignments.total_paid = \
-    types.MethodType(lambda table: sum([x.amount_paid() for x in table.all()]),
-                     db.assignments)

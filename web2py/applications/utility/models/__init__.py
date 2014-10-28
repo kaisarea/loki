@@ -84,170 +84,174 @@ def singleton(v):
     return v[0] if isinstance(v,list) else v
 
 # Set the database
-if sqlitep:
-    database = ('sqlite://%s_sandbox.db' % database_name ) if sandboxp else \
-               ('sqlite://%s.db' % database_name)
-    db = SQLDB(database)
-else:
-    database = 'postgres://%s:%s@localhost:5432/%s' % (database_login_pass
-                                                       + (database_name,))
-    if sandboxp: database += '_sandbox'
-    db = SQLDB(database, pool_size=100)
-session.connect(request, response, db)  # store sessions in database
+def define_database():
+    global db, now
+    if sqlitep:
+        database = ('sqlite://%s_sandbox.db' % database_name ) if sandboxp else \
+                   ('sqlite://%s.db' % database_name)
+        db = SQLDB(database)
+    else:
+        database = 'postgres://%s:%s@localhost:5432/%s' % (database_login_pass
+                                                           + (database_name,))
+        if sandboxp: database += '_sandbox'
+        db = SQLDB(database, pool_size=0) # try to experiment with the pool size!!!!!
+    session.connect(request, response, db)  # store sessions in database
 
-# Define the database tables
-now=datetime.now()
-db.define_table('conditions',
-                db.Field('json', 'text'),
-                migrate=migratep, fake_migrate=fake_migratep)
+    # Define the database tables
+    now=datetime.now()
+    db.define_table('conditions',
+                    db.Field('json', 'text'),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('studies',
-                db.Field('launch_date', 'datetime'),
-                db.Field('name', 'text'),
-                db.Field('description', 'text'),
-                db.Field('task', 'text'),
-                db.Field('conditions', 'text'),
-                db.Field('hit_params', 'text', default='{}'),
-                db.Field('results', 'text'),
-                db.Field('publish', 'boolean', default=False),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('studies',
+                    db.Field('launch_date', 'datetime'),
+                    db.Field('name', 'text'),
+                    db.Field('description', 'text'),
+                    db.Field('task', 'text'),
+                    db.Field('conditions', 'text'),
+                    db.Field('hit_params', 'text', default='{}'),
+                    db.Field('results', 'text'),
+                    db.Field('publish', 'boolean', default=False),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('condition_choices',
-                db.Field('condition', db.conditions),
-                db.Field('workerid', 'text'),
-                db.Field('study', db.studies),
-                db.Field('phase', 'integer'),
-                db.Field('time_assigned', 'datetime'))
+    db.define_table('condition_choices',
+                    db.Field('condition', db.conditions),
+                    db.Field('workerid', 'text'),
+                    db.Field('study', db.studies),
+                    db.Field('phase', 'integer'),
+                    db.Field('time_assigned', 'datetime'))
 
-db.define_table('actions',
-                db.Field('study', db.studies),
-                db.Field('action', 'text'),
-                db.Field('hitid', 'text'),
-                db.Field('workerid', 'text'),
-                db.Field('assid', 'text'),
-                db.Field('time', 'datetime', default=now),
-                db.Field('ip', 'text'),
-                db.Field('condition', db.conditions),
-                db.Field('phase', 'integer'),
-                db.Field('other', 'text'),
-                #db.Field('cookieid', 'text'),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('actions',
+                    db.Field('study', db.studies),
+                    db.Field('action', 'text'),
+                    db.Field('hitid', 'text'),
+                    db.Field('workerid', 'text'),
+                    db.Field('assid', 'text'),
+                    db.Field('time', 'datetime', default=now),
+                    db.Field('ip', 'text'),
+                    db.Field('condition', db.conditions),
+                    db.Field('phase', 'integer'),
+                    db.Field('other', 'text'),
+                    #db.Field('cookieid', 'text'),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('dead_zones',
-                db.Field('study', db.studies),
-                db.Field('start_time', 'datetime'),
-                db.Field('end_time', 'datetime'),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('dead_zones',
+                    db.Field('study', db.studies),
+                    db.Field('start_time', 'datetime'),
+                    db.Field('end_time', 'datetime'),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('runs',
-                db.Field('workerid', 'text'),
-                db.Field('length', 'integer'),
-                db.Field('start_time', 'datetime'),
-                db.Field('end_time', 'datetime'),
-                db.Field('study', db.studies),
-                db.Field('condition', db.conditions),
-                db.Field('censored', 'boolean', default=False),
-                db.Field('bad', 'boolean', default=False),
-                db.Field('other', 'text'),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('runs',
+                    db.Field('workerid', 'text'),
+                    db.Field('length', 'integer'),
+                    db.Field('start_time', 'datetime'),
+                    db.Field('end_time', 'datetime'),
+                    db.Field('study', db.studies),
+                    db.Field('condition', db.conditions),
+                    db.Field('censored', 'boolean', default=False),
+                    db.Field('bad', 'boolean', default=False),
+                    db.Field('other', 'text'),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('countdown',
-                db.Field('assid', 'text'),
-                db.Field('count', 'integer'),
-                db.Field('waiting', 'boolean', default=False),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('countdown',
+                    db.Field('assid', 'text'),
+                    db.Field('count', 'integer'),
+                    db.Field('waiting', 'boolean', default=False),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('hits',
-                db.Field('hitid', 'text', unique=True),
-                db.Field('study', db.studies),
+    db.define_table('hits',
+                    db.Field('hitid', 'text', unique=True),
+                    db.Field('study', db.studies),
 
-                # Status can be {unlaunched, open, getting done, closed}
-                db.Field('status', 'text', default='open'),
+                    # Status can be {unlaunched, open, getting done, closed}
+                    db.Field('status', 'text', default='open'),
 
-                # xmlcache is a local copy of mturk xml
-                db.Field('xmlcache', 'text'),
+                    # xmlcache is a local copy of mturk xml
+                    db.Field('xmlcache', 'text'),
 
-                db.Field('launch_date', 'datetime'),
-                db.Field('task', 'text'),
+                    db.Field('launch_date', 'datetime'),
+                    db.Field('task', 'text'),
 
-                # Variables passed to the controller
-                # -- NO LONGER USED
-                db.Field('price', 'double'),
-                db.Field('othervars', 'text'),
+                    # Variables passed to the controller
+                    # -- NO LONGER USED
+                    db.Field('price', 'double'),
+                    db.Field('othervars', 'text'),
 
-                # Info for later
-                db.Field('url', 'text'),
+                    # Info for later
+                    db.Field('url', 'text'),
 
-                migrate=migratep, fake_migrate=fake_migratep)
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('assignments',
-                db.Field('assid', 'text', unique=True),
-                db.Field('hitid', 'text'),
-                db.Field('workerid', 'text'),
-                db.Field('status', 'text'),
-                db.Field('xmlcache', 'text'),
-                db.Field('cache_dirty', 'boolean', default=True),
-                db.Field('accept_time', 'datetime'),
-                db.Field('paid', 'double', default=0.0),
-                db.Field('condition', db.conditions),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('assignments',
+                    db.Field('assid', 'text', unique=True),
+                    db.Field('hitid', 'text'),
+                    db.Field('workerid', 'text'),
+                    db.Field('status', 'text'),
+                    db.Field('xmlcache', 'text'),
+                    db.Field('cache_dirty', 'boolean', default=True),
+                    db.Field('accept_time', 'datetime'),
+                    db.Field('paid', 'double', default=0.0),
+                    db.Field('condition', db.conditions),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('bonus_queue',
-                # HOW THE BONUS QUEUE WORKS:
-                # For each item in the queue, we will:
-                #   - Approve the assignment (if it has an assid and hitid)
-                #   - Then bonus the worker with the bonus amount
-                #   - It will automatically find an existing assid/hitid to bonus if none is specified
-                db.Field('assid', 'text'),
-                db.Field('hitid', 'text'),
-                db.Field('worker', 'text'),
-                db.Field('amount', 'text'),
-                db.Field('reason', 'text'),
-                db.Field('delay', 'integer', default=0),
-                db.Field('study', db.studies),
-                migrate=migratep, fake_migrate=fake_migratep)
-                
+    db.define_table('bonus_queue',
+                    # HOW THE BONUS QUEUE WORKS:
+                    # For each item in the queue, we will:
+                    #   - Approve the assignment (if it has an assid and hitid)
+                    #   - Then bonus the worker with the bonus amount
+                    #   - It will automatically find an existing assid/hitid to bonus if none is specified
+                    db.Field('assid', 'text'),
+                    db.Field('hitid', 'text'),
+                    db.Field('worker', 'text'),
+                    db.Field('amount', 'text'),
+                    db.Field('reason', 'text'),
+                    db.Field('delay', 'integer', default=0),
+                    db.Field('study', db.studies),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('continents',
-                db.Field('code','string'),
-                db.Field('name','string'),
-                migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('countries',
-                db.Field('code','string'),
-                db.Field('name','string'),
-                db.Field('continent', db.continents),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('continents',
+                    db.Field('code','string'),
+                    db.Field('name','string'),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('ips',
-                db.Field('from_ip','string'),
-                db.Field('to_ip','string'),
-                db.Field('country', db.countries),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('countries',
+                    db.Field('code','string'),
+                    db.Field('name','string'),
+                    db.Field('continent', db.continents),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('workers',
-                db.Field('workerid', 'text', unique=True),
-                db.Field('cookieid', 'text', default=None),
-                db.Field('first_seen', 'datetime', default=now),
-                db.Field('last_seen', 'datetime'),
-                db.Field('latest_ip', 'text'),
-                db.Field('bonus_paid', 'double', default=0.0),
-                db.Field('bonus_earned', 'double', default=0.0),
-                db.Field('country', db.countries),
-                db.Field('time_zone', 'integer'), # hours offset from mine
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('ips',
+                    db.Field('from_ip','string'),
+                    db.Field('to_ip','string'),
+                    db.Field('country', db.countries),
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('feedback',
-                db.Field('time', 'datetime', default=now),
-                db.Field('hitid', 'text'),
-                db.Field('workerid', 'text'),
-                db.Field('assid', 'text'),
-                db.Field('message', 'text'),
-                migrate=migratep, fake_migrate=fake_migratep)
+    db.define_table('workers',
+                    db.Field('workerid', 'text', unique=True),
+                    db.Field('cookieid', 'text', default=None),
+                    db.Field('first_seen', 'datetime', default=now),
+                    db.Field('last_seen', 'datetime'),
+                    db.Field('latest_ip', 'text'),
+                    db.Field('bonus_paid', 'double', default=0.0),
+                    db.Field('bonus_earned', 'double', default=0.0),
+                    db.Field('country', db.countries),
+                    db.Field('time_zone', 'integer'), # hours offset from mine
+                    migrate=migratep, fake_migrate=fake_migratep)
 
-db.define_table('store',
-                db.Field('key', 'text', unique=True),
-                db.Field('value', 'text'))
+    db.define_table('feedback',
+                    db.Field('time', 'datetime', default=now),
+                    db.Field('hitid', 'text'),
+                    db.Field('workerid', 'text'),
+                    db.Field('assid', 'text'),
+                    db.Field('message', 'text'),
+                    migrate=migratep, fake_migrate=fake_migratep)
+
+    db.define_table('store',
+                    db.Field('key', 'text', unique=True),
+                    db.Field('value', 'text'))
+
+define_database()
 
 # Database helpers
 def store_get(key):
