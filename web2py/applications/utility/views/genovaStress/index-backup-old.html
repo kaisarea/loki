@@ -1,0 +1,332 @@
+{{ extend 'layout.html' }}
+<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/static/prisoner/jquery.tooltip.min.js"></script>
+<link rel="stylesheet" href="/static/prisoner/css/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+<script type="text/javascript" src="/static/prisoner/jquery.fancybox.pack.js?v=2.1.5"></script>
+<link rel="stylesheet" href="/static/prisoner/css/prisoner.css" type="text/css" media="screen"/>
+
+{{ include 'stats_box.html' }}
+
+<style>
+.keyword {
+	position: absolute; 
+	left: 56px;
+	}  
+</style>
+
+
+{{ bonus_time = 60 }}
+
+{{ include 'genova/training.html' }}
+
+<h1>Tag Images</h1>
+
+{{ stats_box() }}
+
+<div style="max-width: 325px; margin-bottom: 175px" class="taskdetails">
+<p>
+
+You will be presented with a series of pictures. Provide 5 tags that most
+appropriately describe the content of these pictures.
+The pictures may contain content that some find disturbing (explicit sexual
+content, violence, racism, etc.).  
+    
+</p>
+</div>
+
+<form action id="response" method="POST">
+{{ i = 0 }}
+{{ while i < len(pics): }}
+<h2 style="margin-top: 75px;">Image</h2>
+<img style="max-width: 800px;" src={{ = pics[i].url }}>
+<!-- FROM http://www.morguefile.com/archive -->
+<h2>Submit your Tags</h2>
+<p>
+<div style="position: relative;">
+<div class={{ = "train_info" if hit_num == 0 else "train_info_hidden" }}>
+<p>You must complete <a class="training" href="#training">image tagging training</a>
+                 before working.</p>
+</div>
+<div class={{ = "work_limit" if (work_limit == hit_num) else "work_limit_hidden" }}>
+{{ if (hit_num != 0) : }}
+<p>You have finished all the HITs available. There is no more work to be done. Thank you for your participation!</p>
+{{ pass }}
+</div>
+
+<div class="key_inputs" style="position: absolute; left: 0px; top: 0px;">
+{{ for j in [1, 2, 3, 4, 5]: }}
+{{ id = "keyword" + str(i*5+j) }}
+<span style="position: relative;">Tag {{=j}}: </span><input {{ = "disabled" if hit_num == 0 else "" }} name="image_tag" type="text" id={{=id}} class="keyword"><br>
+{{ pass }}
+{{ i += 1 }}
+</div>
+
+<!--<div style="position: relative; top: -100px;">-->
+<table style="position: relative; top: -10px;">
+<tr>
+  <td style="vertical-align: middle;">This photo is
+  <td>
+    <div>  
+{{ radio_id = "disturbingness" + str(i) }}
+      <input {{ = "disabled" if hit_num == 0 else "" }} style="margin: 2px 5px 2px 5px;" type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="0">appropriate<br>
+      <input {{ = "disabled" if hit_num == 0 else "" }} style="margin: 2px 5px 2px 5px;" type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="1">inappropriate
+    </div>
+  <td style="vertical-align: middle;">for a PG audience.
+</table>
+{{ pass }}
+<input id="submit" type="submit" disabled="true" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
+</form>
+
+</div>
+</p>
+
+
+<script>
+params = {
+    track: true,
+    delay: 0, 
+    showURL: false, 
+    showBody: " - ", 
+    fade: 150,
+    fixPNG: true, 
+    opacity: 1, 
+    left: -120,
+     top: 9
+};
+$('.bonus').tooltip(params);
+delete params.left
+delete params.top
+$('.crime').tooltip(params);
+
+//######## Keywords for the actual task and the behavior of the Submit button of the 
+//######## actual task
+
+    
+     
+function show_training() {
+  scrollTo(0,0);
+  jQuery('#shadow').fadeIn().find('button').click(function(e) {
+    e.preventDefault();
+    if($('input[id=quiz_given]').val()=='0')
+    {
+      overall = 15;
+    }
+    else
+    {
+      overall = $('.quiz input[name=correct]').length;
+    }
+
+    if(overall == 15)
+    {
+      $('form input:text').prop("disabled", false);
+      $('form input:radio').prop("disabled", false);
+      $('#shadow').fadeOut();
+      //$('.train_info').fadeOut();
+	$('.train_info').css('visibility', 'hidden');
+	$('.train_info').css('display', 'block');
+// Nail: I commented this because it was creating undue space between 'Submit your Keywords' and the text entries themselves (Apr 13)
+//      $('.key_inputs').css('position', 'relative');
+      if($('input[id=quiz_given]').val()=='1')
+      {
+        $('.congrats').fadeIn();
+      }
+      $('.trainbutton').fadeIn();
+      window.scroll(0,0);
+    }
+    else
+    {
+        $('div.err').remove();
+	$('div.cor').remove();
+	if($('div[name=batch1] input[name=empty]').length > 0 | $('div[name=batch1] input[name=incorrect]').length > 0)
+	{
+		$('.quiz div[name=batch1]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the first batch of questions!</div>');
+	}
+	else
+	{
+		$('.quiz div[name=batch1]').after('<div class="cor" style="left: 1em; clear: both;">Success!</div>');
+	}
+	if($('div[name=batch2] input[name=empty]').length > 0 | $('div[name=batch2] input[name=incorrect]').length > 0)
+	{
+		$('.quiz div[name=batch2]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the second batch of questions!</div>');
+	}
+	else
+	{
+		$('.quiz div[name=batch2]').after('<div class="cor" style="left: 1em; clear: both;">Success!</div>');
+	}
+	if($('div[name=batch3] input[name=empty]').length > 0 | $('div[name=batch3] input[name=incorrect]').length > 0)
+	{
+		$('.quiz div[name=batch3]').after('<div class="err" style="left: 1em; clear: both;">You have either filled incorrectly or not at all one of the fields in the third batch of questions!</div>');
+	}
+	else
+	{
+		$('.quiz div[name=batch3]').after('<div class="cor" style="left: 1em; clear: both;">Success!</div>');
+	}
+    }
+  });
+}
+
+$('.quiz input:text').on("change", function() { 
+        /* ... */ 
+  possible_answers = new Array("object", "orientation", "emotion", "technique", "time", "color",
+        "emotion", "artistic genre");
+  user_answer = new Array(this.value.toLowerCase());
+  if($(user_answer).not(possible_answers).length != 0)
+  {
+             if($(this).attr('id').length==4)
+        {
+          multiplier = $(this).attr('id')[3];
+        }
+        else
+        {
+          multiplier = $(this).attr('id')[3] + $(this).attr('id')[4];
+        }
+
+          if(multiplier < 6)
+          {
+          my_top = (multiplier-1.1)*23;
+        }
+        else if(multiplier < 11)
+        {
+          my_top = (multiplier-6.1)*23;
+        }
+        else
+        {
+          my_top = (multiplier-11.1)*23;
+        }
+        $(this).after('<span style="position: absolute; left: 200px; min-width: 200px; top: ' + my_top + 'px;" class="err">Not a possible answer!</span>');
+	$(this).attr("name", "incorrect");
+  }
+  else
+  {
+    $(this).parent().find('.err').remove();
+    position_input = $('.quiz input:text').index($(this));
+    correct_answers = new Array("orientation", "time", "technique", 
+          "emotion", "artistic genre", "technique", "emotion", "object",
+          "emotion", "object", "time", "color", "emotion",
+          "technique", "artistic genre");
+    if (correct_answers[position_input]==user_answer)
+    {
+        this.name="correct";
+    }
+    else
+    {
+        $(this).attr("name", "incorrect");
+    }
+  }        
+    });
+
+
+// ivar values = new Array();
+//var store_keywords = new Array();
+var missing = $('div.key_inputs input:text').length;
+var total_inputs = 0;
+var unique_count = 0;
+var values = new Array();
+var debug1 = "";
+var debug2 = "";
+var fivetuple_keywords = new Array();
+var duplicity_troubles = 0;
+var radios_check = 0;
+var all_radios = $('form input:radio').length/2;
+
+// The following function enables the submit button only after all the input fields are filled with image tags    
+
+
+
+$('form input:text').change(function(){
+  $('.err').remove();
+  values = new Array();
+  debug1 = $(this);
+  debug2 = $(this).parent();
+
+// IMPORTANT: jQuery('input', debug2), jQuery('input', $(this).parent()) should identify the particular div.key_inputs relevant for a given 5-tuple of tags
+
+//  store_keywords = new Array();
+  missing = 0;
+  duplicity_troubles = 0;
+  total_inputs = 0;
+$('input[class=keyword]').each(function(i) {
+    values[$(this).id] = $(this).val();
+    total_inputs = total_inputs+1;
+//    store_keywords.push($(this).val());
+    if(values[$(this).id] == "")
+    {
+      missing = missing + 1;
+    }
+});
+ 
+//#jQuery('input', $(this).parent()).each(function(j) {
+//#	fivetuple_keywords.push($(this).val());
+//#}
+
+jQuery('div.key_inputs').each(function(k) {
+        fivetuple_keywords = new Array();
+	for(var m = 0; m < 5; m++)
+       	{
+		fivetuple_keywords.push($(this).find('input')[m].value);
+	}
+        unique_ans = jQuery.unique(fivetuple_keywords);
+        if(unique_ans.length != 5) 
+     	{
+		duplicity_troubles = duplicity_troubles + 1;
+	}
+        
+});
+
+
+//#jQuery('form input:radio').each(function(l) {
+//#	if($(this).checked = true)
+//#	{
+//#		radios_check = radios_check +1;
+//#	}
+//#});
+ 
+// values = store_keywords;
+
+//  unique_keywords = jQuery.unique(values);
+  //$(this).after(jQuery.unique(store_keywords).length + total_inputs + store_keywords.length + missing + jQuery.unique(store_keywords));
+
+//  unique_count = jQuery.unique(store_keywords).length;
+  if(missing == 0 & duplicity_troubles ==0 & radios_check == all_radios)  
+  {
+    $("input[type=submit]").removeAttr('disabled');
+  }
+  else
+  {
+    $("input[type=submit]").attr("disabled", "true");
+    $(this).after('<span style="position: absolute; left: 270px; top: ' + $(this).position().top + 'px; min-width: 200px;" class="err">Check for possible duplicates or missing tags!</span>');
+  }
+});
+
+$('form input:radio').change(function(){	
+  radios_check = $('form input:radio:checked').length;
+//  if(missing == 0 & duplicity_troubles ==0 & radios_check == all_radios)  
+//  {
+//    $("input[type=submit]").removeAttr('disabled');
+//  }
+//  else
+//  {
+//    $("input[type=submit]").attr("disabled", "true");
+//    $(this).after('<span style="position: absolute; left: 350px; top: ' + $(this).position().top + 'px; min-width: 200px;" class="err">Check for duplicates, missing tags or unchecked radio buttons!</span>');
+//  }
+});
+
+function leave_training(){
+  window.scroll(0,0);
+  $('#shadow').fadeOut();
+}
+
+function hide_training() {
+  window.scroll(0,0);
+  $('#shadow').fadeOut();
+  $('.congrats').fadeOut();
+}
+
+$(".training").bind('click', show_training);
+$('.leave_training').bind('click', hide_training);    
+$(".cancel_training").bind('click', leave_training);
+
+
+$(document).on('click', 'a.training', show_training);    
+</script>

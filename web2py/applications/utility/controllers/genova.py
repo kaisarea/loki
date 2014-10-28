@@ -19,16 +19,23 @@ def index():
     
     # Choose 5 images from the 2 queues, depeding on how disagreeable we want it
     pics = []
-    for i in range(request.pics_per_task):
+    for i in range(1,request.pics_per_task+1):
         def add_pic(type):
             pics.append(genova_pics[type][progress[type]])
             progress[type] += 1
 
-        r = random.random()
-        if r < request.disagreeable/100.0:
-            add_pic('treatment')
-        else:
-            add_pic('control')
+        #r = random.random()
+        #if r < request.disagreeable/100.0:
+        #    add_pic('treatment')
+        #else:
+        #    add_pic('control')
+	# how about this
+	if i <= request.disagreeable/20.0:
+		add_pic('treatment')
+	else: 
+	    	add_pic('control')
+
+	# how about this
 
     # If this is a hit submission, then let's finish!
     if request.vars.netprog != None:
@@ -41,6 +48,9 @@ def index():
         othervars = dict()
         othervars['pics'] = pics
 	othervars['disturbingness'] = request.vars.disturbingness
+	othervars['complete_training'] = request.vars.complete_training_time
+	othervars['leave_incomplete_training'] = request_vars.leave_training_time
+	othervars['enter_training'] = request.vars.training_start_time_stamp
         othervars['request_vars'] = request.vars
 
         # Calculate a random amount to pay them, pretending that they
@@ -48,7 +58,8 @@ def index():
         pay, good_tags = randomize_pay(request.price,
                                        request.improbability_rate/100.0,
                                        num_tags)
-        othervars['actual_price'] = pay
+        othervars['approved_price'] = pay
+        othervars['approved_tags'] = good_tags
 
         bonus_message = '''
 Thank you for working on our HIT today. We approved %d of your 25 tags, which earns you $%.2f of the possible $%.2f for this HIT.
@@ -76,6 +87,7 @@ We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.p
         #log('AVAIL: delaying!!!')
 
         delay_time = int(availability_period - phase) + 2
+        record_action('wait', other={'for':delay_time})
         response.view = 'genova/wait.html'
         return dict(hit_num=hit_num,
                     hits_left= request.work_limit - hit_num,
@@ -134,8 +146,7 @@ def results():
                     orderby=~db.actions.time)
         return Storage(worker=workerid,
                        latest=rows[0].time,               
-                       condition=db.conditions(rows[0].condition).json,
-                       letters=[sj.loads(row.other)['letter'] for row in rows])
+                       condition=db.conditions(rows[0].condition).json)
 
     # Copied this code from djangosnippets
     import re
@@ -175,6 +186,7 @@ def results():
 def track_error_submit():
     log_action('error submit', other=request.vars)
     log('Tracking Error submit! vars are %s' % sj.dumps(request.vars))
+    db.commit()
     return 'Good thanks for that'
 
 def preview(): return {}

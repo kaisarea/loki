@@ -1,5 +1,5 @@
 options.genova = {'price' : [.05, .10, .15, .20, .25, .30, .35, .40, .45, .50],
-		  'disagreeable' : [0, 12.5, 25, 50, 75, 100],
+		  'disagreeable' : [0, 20, 40, 60, 80, 100],
                   'training' : [False, True],
                   'improbability_rate' : [93, 56],
                   'availability' : ['high'],
@@ -38,7 +38,11 @@ def load_genova_pics():
     global genova_pics
 
     def load_pics(subdir):
-        filenames = os.listdir("applications/utility/static/genova/%s" % subdir)
+        #filenames = os.listdir("applications/utility/static/genova/%s" % subdir)
+        #f = open('/home/econ/loki/static/genova/file_list_%s' % subdir, 'r')
+        filenames = [line.strip() for line in open('/home/econ/loki/static/genova/file_list_%s' % subdir)]
+        #test = f.readline()
+        #test.strip()
         return ['/static/genova/%s/%s' % (subdir, f) for f in filenames]
 
 

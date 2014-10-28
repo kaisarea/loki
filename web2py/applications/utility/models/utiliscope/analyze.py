@@ -883,9 +883,10 @@ def study_runs_csv(study, filename=None):
                 % ','.join(variables))
         for run in db(db.runs.study==study).select():
             condition = sj.loads(run.condition.json)
+            #log('Run is %s, condition is %s' % (run, condition))
             vals = ([run.id,
                      run.length]
-                    + [condition[key] for key in variables]
+                    + [condition[key] for key in variables if key in condition]
                     + [run.start_time,
                        run.end_time,
                        run.workerid,
@@ -1354,6 +1355,47 @@ def captcha_csv(study):
 #         return runs
 
 
+def hit_completion_times(study):
+    global errors
+    hits = db((db.actions.study==study)
+              & (db.actions.action == 'finished')).select(distinct=db.actions.hitid)
+    hits = [h.hitid for h in hits]
+
+    errors = []
+
+    def hit_details(hitid):
+        worker = None
+        start = db((db.actions.hitid==hitid)
+                   & (db.actions.action == 'accept')).select(orderby=~db.actions.time).last()
+        if start: 
+            worker = start.workerid
+            start = start.time
+
+        end = db((db.actions.hitid==hitid)
+                 & (db.actions.action == 'finished')).select()
+        if len(end) > 1: 
+            debug('Yuck there should only be one finish per hit... but hit %s has %s'
+                  % (hitid, len(end) ))
+            errors.append(hitid)
+        end = end.first()
+        if end:
+            end = end.time
+            worker = worker or end.workerid
+        return [h, worker, start, end]
+
+    hits = [hit_details(h) for h in hits]
+    return hits
+
+def prisoner_names(rows):
+    for row in rows:
+        if not row.other: continue
+        other = sj.loads(row.other)
+        if not isinstance(other, dict): continue
+        if not 'prisoner' in other: continue
+        row.other = other['prisoner']['name']
+    return rows
+    
+    
 def price_func(row):
     return sj.loads(row.conditions.json)['price']
 def width_func(row):

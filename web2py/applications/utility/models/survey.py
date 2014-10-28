@@ -56,6 +56,13 @@ Link to survey: https://yuno.us/survey?workerid=%s&s=%s \
 		Help us improve our HITs on Mechanical Turk and receive $%.2f \
 		''' % (survey_pay)
 
-        turk.message_worker(worker,
-                            subject_line,
-                            message_body)
+        db.scheduler_task.insert(function_name='message_turk_worker',
+                                 application_name='utility/utiliscope',
+                                 vars=sj.dumps({'worker' : worker,
+                                                'subject_line' : subject_line,
+                                                'message_body' : message_body}))
+        db.commit()
+
+        # turk.message_worker(worker,
+        #                     subject_line,
+        #                     message_body)

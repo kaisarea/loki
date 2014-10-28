@@ -1,0 +1,112 @@
+.bonus {
+	display: none;
+}
+
+.congrats {
+	display: none;
+	max-width: 700px;
+	width: 700px;
+	background: #eee;
+	position: absolute;
+	left: 0px;
+	z-index: 500;
+	top: 0px;
+	box-shadow: 3px 3px 0px 0px #888888;
+	padding: 25px;
+	height: 600px;
+}
+
+
+img.genova_image {
+	max-width: 600px;
+}
+
+
+table.genova_image td {
+	border: 0px solid black;
+	padding: 0px;
+	cell-padding: 0px;
+	cell-spacing: 0px;
+	margin: 0px;
+	border-spacing: 0px;
+}
+
+p.image_tag {
+	padding: 0px;
+	margin: 0px;
+}
+
+table.radio td {
+	border: 0px;
+	padding-right: 15px;
+	text-align: left;
+}
+
+table.genova_image {
+	border-collapse: collapse;
+}
+
+
+table.genova_image tr td input {
+	position: relative;
+	top: 0px; 
+	left: 0px;
+}
+
+tr.genova_radio td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+tr.genova_radio td {
+	text-align: left;
+	vertical-align: middle;
+}
+
+.train_info {
+	max-width: 300px;
+	background: #e5e5e5;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	box-shadow: 2px 2px 0px 0px #888888;
+	margin: 15px;
+	padding: 25px;
+}
+
+p.error_message {
+	max-width: 330px;
+	background: #e5e5e5;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	display: none;
+	box-shadow: 2px 2px 0px 0px #888888;
+	margin: 15px;
+	padding: 25px;
+	border: 2px solid red;
+}
+
+h2.genova_subtitle {
+	margin-top: 35px;
+}
+
+.tag_error {
+	font-weight: bold;
+	color: red;
+	margin: 0px;
+	padding: 0px;
+}
+
+p.tag_error {
+	margin: 0px;
+	padding: 0px;
+}
+
+.input_error {
+	border-color: red;
+	background-color: #fee;
+	border: 2px solid red;
+}
+
+

@@ -1,0 +1,78 @@
+{{ extend 'layout.html' }}
+
+{{ include 'genova/header.html' }}
+
+<table class="genova_image">
+    <form action id="response" method="POST">
+
+    {{ for i,pic_file in enumerate(pics): }}
+    <tbody class="key_inputs">
+      <tr><td colspan="3"><h2 class="genova_subtitle">
+        Image
+      </h2></td></tr>
+      <tr><td colspan="3">
+        <img class="genova_image" src="{{= pic_file}}">
+        <input name="image_{{=i}}" type="hidden" value="{{=pic_file}}">
+      </td></tr>
+      <tr><td colspan="3"><h2 class="genova_subtitle">
+        Submit your Tags
+      </h2></td></tr>
+
+      {{ for j in range(5): }}
+        {{ id = "keyword" + str(i*5+j) }}
+        <tr>
+          <td><p class="image_tag">Tag {{=j+1}}:</p></td>
+          <td><input {{= "disabled" if hit_num == 0 else "" }}
+          name="image_tag_{{=i}}_{{=j}}" type="text" id={{=id}}
+          class="keyword"> </td>
+
+        {{ if j == 0: }}
+          <td rowspan="5">
+          {{ if hit_num == 0: }}  
+            <p class="train_info">You must complete <a class="training"
+            href="#training">image tagging training</a> before
+            working.</p>
+          {{ pass }}
+
+          {{ if hit_num == work_limit: }}
+            <p class="train_info">You have finished all the HITs
+            available. There is no more work to be done. Thank you for
+            your participation!</p>
+          {{ pass }}
+        {{ pass }}
+
+      </td>
+      </tr>
+      {{ pass }}
+    </tbody>
+<tr>
+<td colspan="3">
+<table class="radio">
+<tr class="genova_radio">
+  <td rowspan="2">This photo is</td>
+  <td>  
+  {{ radio_id = "disturbingness" + str(i) }}
+  <input {{ = "disabled" if hit_num == 0 else "" }} type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="0">&nbsp;&nbsp;appropriate
+  </td>
+  <td style="text-align: left;" rowspan="2">for a general audience.</td>
+</tr>
+<tr class="genova_radio">
+  <td>
+  <input {{ = "disabled" if hit_num == 0 else "" }} type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="1">&nbsp;&nbsp;inappropriate
+  </td>
+</tr>
+</table>
+</td>
+</tr>
+{{ pass }}
+<tr>
+<td>
+<input id="submit" disabled type="submit" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
+</td>
+<td colspan="2">
+<p class="error_message">Some of the tags you entered are bad or duplicated. Go back and fix the problems highlighted in red.</p>
+</td>
+</tr>
+<input type="hidden" name="netprog" value="{{=net_progress}}">
+</form>
+</table>

@@ -1,6 +1,16 @@
 import os
+import string
+import random
 
-response.generic_patterns += ['worker_ids.json', 'worker_actions.json']
+def id_generator(size=30, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+# launch_study(1000, 'genova', 'genova live 1', 'One monday late, here goes launch.')
+
+# now we wanna select all unlaunched hits and assign them random hitids
+
+
+
 
 ############################################################
 ####                 Loading hits                       ####
@@ -157,7 +167,7 @@ def submit():
     redirect(turk_submit_url())
 
 def submit_first_hit():
-    log('Request vars is %s %s' % (request.workerid, request.study))
+    #log('Request vars is %s %s' % (request.workerid, request.study))
     soft_assert(db((db.actions.workerid == request.vars.workerid)
                    & (db.actions.action == 'finished')).count() < 1)
     hit_finished(bonus_amount=request.first_time_bonus or 0.51,
@@ -244,6 +254,56 @@ def error():
                 width=200,
                 height=200)
 
+###########################################################
+#### Nail: return list of hit ids that are open for testing
+###########################################################
+
+def return_list_of_hit_ids_genova():
+    rows = db((db.hits.task == 'genova') & (db.hits.status == 'open')).select()
+    list_of_hitids_to_be_returned = []
+    for database_table_row in rows:
+        list_of_hitids_to_be_returned.append(database_table_row.hitid)
+    import json
+    json_output = json.dumps(list_of_hitids_to_be_returned)
+    return json_output
+
+def return_list_of_hit_ids_prisoner():
+    rows = db((db.hits.task == 'prisoner') & (db.hits.status == 'open')).select()
+    list_of_hitids_to_be_returned = []
+    for database_table_row in rows:
+        list_of_hitids_to_be_returned.append(database_table_row.hitid)
+    import json
+    json_output = json.dumps(list_of_hitids_to_be_returned)
+    return json_output
+
+def return_list_of_hit_ids_genovaStress():
+    rows = db((db.hits.task == 'genovaStress') & (db.hits.status == 'open')).select()
+    list_of_hitids_to_be_returned = []
+    for database_table_row in rows:
+        list_of_hitids_to_be_returned.append(database_table_row.hitid)
+    import json
+    json_output = json.dumps(list_of_hitids_to_be_returned)
+    return json_output
+
+    #len(rows)
+    #rows[0].hitid
+
+
+def open_unlaunched_hits():
+    rows = db((db.hits.hitid == None) & (db.hits.study == request.vars.study) & (db.hits.status == 'unlaunched')).select()
+    #print(db((db.hits.hitid == None) & (db.hits.study == request.vars.study) & (db.hits.status == 'unlaunched')).count())
+    #xml_stuff = ''
+    rows_affected = 0
+    for hit in rows:
+        hit_id = id_generator()
+        db(db.hits.id == hit.id).update(hitid = hit_id)
+        db(db.hits.id == hit.id).update(status = 'open')
+        rows_affected += 1
+        #print(db(db.hits.id == hit.id).select()[0].hitid)
+    return rows_affected
+
+response.generic_patterns += ['worker_ids.json', 'worker_actions.json']
+
 
 ############################################################
 ####           Displaying Database and Queues           ####
@@ -291,6 +351,24 @@ def launch_one_off_hit():
     launch_test_study(request.vars.task)
     debug("We added a hit to the launch queue.")
     return 'success'
+
+######### moved over here by Nail from models/utiliscope/tasks.py
+
+def launch_bulk_genova_hits():
+    number_of_hits = int(request.vars.hits)
+    launch_study(number_of_hits, 'genova', 'genova stress test', 'Launching HITs to find the server error.')
+    return "success"
+
+def launch_bulk_prisoner_hits():
+    number_of_hits = int(request.vars.hits)
+    launch_study(number_of_hits, 'prisoner', 'prisoner stress test', 'Launching HITs to find the server error.')
+    return "success"
+
+def launch_bulk_genovaStress_hits():
+    number_of_hits = int(request.vars.hits)
+    launch_study(number_of_hits, 'genovaStress', 'hybrid genova test', 'Launching HITs to find the server error.')
+    return "success"
+
 
 
 ############################################################

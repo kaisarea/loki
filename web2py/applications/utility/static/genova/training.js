@@ -1,5 +1,48 @@
 function show_training() {
+	var action_type;
+	var action_time;
+	action_time = new Date($.now());
+	action_type = 'training entered';
+	action_information = { 'action_time': action_time, 
+				'action_type': action_type};
+	console.log(action_information);
+	action_string = JSON.stringify(action_information);
+	console.log(action_string);
+	if($('input:hidden[name=activity_log]').length == 0){ 
+		// this is the first record so we do not need to append
+		// we need to create an object first
+		// we also want some details like which button what text etc
+		// console.log("hello");
+		$('<input>').attr({
+    			type: 'hidden',
+    			id: 'activity_log',
+    			name: 'activity_log',
+			value: action_string
+		}).appendTo('form#response');
+	}
+	else {
+		// now we have to provide some alternative in case the input has content already,
+		// read it in and then combine with the current action and then put it back
+		current_content = $('input:hidden[name=activity_log]').attr('value');
+		new_content = current_content + ", " + action_string;
+		console.log(new_content)
+		$('input:hidden[name=activity_log]').attr('value', new_content);
+		
+	}
     scrollTo(0,0);
+/*
+	var training_start;
+	training_start = new Date($.now());
+	if($('input:hidden[name=training_start_time_stamp]').length == 0){ 
+		console.log(training_start);
+		console.log("hello");
+		$('<input>').attr({
+    			type: 'hidden',
+    			id: 'training_start_time_stamp',
+    			name: 'training_start_time_stamp',
+			value: training_start
+		}).appendTo('form#response');
+	}   */
     jQuery('#shadow').fadeIn().find('button').click(function(e) {
         e.preventDefault();
         if($('input[id=quiz_given]').val()=='0')
@@ -62,6 +105,40 @@ function show_training() {
 }
 
 function validate_training_entry () {
+	var action_type;
+	var action_time;
+	action_time = new Date($.now());
+	action_type = 'training form change';
+	action_information = { 'action_time': action_time, 
+				'action_type': action_type, 
+				'text_field_id': $(this).attr('id'), 
+				'text_field_name': $(this).attr('name'),
+				'text_field_value': $(this).attr('value') };
+	console.log(action_information);
+	action_string = JSON.stringify(action_information);
+	console.log(action_string);
+	if($('input:hidden[name=activity_log]').length == 0){ 
+		// this is the first record so we do not need to append
+		// we need to create an object first
+		// we also want some details like which button what text etc
+		// console.log("hello");
+		$('<input>').attr({
+    			type: 'hidden',
+    			id: 'activity_log',
+    			name: 'activity_log',
+			value: action_string
+		}).appendTo('form#response');
+	}
+	else {
+		// now we have to provide some alternative in case the input has content already,
+		// read it in and then combine with the current action and then put it back
+		console.log("to be conntinued");
+		current_content = $('input:hidden[name=activity_log]').attr('value');
+		new_content = current_content + ", " + action_string;
+		console.log(new_content)
+		$('input:hidden[name=activity_log]').attr('value', new_content);
+		
+	}
     /* ... */ 
     possible_answers = new Array("object", "orientation", "emotion", "technique", "time", "color",
                                  "emotion", "artistic genre");
@@ -112,11 +189,96 @@ function validate_training_entry () {
 }
 
 function leave_training(){
+	var action_type;
+	var action_time;
+	action_time = new Date($.now());
+	action_type = 'leave training incomplete';
+	action_information = { 'action_time': action_time, 
+				'action_type': action_type};
+	console.log(action_information);
+	action_string = JSON.stringify(action_information);
+	console.log(action_string);
+	if($('input:hidden[name=activity_log]').length == 0){ 
+		// this is the first record so we do not need to append
+		// we need to create an object first
+		// we also want some details like which button what text etc
+		// console.log("hello");
+		$('<input>').attr({
+    			type: 'hidden',
+    			id: 'activity_log',
+    			name: 'activity_log',
+			value: action_string
+		}).appendTo('form#response');
+	}
+	else {
+		// now we have to provide some alternative in case the input has content already,
+		// read it in and then combine with the current action and then put it back
+		current_content = $('input:hidden[name=activity_log]').attr('value');
+		new_content = current_content + ", " + action_string;
+		console.log(new_content)
+		$('input:hidden[name=activity_log]').attr('value', new_content);
+		 /*
+	}
+	var leave_training_time;
+	leave_training_time = new Date($.now());
+	if($('input:hidden[name=leave_training_time]').length == 0){ 
+		console.log(leave_training_time);
+		console.log("hello");
+		$('<input>').attr({
+    			type: 'hidden',
+    			id: 'leave_training_time',
+    			name: 'leave_training_time',
+			value: leave_training_time
+		}).appendTo('form#response');
+	} */
     window.scroll(0,0);
     $('#shadow').fadeOut();
 }
 
 function hide_training() {
+	var action_type;
+	var action_time;
+	action_time = new Date($.now());
+	action_type = 'training completed';
+	action_information = { 'action_time': action_time, 
+				'action_type': action_type};
+	console.log(action_information);
+	action_string = JSON.stringify(action_information);
+	console.log(action_string);
+	if($('input:hidden[name=activity_log]').length == 0){ 
+		// this is the first record so we do not need to append
+		// we need to create an object first
+		// we also want some details like which button what text etc
+		// console.log("hello");
+		$('<input>').attr({
+    			type: 'hidden',
+    			id: 'activity_log',
+    			name: 'activity_log',
+			value: action_string
+		}).appendTo('form#response');
+	}
+	else {
+		// now we have to provide some alternative in case the input has content already,
+		// read it in and then combine with the current action and then put it back
+		current_content = $('input:hidden[name=activity_log]').attr('value');
+		new_content = current_content + ", " + action_string;
+		console.log(new_content)
+		$('input:hidden[name=activity_log]').attr('value', new_content);
+		
+	}
+/*
+	var complete_training_time;
+	complete_training_time = new Date($.now());
+	if($('input:hidden[name=complete_training_time]').length == 0){ 
+		console.log(complete_training_time);
+		console.log("hello");
+		$('<input>').attr({
+    			type: 'hidden',
+    			id: 'complete_training_time',
+    			name: 'complete_training_time',
+			value: complete_training_time 
+	 	}).appendTo('form#response');
+	} */
     window.scroll(0,0);
     $('#shadow').fadeOut();
     $('.congrats').fadeOut();

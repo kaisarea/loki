@@ -1,0 +1,22 @@
+{{ extend 'layout.html' }}
+{{ include 'genova/header.html' }}
+
+<div style="border: solid 2px #ccc; width: 560px; background-color: #e7e7e7; padding: 40px;">
+  <img src="/static/genova/clock.png" style="opacity: .5; position: absolute; width: 70px; margin-left: -10px;">
+
+  <div style="margin-left: 90px;">
+    <h1>Waiting for Images...</h1>
+
+    <p>A new batch of images is becoming available for tagging.
+
+    <p>This page will reload automatically when they are ready.
+  </div>
+</div>
+
+<script>
+  setTimeout(function () {document.location.reload(true)},
+             {{=until * 1000}})
+  var a = $('a.training')
+  a.removeClass('training')
+  a.css({color: '#555'})
+</script>

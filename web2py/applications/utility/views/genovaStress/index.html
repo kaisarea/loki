@@ -1,0 +1,62 @@
+{{ extend 'layout.html' }}
+
+{{ include 'genova/header.html' }}
+
+{{ maybe_disabled = "disabled" if hit_num==0 else "" }}
+
+<div class="images">
+  <form action id="response" method="POST">
+
+  {{ for i,pic_file in enumerate(pics): }}
+  <div class="image_set">
+    <h2 class="genova_subtitle">Image</h2>
+    <img class="genova_image" src="{{=pic_file}}">
+    <input name="image_{{=i}}" type="hidden" value="{{=pic_file}}">
+    <h2 class="genova_subtitle" style="margin-bottom: 5px;">Submit your Tags</h2>
+
+    {{ if hit_num == 0: }}  
+      <p class="train_info">You must complete <a class="training"
+         href="#training">image tagging training</a> before working.</p>
+    {{ pass }}
+
+    {{ for j in range(5): }}
+      {{ id = "keyword" + str(i*5+j) }}
+      <p class="image_tag">
+        <input {{= maybe_disabled}} class="keyword"
+                name="image_tag_{{=i}}_{{=j}}" type="text" id={{=id}}>
+        Tag {{=j+1}}:
+		</p>
+    {{ pass }}
+
+    <table class="radio" style="margin-top: 15px;">
+    <tr class="genova_radio">
+      <td rowspan="2">This photo is</td>
+      <td>
+        {{ radio_id = "disturbingness" + str(i) }}
+
+      <input {{= maybe_disabled}} type="radio"
+      name={{ = radio_id }} id={{ = radio_id }}
+      value="0">&nbsp;&nbsp;appropriate
+
+      </td>
+      <td style="text-align: left;" rowspan="2">for a general audience.</td>
+    </tr>
+    <tr class="genova_radio">
+      <td>
+      <input {{= maybe_disabled}} type="radio" name={{ = radio_id }}  id={{ = radio_id }} value="1">&nbsp;&nbsp;inappropriate
+      </td>
+    </tr>
+    </table>
+
+  </div>
+  {{ pass }}
+
+{{ pass }}
+
+<p class="error_message">Some of the tags you entered are bad or
+duplicated. Go back and fix the problems highlighted in red.</p>
+
+<input id="submit" {{= maybe_disabled}} type="submit" style="min-width: 70px; font-size: 16px; margin: 10px 0;" />
+
+<input type="hidden" name="netprog" value="{{=net_progress}}">
+</form>
