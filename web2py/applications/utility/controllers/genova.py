@@ -19,7 +19,15 @@ def index():
     
     # Choose 5 images from the 2 queues, depeding on how disagreeable we want it
     pics = []
-    for i in range(1,request.pics_per_task+1):
+#from random import shuffle
+#x = [[i] for i in range(10)]
+#shuffle(x)
+
+# print x  gives  [[9], [2], [7], [0], [4], [5], [3], [1], [8], [6]]
+# of course your results will vary
+    picture_positions = range(1, request.pics_per_task+1)
+    random.shuffle(picture_positions)
+    for i in picture_positions:
         def add_pic(type):
             pics.append(genova_pics[type][progress[type]])
             progress[type] += 1
