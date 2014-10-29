@@ -189,6 +189,12 @@ def track_error_submit():
     db.commit()
     return 'Good thanks for that'
 
+def leave_without_submitting():
+	log_action('leave_without_submit', other=request.vars)
+	log('User left the HIT without finishing it. Vars are %s' % sj.dumps(request.vars))
+	db.commit()
+	return "log recorded"
+
 def preview(): return {}
 def first_time():
     response.view = 'first_time.html'

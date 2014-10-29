@@ -9,10 +9,6 @@ function show_training() {
 	action_string = JSON.stringify(action_information);
 	console.log(action_string);
 	if($('input:hidden[name=activity_log]').length == 0){ 
-		// this is the first record so we do not need to append
-		// we need to create an object first
-		// we also want some details like which button what text etc
-		// console.log("hello");
 		$('<input>').attr({
     			type: 'hidden',
     			id: 'activity_log',
@@ -21,8 +17,6 @@ function show_training() {
 		}).appendTo('form#response');
 	}
 	else {
-		// now we have to provide some alternative in case the input has content already,
-		// read it in and then combine with the current action and then put it back
 		current_content = $('input:hidden[name=activity_log]').attr('value');
 		new_content = current_content + ", " + action_string;
 		console.log(new_content)
@@ -30,19 +24,6 @@ function show_training() {
 		
 	}
     scrollTo(0,0);
-/*
-	var training_start;
-	training_start = new Date($.now());
-	if($('input:hidden[name=training_start_time_stamp]').length == 0){ 
-		console.log(training_start);
-		console.log("hello");
-		$('<input>').attr({
-    			type: 'hidden',
-    			id: 'training_start_time_stamp',
-    			name: 'training_start_time_stamp',
-			value: training_start
-		}).appendTo('form#response');
-	}   */
     jQuery('#shadow').fadeIn().find('button').click(function(e) {
         e.preventDefault();
         if($('input[id=quiz_given]').val()=='0')
@@ -56,9 +37,6 @@ function show_training() {
 
         if(overall == 15)
         {
-            // Then the user passes!
-
-            // Let's enable the hit...
             $('.image_set input').prop("disabled", false);
             $('input:submit').prop('disabled', false);
             $('.train_info').css('visibility', 'hidden');
@@ -118,10 +96,6 @@ function validate_training_entry () {
 	action_string = JSON.stringify(action_information);
 	console.log(action_string);
 	if($('input:hidden[name=activity_log]').length == 0){ 
-		// this is the first record so we do not need to append
-		// we need to create an object first
-		// we also want some details like which button what text etc
-		// console.log("hello");
 		$('<input>').attr({
     			type: 'hidden',
     			id: 'activity_log',
@@ -130,8 +104,6 @@ function validate_training_entry () {
 		}).appendTo('form#response');
 	}
 	else {
-		// now we have to provide some alternative in case the input has content already,
-		// read it in and then combine with the current action and then put it back
 		console.log("to be conntinued");
 		current_content = $('input:hidden[name=activity_log]').attr('value');
 		new_content = current_content + ", " + action_string;
@@ -217,20 +189,7 @@ function leave_training(){
 		new_content = current_content + ", " + action_string;
 		console.log(new_content)
 		$('input:hidden[name=activity_log]').attr('value', new_content);
-		 /*
 	}
-	var leave_training_time;
-	leave_training_time = new Date($.now());
-	if($('input:hidden[name=leave_training_time]').length == 0){ 
-		console.log(leave_training_time);
-		console.log("hello");
-		$('<input>').attr({
-    			type: 'hidden',
-    			id: 'leave_training_time',
-    			name: 'leave_training_time',
-			value: leave_training_time
-		}).appendTo('form#response');
-	} */
     window.scroll(0,0);
     $('#shadow').fadeOut();
 }
@@ -239,7 +198,7 @@ function hide_training() {
 	var action_type;
 	var action_time;
 	action_time = new Date($.now());
-	action_type = 'training completed';
+	action_type = 'leave training in a training=false condition';
 	action_information = { 'action_time': action_time, 
 				'action_type': action_type};
 	console.log(action_information);
@@ -264,21 +223,7 @@ function hide_training() {
 		new_content = current_content + ", " + action_string;
 		console.log(new_content)
 		$('input:hidden[name=activity_log]').attr('value', new_content);
-		
 	}
-/*
-	var complete_training_time;
-	complete_training_time = new Date($.now());
-	if($('input:hidden[name=complete_training_time]').length == 0){ 
-		console.log(complete_training_time);
-		console.log("hello");
-		$('<input>').attr({
-    			type: 'hidden',
-    			id: 'complete_training_time',
-    			name: 'complete_training_time',
-			value: complete_training_time 
-	 	}).appendTo('form#response');
-	} */
     window.scroll(0,0);
     $('#shadow').fadeOut();
     $('.congrats').fadeOut();
@@ -293,6 +238,48 @@ $(function () {
     $('.leave_training').bind('click', hide_training);
     $(".cancel_training").bind('click', leave_training);
     $('.quiz input:text').on("change", validate_training_entry)
+	// log activation of the keywords in the HIT and put a time stamp on it
+/*$('#test').bind('blur mousedown mouseup focus', function (e) {
+    // This is your combined function
+    // Inside here you can use e.type to find out whether it was a
+    // "blur", "mousedown", "mouseup", etc...
+});*/
+	$('input.keyword').bind('focus', function(e) { 
+		console.log("HIT keyword activated"); 
+		var action_type;
+		var action_time;
+		action_time = new Date($.now());
+		action_type = 'image tag ' + e.type;
+		action_information = { 'action_time': action_time, 
+					'action_type': action_type,
+					'text_field_id': $(this).attr('id'), 
+					'text_field_name': $(this).attr('name'),
+					'text_field_value': $(this).attr('value') };
+		console.log(action_information);
+		action_string = JSON.stringify(action_information);
+		console.log(action_string);
+		if($('input:hidden[name=activity_log]').length == 0){ 
+			// this is the first record so we do not need to append
+			// we need to create an object first
+			// we also want some details like which button what text etc
+			// console.log("hello");
+			$('<input>').attr({
+    				type: 'hidden',
+    				id: 'activity_log',
+    				name: 'activity_log',
+				value: action_string
+			}).appendTo('form#response');
+		}
+		else {
+			// now we have to provide some alternative in case the input has content already,
+			// read it in and then combine with the current action and then put it back
+			current_content = $('input:hidden[name=activity_log]').attr('value');
+			new_content = current_content + ", " + action_string;
+			console.log(new_content)
+			$('input:hidden[name=activity_log]').attr('value', new_content);
+		
+		}
+	});
 
     $(document).on('click', 'a.training', show_training);
 })

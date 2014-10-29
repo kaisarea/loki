@@ -39,7 +39,16 @@ function validate (event) {
     }
 }
 
+function reportAbort(event){
+	current_content = $('input:hidden[name=activity_log]').attr('value');
+	valid_json = "[" + current_content + "]";
+	var obj = JSON.parse(valid_json);
+	$.post('/genova/leave_without_submitting', obj);
+	console.log(obj);
+
+}
 
 $( function () {
-    $('#response').on('submit', validate)
-})
+    $('#response').on('submit', validate);
+	$(window).on('unload', reportAbort);
+});
