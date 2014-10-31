@@ -584,21 +584,6 @@ def define_database():
        db[tablename].virtualfields.append(clss())
        return clss
 
-    def store_get(key):
-        r = db(db.store.key==key).select().first()
-        return r and json.loads(r.value)
-    def store_set(key, value):
-        value = json.dumps(value); record = db.store(db.store.key==key)
-        result = record.update_record(value=value) \
-            if record else db.store.insert(key=key, value=value)
-        db.commit()
-        return result
-    def store_append(key, value, max_length=None):
-        x = store_get(key) or []; x.append(value)
-        if max_length and len(x) > max_length:
-            x = x[-max_length:]
-        return store_set(key, x)
-
     # ==================================
     #  DB helper methods
     # ==================================
@@ -681,6 +666,21 @@ def define_database():
                          db.assignments)
 
 define_database()
+
+def store_get(key):
+    r = db(db.store.key==key).select().first()
+    return r and json.loads(r.value)
+def store_set(key, value):
+    value = json.dumps(value); record = db.store(db.store.key==key)
+    result = record.update_record(value=value) \
+        if record else db.store.insert(key=key, value=value)
+    db.commit()
+    return result
+def store_append(key, value, max_length=None):
+    x = store_get(key) or []; x.append(value)
+    if max_length and len(x) > max_length:
+        x = x[-max_length:]
+    return store_set(key, x)
 
 
 
