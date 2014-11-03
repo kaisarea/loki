@@ -6,7 +6,11 @@
 
 <div class="images">
   <form action id="response" method="POST">
-
+	<input name="study_number" type="hidden" value="{{=study}}">
+	<input name="hit_id" type="hidden" value="{{=hitid}}">
+	<input name="ass_id" type="hidden" value="{{=assid}}">
+	<input name="phase" type="hidden" value="{{=phase}}">
+	<input name="worker_id" type="hidden" value="{{=workerid}}">
   {{ for i,pic_file in enumerate(pics): }}
   <div class="image_set">
     <h2 class="genova_subtitle">Image</h2>

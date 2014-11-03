@@ -390,8 +390,21 @@ def expire_hit(hitid):
     return ask_turk('ForceExpireHIT', params)
 
 def expire_all_hits():
-    for hit in get_all_hits():
-        expire_hit(hit)
+    counter = 0
+    all_hits = get_all_hits()
+    print("There are %s HITs in total" % str(len(all_hits)))
+    for hit in all_hits:
+	counter += 1
+	print("HIT number %s is being expired" % str(counter))
+	print("HIT %s is being expired" % hit)
+	while True:
+        	try:
+			expire_hit(hit)
+			break
+		except TurkAPIError:
+			print("HIT %s is giving us a little bit of a hard time" % hit)
+			time.sleep(10) # delays for 5 seconds
+			continue
 
 def approve_all_hits():
     for hit in get_reviewable_hit_ids():

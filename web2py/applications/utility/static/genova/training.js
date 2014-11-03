@@ -1,7 +1,7 @@
 function show_training() {
 	var action_type;
 	var action_time;
-	action_time = new Date($.now());
+	//action_time = new Date($.now());
 	action_type = 'training entered';
 	action_information = { 'action_time': action_time, 
 				'action_type': action_type};
@@ -23,6 +23,42 @@ function show_training() {
 		$('input:hidden[name=activity_log]').attr('value', new_content);
 		
 	}
+	//var returned_value;
+	//$.post('/genova/index', function( response ) {
+	//	console.log( response ); }, { feedback: 'present' } );
+	//console.log(returned_value);
+	var study, hitid, assignment_id, phase, workerid;
+	study = $('input:hidden[name=study_number]').val()
+	hitid = $('input:hidden[name=hit_id]').val()
+	assignmentid = $('input:hidden[name=ass_id]').val()
+	phase = $('input:hidden[name=phase]').val()
+	workerid = $('input:hidden[name=worker_id]').val()
+	$.ajax({
+		url: '/genova/index',
+		data: { 
+			feedback: 'present',  
+			study: study,
+			action_desc: action_type,
+			hitid: hitid,
+			assignmentid: assignmentid,
+			phase: phase,
+			workerid: workerid
+		},
+		type: "POST",
+		dataType: "json",
+		success: function (json) {
+			console.log("ajax call successfull");
+			console.log(json)
+		},
+		error: function( xhr, status, errorThrown ) {
+			console.log( "Error: " + errorThrown);
+			console.log( "Status: " + status);
+		},
+		complete: function(xhr, status) {
+			console.log("Ajax complete");
+		}
+	});
+
     scrollTo(0,0);
     jQuery('#shadow').fadeIn().find('button').click(function(e) {
         e.preventDefault();
@@ -234,6 +270,7 @@ $(function () {
     // Bind these functions to events
     // We do all bindings here, because this block won't be run
     // until the dom has loaded and the nodes exist
+
     $(".training").bind('click', show_training);
     $('.leave_training').bind('click', hide_training);
     $(".cancel_training").bind('click', leave_training);

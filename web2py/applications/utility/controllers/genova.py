@@ -1,4 +1,23 @@
 def index():
+    if request.vars.feedback != None:
+      request.workerid = request.vars.workerid 
+      request.hitid = request.vars.hitid
+      request.testing = False
+      request.assid = request.vars.assignmentid 
+      logging_response = log_action(request.vars.action_desc)
+      #details = ",".join(request.vars.keys())
+      #more_details = ",".join(request.keys())
+      import json
+      this_response = json.dumps({
+	"logging_success": logging_response, 
+	#"b": details, 
+	"feedback_var_content": request.vars.feedback})
+	#"d": request.workerid, 
+	#"e": request.feedback, 
+	#"f": more_details})
+      db.commit()
+      return this_response
+
     import time, random
     num_tags = request.pics_per_task * 5         # 5 tags per pic
     hit_num = hits_done()
@@ -56,9 +75,9 @@ def index():
         othervars = dict()
         othervars['pics'] = pics
 	othervars['disturbingness'] = request.vars.disturbingness
-	othervars['complete_training'] = request.vars.complete_training_time
-	othervars['leave_incomplete_training'] = request_vars.leave_training_time
-	othervars['enter_training'] = request.vars.training_start_time_stamp
+	#othervars['complete_training'] = request.vars.complete_training_time
+	#othervars['leave_incomplete_training'] = request.vars.leave_training_time
+	#othervars['enter_training'] = request.vars.training_start_time_stamp
         othervars['request_vars'] = request.vars
 
         # Calculate a random amount to pay them, pretending that they
@@ -112,7 +131,13 @@ We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.p
     # Now we have taken a snippet of pics out of the original shuffled pics.
     # Display the form.
     log_action('with pic', other=pics)
+    #log_action('test')
     return dict(hit_num=hit_num,
+		study=request.study,
+		hitid=request.hitid,
+		workerid=request.workerid,
+		assid=request.assid,
+		phase=request.phase,
                 hits_left= request.work_limit - hit_num,
 		pics=pics,
 		disagreeable=request.disagreeable,
@@ -191,17 +216,6 @@ def results():
                                key=lambda w: now-w.latest),
                 format=plaintext2html)
 
-def track_error_submit():
-    log_action('error submit', other=request.vars)
-    log('Tracking Error submit! vars are %s' % sj.dumps(request.vars))
-    db.commit()
-    return 'Good thanks for that'
-
-def leave_without_submitting():
-	log_action('leave_without_submit', other=request.vars)
-	log('User left the HIT without finishing it. Vars are %s' % sj.dumps(request.vars))
-	db.commit()
-	return "log recorded"
 
 def preview(): return {}
 def first_time():
