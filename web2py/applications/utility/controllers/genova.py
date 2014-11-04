@@ -4,7 +4,7 @@ def index():
       request.hitid = request.vars.hitid
       request.testing = False
       request.assid = request.vars.assignmentid 
-      logging_response = log_action(request.vars.action_desc)
+      logging_response = log_action(request.vars.action_desc, other=request.vars.logs)
       #details = ",".join(request.vars.keys())
       #more_details = ",".join(request.keys())
       import json
@@ -79,6 +79,7 @@ def index():
 	#othervars['leave_incomplete_training'] = request.vars.leave_training_time
 	#othervars['enter_training'] = request.vars.training_start_time_stamp
         othervars['request_vars'] = request.vars
+	othervars['activity_log'] = request.vars.activity_log
 
         # Calculate a random amount to pay them, pretending that they
         # only did so well.

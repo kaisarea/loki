@@ -1,3 +1,5 @@
+var baseline_time;
+
 function submit_log() {
 	current_content = $('input:hidden[name=activity_log]').attr('value');
 	//new_content = current_content + ", " + action_string;
@@ -14,7 +16,7 @@ function submit_log() {
                 data: {
                         feedback: 'present',
                         study: study,
-                        action_desc: action_type,
+                        action_desc: 'user leaving',
                         hitid: hitid,
                         assignmentid: assignmentid,
                         phase: phase,
@@ -72,10 +74,15 @@ function alter_log(action_detail) {
 function show_training() {
         var action_type;
         var action_time;
+	var miliseconds;
+	var relative_time;
         action_time = new Date($.now());
+	miliseconds = $.now();
+	relative_time = miliseconds - baseline_time;
         action_type = 'training entered';
         action_information = { 'action_time': action_time,
-                                'action_type': action_type};
+                                'action_type': action_type,
+				'relative_time': relative_time};
 	alter_log(action_information);	
     	scrollTo(0,0);
 	jQuery('#shadow').fadeIn().find('button').click(function(e) {
@@ -139,7 +146,12 @@ function show_training() {
 function validate_training_entry () {
 	var action_time;
 	action_time = new Date($.now());
-	action_information = { 'action_time': action_time, 
+	var miliseconds;
+	var relative_time;
+	miliseconds = $.now();
+	relative_time = miliseconds - baseline_time;
+	action_information = { 'action_time': action_time,
+				'relative_time': relative_time, 
 				'action_type': 'training form input', 
 				'text_field_id': $(this).attr('id'), 
 				'text_field_name': $(this).attr('name'),
@@ -197,9 +209,14 @@ function validate_training_entry () {
 function leave_training(){
 	var action_type;
 	var action_time;
+	var miliseconds;
+	var relative_time;
+	miliseconds = $.now();
+	relative_time = miliseconds - baseline_time;
 	action_time = new Date($.now());
 	action_type = 'leave training incomplete';
-	action_information = { 'action_time': action_time, 
+	action_information = { 'action_time': action_time,
+				'relative_time': relative_time, 
 				'action_type': action_type};
     	alter_log(action_information);
 	window.scroll(0,0);
@@ -209,9 +226,14 @@ function leave_training(){
 function hide_training() {
 	var action_type;
 	var action_time;
+	var miliseconds;
+	var relative_time;
+	miliseconds = $.now();
+	relative_time = miliseconds - baseline_time;
 	action_time = new Date($.now());
 	action_type = 'leave training in a training=false condition';
-	action_information = { 'action_time': action_time, 
+	action_information = { 'action_time': action_time,
+				'relative_time': relative_time, 
 				'action_type': action_type};
 	alter_log(action_information);
     	window.scroll(0,0);
@@ -254,9 +276,14 @@ function validate (event) {
         	event.preventDefault();  // Stops submit from happening
 		var action_type;
 		var action_time;
+		var miliseconds;
+		var relative_time;
+		miliseconds = $.now();
+		relative_time = miliseconds - baseline_time;
 		action_time = new Date($.now());
 		action_type = "training submission with mistakes";
         	action_information = { 'action_time': action_time,
+					'relative_time': relative_time,
                                 	'action_type': action_type};
         	alter_log(action_information);
 		$('p.error_message').show();
@@ -285,15 +312,33 @@ $(function () {
 		var action_type;
 		var action_time;
 		action_time = new Date($.now());
+		var relative_time;
+		var absolute_time;
+		absolute_time = $.now();
+		relative_time = absolute_time - baseline_time;
 		action_type = 'image tag ' + e.type;
 		action_information = { 'action_time': action_time, 
 					'action_type': action_type,
 					'text_field_id': $(this).attr('id'), 
 					'text_field_name': $(this).attr('name'),
-					'text_field_value': $(this).attr('value') };
+					'text_field_value': $(this).attr('value'),
+					'relative_time': relative_time };
 		alter_log(action_information);
 	});
-
+	$(document).ready(function() {
+		// stuff
+		console.log("page loaded");
+		var action_type;
+		var action_time;
+		action_time = new Date($.now());
+		baseline_time = $.now();
+		action_type = 'page loaded';
+		action_information = {
+			'action_time': action_time,
+			'action_type': action_type,
+			'baseline_time': baseline_time};
+		alter_log(action_information);
+	});
 	$(document).on('click', 'a.training', show_training);
     	$('#response').on('submit', validate);
     	$(window).on('unload onbeforeunload pageleave beforeunload', reportAbort);
