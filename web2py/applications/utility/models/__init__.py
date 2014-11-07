@@ -679,6 +679,7 @@ def choose_condition():
     # First we'll choose the stuff we want in the condition.
     for probability, condition in options[request.task]['special_conditions'] or []:
         # First, give special conditions a shot
+        random.seed()
         if random.random() < probability:
             request.condition = condition.copy()
             break
@@ -708,7 +709,7 @@ def choose_condition():
           & (db.condition_choices.workerid == request.workerid)).count() > 0:
         request.new_phase = True
 
-def condition_by_index(conditions, index):
+def condition_by_index(conditions, index, shuffle=True):
     '''Takes a dictionary of all conditions, that maps each variable to
        its possible values.  Returns a single choice of values for
        each variable.  Enumerates all choices in order, like:
@@ -730,6 +731,19 @@ def condition_by_index(conditions, index):
        ...and returns the nth (er, `index'th) enumeration.
 
     '''
+    if shuffle:
+        # First calculate the number of indices
+        from operator import mul
+        num_indices = reduce(mul,
+                             [len(x) for x in conditions.values()],
+                             1)
+        # Now choose a shuffled index
+        random.seed(0)
+        shuffled = range(num_indices)
+        random.shuffle(shuffled)
+        index = shuffled[index]
+        random.seed()
+
     result = {}
     for var,vals in conditions.items():
         result[var] = vals[index % len(vals)]
