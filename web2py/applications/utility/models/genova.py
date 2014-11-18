@@ -54,13 +54,14 @@ def load_genova_pics():
 
 
 def randomize_pay(pay, expected_rate_of_success, num_tags):
+    import math
     rate_of_failure = 1.0 - expected_rate_of_success
-    rate_of_failure /= 2.0  # Let's diminish it, be nicer
+    rate_of_failure /= 6.0  # Let's diminish it, be nicer
     rate_of_success = 1 - random.random() * rate_of_failure
     good_tags = round(num_tags * rate_of_success)
     pay = pay * (good_tags/float(num_tags))
     log('With noise, we want to pay %.4f' % pay)
-    pay = round(pay * 100.0)/100.0
+    pay = math.ceil(pay * 100.0)/100.0
     log('When rounded, are actually paying %.3f' % pay)
     return (pay, int(good_tags))
 

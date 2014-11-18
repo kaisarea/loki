@@ -83,9 +83,8 @@ def index():
 
         # Calculate a random amount to pay them, pretending that they
         # only did so well.
-        pay, good_tags = randomize_pay(request.price,
-                                       request.improbability_rate/100.0,
-                                       num_tags)
+        pay, good_tags = request.price, num_tags
+	#randomize_pay(request.price, request.improbability_rate/100.0,num_tags)
         othervars['approved_price'] = pay
         othervars['approved_tags'] = good_tags
 
@@ -129,6 +128,22 @@ We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.p
 
     # Ok, let's proceed with the regular task!
 
+    def random_offset(max_offset, seed):
+        random.seed(seed)
+        result = (random.random() - .5) * max_offset * 2
+        random.seed()
+        return result
+
+    max_offset = 6 if request.improbability_rate < 90 else 2.5
+    displayed_improbability_rate = request.improbability_rate \
+        + random_offset(max_offset, now.day) \
+        + random_offset(max_offset, now.hour)
+    if request.testing:
+        displayed_improbability_rate += random_offset(max_offset, now.second)
+    displayed_improbability_rate = int(displayed_improbability_rate)
+    displayed_improbability_rate = min(displayed_improbability_rate, 99)
+    
+
     # Now we have taken a snippet of pics out of the original shuffled pics.
     # Display the form.
     log_action('with pic', other=pics)
@@ -143,7 +158,7 @@ We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.p
 		pics=pics,
 		disagreeable=request.disagreeable,
                 training=request.training,
-                improbability_rate=request.improbability_rate,
+                improbability_rate=displayed_improbability_rate,
                 availability=request.availability,
                 work_limit=request.work_limit,
                 net_progress=progress.control + progress.treatment + progress.food)
