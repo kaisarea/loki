@@ -16,7 +16,7 @@ function submit_log() {
                 data: {
                         feedback: 'present',
                         study: study,
-                        action_desc: 'user leaving',
+                        action_desc: 'js log on user leaving',
                         hitid: hitid,
                         assignmentid: assignmentid,
                         phase: phase,

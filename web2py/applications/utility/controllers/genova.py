@@ -134,7 +134,7 @@ We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.p
         random.seed()
         return result
 
-    max_offset = 6 if request.improbability_rate < 90 else 2.5
+    max_offset = 6 if request.improbability_rate < 90 else 2
     displayed_improbability_rate = request.improbability_rate \
         + random_offset(max_offset, now.day) \
         + random_offset(max_offset, now.hour)
