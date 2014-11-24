@@ -143,9 +143,11 @@ def define_database():
 
     db.define_table('runs',
                     db.Field('workerid', 'text'),
+                    db.Field('phase', 'integer'),
                     db.Field('length', 'integer'),
                     db.Field('start_time', 'datetime'),
                     db.Field('end_time', 'datetime'),
+                    db.Field('first_time', 'boolean'),
                     db.Field('study', db.studies),
                     db.Field('condition', db.conditions),
                     db.Field('censored', 'boolean', default=False),
@@ -741,7 +743,10 @@ def condition_by_index(conditions, index, shuffle=True):
         random.seed(0)
         shuffled = range(num_indices)
         random.shuffle(shuffled)
-        index = shuffled[index]
+        log('Initially, this is worker index %s, wrapping to %s'
+            % (index, index % len(shuffled)))
+        index = shuffled[index % len(shuffled)]
+        log('And now the worker is shuffled to index %s' % index)
         random.seed()
 
     result = {}

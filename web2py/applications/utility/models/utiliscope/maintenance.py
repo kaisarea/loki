@@ -235,9 +235,89 @@ def pay_worker_extra(workerid, amount, reason):
 
     return turk.give_bonus(ass.assid, workerid, amount, reason)
 
+def amount_worker_paid(workerid, study):
+    assignments = db((db.actions.workerid==workerid)
+                     & (db.actions.study==study)).select(distinct=db.actions.assid)
+    assignments = [turk.bonus_total(a.assid) for a in assignments]
+    return sum(assignments)
+
+
+def parse_turk_datetime(string):
+    from dateutil import tz
+    from dateutil.parser import parse
+    dt = parse(string)
+
+    utc = tz.gettz('UTC')
+    est = tz.gettz('America/Los_Angeles')
+    dt = dt.replace(tzinfo=utc)
+    dt = dt.astimezone(est)
+
+    return dt
+
+
+def worker_payment_history(workerid, study):
+    assignments = db((db.actions.workerid==workerid)
+                     & (db.actions.study==study)).select(distinct=db.actions.assid)
+
+    for ass in assignments:
+        ass.pay = turk.get_bonus_payments(ass.assid)
+
+    assignments = sorted(assignments, key=lambda ass: turk.get(ass.pay, 'GrantTime'))
+
+    total = 0.0
+    for ass in assignments:    
+        pay = ass.pay
+        if turk.get(pay, 'NumResults') not in (u'1', u'0'):
+            raise 'Hey Mike fix this function! Found a bonus with more than 1 entry.'
+        amount = float(turk.get(pay, 'Amount'))
+        reason = turk.get(pay, 'Reason')
+        if not amount or float(amount) < .01: continue
+        when = parse_turk_datetime(turk.get(pay, 'GrantTime'))
+        worker = turk.get(pay, 'WorkerId')
+        assignment = ass.assid
+
+        total += amount
+
+        print ('[%s] Amount Paid: $%.2f, WorkerId: %s, AssignmentId: %s'
+               % (when, amount, worker, assignment))
+
+    print 'Total paid: $%.2f' % total
+
+
 def add_hits_log_creation_dates():
 #     for hit in db().select(db.hits_log.ALL):
 #         hit.update_record(xmlbody = hit.xmlbody.replace('\n','')
 #                           .replace('\t',''),
 #                           creation_time)
     pass
+
+def ticket_data(ticket_name):
+    import pickle
+    dir = 'applications/utility/errors/'
+    if not ticket_name.startswith(dir):
+        ticket_name = dir + ticket_name
+    return Storage(pickle.loads(open(ticket_name).read()))
+def print_ticket(ticket_name):
+    print ticket_data(ticket_name).traceback
+def print_ticket_details(ticket_name):
+    print ticket_data(ticket_name).snapshot
+
+def print_recent_tickets(N=40, filter_func=None):
+    import glob
+    import os
+    import time
+    dir = 'applications/utility/errors/'
+    files = filter(os.path.isfile, glob.glob(dir + "*"))
+    files.sort(key=lambda f: -os.path.getmtime(f))
+    if N and N != 0:
+        files = files[:N]
+    skipped = 0
+    for f in files:
+        if filter_func and not filter_func(ticket_data(f)):
+            skipped += 1
+            continue
+        print time.ctime(os.path.getmtime(f))
+        print f
+        print_ticket(f)
+        print ''
+    print '%s files total' % (len(files) - skipped)

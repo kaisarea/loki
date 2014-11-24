@@ -755,6 +755,76 @@ def populate_runs(study):
     db.commit()
 
 
+def populate_runs_phased(study):
+    ''' This used to split runs into multiple runs if more than gap
+    size had transpired in between hit completions.  I removed that
+    feature.'''
+
+    ## TEMPORARY -- CHANGE THIS BACK
+    #
+    # Each study from now on has an 'accept' event, but some old
+    # studies I am analyzing only have 'display' events.  These
+    # produce the same result, but 'accept' is more logical.  As soon
+    # as I'm done analyzing those studies, let's change this all to
+    # 'accept' instead of 'display'.
+    accept = 'display'
+
+    db(db.runs.study == study).delete()
+
+    rows = db((db.actions.action == accept)
+              & (db.actions.study == study)) \
+              .select(db.actions.workerid, db.actions.phase, distinct=True)
+               
+    if 'bad_workers' in globals():
+        rows = [r for r in rows if r.workerid not in bad_workers]
+
+    for r in rows:
+        finishes = db((db.actions.action == 'finished')
+                      & (db.actions.study == study)
+                      & (db.actions.phase == r.phase)
+                      & (db.actions.workerid == r.workerid)) \
+                      .select(orderby=db.actions.time)
+        first_accept = db((db.actions.action == accept)
+                          &(db.actions.workerid == r.workerid)
+                          &(db.actions.phase == r.phase)
+                          &(db.actions.study == study)) \
+                          .select(orderby=db.actions.time,
+                                  limitby=(0,1))[0]
+
+        first_time = 0 != db((db.actions.action == 'first time')
+                             &(db.actions.workerid == r.workerid)
+                             &(db.actions.phase == r.phase)
+                             &(db.actions.study == study)) \
+                             .count()
+
+        censored = 0 < db((db.actions.action=='work quota reached')
+                          & (db.actions.workerid == r.workerid)
+                          & (db.actions.phase == r.phase)
+                          & (db.actions.study == study)).count()
+
+        run = Storage(workerid=r.workerid,
+                      phase=r.phase,
+                      length=len(finishes),
+                      study=study,
+                      start_time=first_accept.time,
+                      end_time=((finishes.last() and finishes.last().time)
+                                or first_accept.time),
+                      first_time=first_time,
+                      condition=first_accept.condition,
+                      censored=censored)
+
+        # Write out the run
+        db.runs.insert(**run)
+
+    # Now mark the last runs as censored
+    db((db.runs.study==study)
+       &(db.runs.end_time > 
+         db(db.runs.study==study).select(db.runs.end_time,
+                                         orderby=~db.runs.end_time,
+                                         limitby=(0,1)).first().end_time
+         - gap_size())).update(censored=True)
+
+    db.commit()
 
 
 def annotate_censored_runs_old_and_powerful(study):
@@ -894,6 +964,36 @@ def study_runs_csv(study, filename=None):
                        run.other])
             f.write(','.join([str(x) for x in vals]) + '\n')
     return 'done'
+
+def study_runs_csv_phased(study, filename=None):
+    import csv
+    conditions = sj.loads(study.conditions)
+    with open(filename or 'study_%d.csv' % study.id, 'w') as f:
+        out = csv.writer(f)
+
+        # Write the header
+        variables = experimental_vars(study)
+        out.writerow(('id run_length %s start_time end_time workerid phase first_time censored other'
+                      % ' '.join(variables)).split())
+
+        # Now write the body
+        for run in db(db.runs.study==study).select():
+            condition = sj.loads(run.condition.json)
+            #log('Run is %s, condition is %s' % (run, condition))
+            vals = ([run.id,
+                     run.length]
+                    + [(key in condition) and condition[key]
+                       for key in variables]
+                    + [run.start_time,
+                       run.end_time,
+                       run.workerid,
+                       run.phase,
+                       run.first_time,
+                       run.censored,
+                       run.other])
+            out.writerow([str(x) for x in vals])
+    return 'done'
+
 
 def rt_ratio1(condition):
     rt = runs_trickle(condition)

@@ -106,6 +106,7 @@ def print_hits():
             print '   ', h.launch_date, h.status, h.hitid, h.price, h.othervars
 
 def print_studies(more=False):
+    print 'id\thits\tname'
     for study in db().select(db.studies.ALL, orderby=db.studies.id):
         print '%d\t%d\t%s%s' % (study.id,
                                 db(db.hits.study == study).count(),
