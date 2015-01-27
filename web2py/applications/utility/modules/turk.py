@@ -90,7 +90,7 @@ amazon_health_log = []
 def error_rate():
     amazon_health_log = store_get('amazon_health_log')
     if not amazon_health_log: return 0.0
-    recent = amazon_health_log[-200:]
+    recent = amazon_health_log[-100:]
     return float(recent.count('error')) / float(len(recent))
 def error_check(result_xml):
     # Check for and print results and errors

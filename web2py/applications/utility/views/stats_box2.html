@@ -10,10 +10,7 @@
 			 <div class="stat">{{=request.price_string}}</div> Per HIT
 			 <span class="details">
 		         <ul>
-
-			<li>This job pays up to {{=request.price_string}} per HIT via
-			    bonus.
-
+			  <li>This job pays {{=request.price_string}} per HIT via bonus.
 			<li>Bonus payments will be visible in your
 
 			    <a href="https://payments.amazon.com/sdui/sdui/dailysummary"
@@ -32,16 +29,11 @@
 			 <div class="stat">{{=improbability_rate}}%</div> Approved
 			 <span class="details">
 			 <ul>
+ 			   <li>Our staff will approve or reject your work in roughly
+			   {{=request.pay_delay / 60}} minutes.
 
-
-			   <li>You are paid per approved tag.  (<i>e.g.</i>80%
-			   approval will earn ${{='%.2f' % (request.price * .8)}}.)
-
-			   <li>Our staff will approve or reject your tags within
-			   roughly {{=request.pay_delay / 60}} minutes.
-				<li>Today they have approved approximately
-			   {{=improbability_rate}}% of submitted tags.
-			   
+			   <li>Today they have been approving around {{=improbability_rate}}%
+			   of submitted tags.
 			</ul>
 
 			 </span>

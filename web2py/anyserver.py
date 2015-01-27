@@ -88,7 +88,7 @@ class Servers:
         from gevent import monkey; monkey.patch_all()
         from gevent import pywsgi
         from gevent.pool import Pool
-        pywsgi.WSGIServer(address, app, spawn = 'workers' in options and Pool(int(options.workers)) or 'default').serve_forever()
+        pywsgi.WSGIServer(address, app, spawn = 'workers' in options and Pool(int(options.workers)) or 'utiliscope').serve_forever()
 
     @staticmethod
     def bjoern(app,address, **options):

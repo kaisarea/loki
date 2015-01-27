@@ -56,7 +56,7 @@ def send_email(to, subject, message):
 
 @log_scheduler_errors
 def message_turk_worker(worker, subject_line, message_body):
-    turk.message_worker(worker, subject_line, message_worker)
+    turk.message_worker(worker, subject_line, message_body)
 
 
 # Initial Setup, Periodic Maintenance

@@ -2,6 +2,16 @@ import os
 import string
 import random
 
+def user(): return dict(form=auth())
+
+#def myregister(): return dict(form=auth.register())
+
+#def users():
+#    form = SQLFORM.grid(db.auth_user)
+#    return dict(form=form)
+
+
+
 def id_generator(size=30, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
@@ -94,6 +104,7 @@ def prep_test(as_preview=False):
             # log('And now it\'s %s' % conditions[k])
 
     return locals()
+@auth.requires_login()
 def test():
     return prep_test(as_preview=False)
 def test_preview():
@@ -308,12 +319,11 @@ response.generic_patterns += ['worker_ids.json', 'worker_actions.json']
 ############################################################
 ####           Displaying Database and Queues           ####
 ############################################################
-
+#@auth.requires_login()
 def dash():
     workers = db.scheduler_worker.all()
     tasks = db.scheduler_task.all()
-    max_heartbeat = max([(now - w.last_heartbeat).total_seconds()
-                         for w in workers])
+    max_heartbeat = workers and max([(now - w.last_heartbeat).total_seconds() for w in workers])
 
     red = '<span class="red">%s!!</span>'
 
@@ -323,8 +333,7 @@ def dash():
     elif len(workers) < 3: status = red % 'MISSING WORKERS'
     elif max_heartbeat > 10: status = red % 'NOT RUNNING'
 
-    return dict(theme='black',
-                worker_stats=Storage(count=len(workers), status=status))
+    return dict(theme='black', worker_stats=Storage(count=len(workers), status=status))
 def amazon_health():
     rate = int((1.0-turk.error_rate()) * 10)
     if rate <= 8:

@@ -307,6 +307,35 @@ $(function () {
     // Inside here you can use e.type to find out whether it was a
     // "blur", "mousedown", "mouseup", etc...
 });*/
+//                 var empty_radio = $curr_set.find('input[type="radio"]:not(:checked)').length > 1;
+//1
+//2
+//3
+//$( ".target" ).change(function() {
+//  alert( "Handler for .change() called." );
+//});
+	$('input[type="radio"]').change(function(e) {
+		//console.log('hey');
+		console.log('radio changed');
+		var action_type;
+		var action_time;
+		action_time = new Date($.now());
+		var relative_time;
+		var absolute_time;
+		absolute_time = $.now();
+		relative_time = absolute_time - baseline_time;
+		action_type = 'radio ' + e.type;
+		action_information = {
+			'action_time': action_time,
+			'action_type': action_type,
+			'text_field_id': $(this).attr('id'),
+			'text_field_name': $(this).attr('name'),
+			'text_field_value': $(this).attr('value'),
+			'relative_time': relative_time
+		};
+		alter_log(action_information);
+			
+	});
 	$('input.keyword').bind('focus', function(e) { 
 		console.log("HIT keyword activated"); 
 		var action_type;

@@ -89,11 +89,18 @@ def index():
         othervars['approved_tags'] = good_tags
 
         bonus_message = '''
-Thank you for working on our HIT today. We approved %d of your 25 tags, which earns you $%.2f of the possible $%.2f for this HIT.
+Thank you for working on our HIT today. You earned $%.2f for this HIT.
 
 By paying in bonus, we are able to approve every honest HIT you submit, and increase your Approval Rating.
 
-We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.price)
+We hope to see more of you in the ClearingHouse.''' % (request.price)
+
+#         bonus_message = '''
+# Thank you for working on our HIT today. We approved %d of your 25 tags, which earns you $%.2f of the possible $%.2f for this HIT.
+
+# By paying in bonus, we are able to approve every honest HIT you submit, and increase your Approval Rating.
+
+# We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.price)
 
         hit_finished(bonus_amount=pay,
                      bonus_message=bonus_message,
@@ -137,7 +144,7 @@ We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.p
     max_offset = 6 if request.improbability_rate < 90 else 2
     displayed_improbability_rate = request.improbability_rate \
         + random_offset(max_offset, now.day) \
-        + random_offset(max_offset, now.hour)
+        + random_offset(max_offset/2, now.hour)
     if request.testing:
         displayed_improbability_rate += random_offset(max_offset, now.second)
     displayed_improbability_rate = int(displayed_improbability_rate)
@@ -179,6 +186,38 @@ def wait():
 
 
 def results():
+    study_id = (len(request.args) > 0 and request.args[0]) or 9
+    studies = (db.studies(study_id),)
+
+    workers = db(db.actions.action=='finished', db.actions.study.belongs(studies)) \
+        .select(db.actions.workerid, distinct=True)
+    workers = [w.workerid for w in workers]
+
+    def action_tags(action):
+        request_vars = sj.loads(action.other)
+        if 'request_vars' not in request_vars: return []
+        request_vars = request_vars['request_vars']
+
+        keys = ['image_tag_%d_%d' % (i,j)
+                for i in range(5)
+                for j in range(5)]
+        keys += ['disturbingness%d' % i for i in range(5)]
+        return ['%s: %s' % (key, request_vars[key]) for key in keys]
+
+    def worker_results(workerid):
+        rows = db((db.actions.action=='finished')
+                  &(db.actions.workerid==workerid)) \
+            .select(db.actions.other, db.actions.time, db.actions.condition,
+                    orderby=~db.actions.time)
+        return Storage(worker=workerid,
+                       latest=rows[0].time,               
+                       condition=db.conditions(rows[0].condition).json,
+                       tags=action_tags(rows[0]))
+    return dict(studies=studies,
+                results=sorted([worker_results(w) for w in workers],
+                               key=lambda w: now-w.latest))
+
+def results2():
     if len(request.args) > 0:
         studies = (db.studies(request.args[0]),)
     else:

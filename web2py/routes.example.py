@@ -6,7 +6,8 @@
 # (possibly rewritten) incoming URL
 #
 default_application = 'init'    # ordinarily set in base routes.py
-default_controller = 'default'  # ordinarily set in app-specific routes.py
+#default_controller = 'default'  # ordinarily set in app-specific routes.py
+default_controller = 'utiliscope'
 default_function = 'index'      # ordinarily set in app-specific routes.py
 
 # routes_app is a tuple of tuples.  The first item in each is a regexp that will

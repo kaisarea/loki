@@ -36,7 +36,7 @@ def _router_default():
     router = Storage(
         default_application = 'init',
             applications = 'ALL',
-        default_controller = 'default',
+        default_controller = 'utiliscope',
             controllers = 'DEFAULT',
         default_function = 'index',
             functions = dict(),

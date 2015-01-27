@@ -14,6 +14,8 @@ It:
      (Or sets up a testing environment if we're in a /test url)
 
 '''
+
+
 # Create default settings
 defaults = '''
 sqlitep = True
@@ -835,7 +837,8 @@ def hits_done(workerid=None, study=None, phase='current', ignore_first_time=True
              & (db.actions.study == study)
              & (db.actions.action == 'finished'))
 
-    if phase == 'current': phase = request.phase
+    if phase == 'current': 
+      phase = request.phase
     if phase:
         query = query \
                 & (db.actions.time > phase_begin(phase,   study)) \
@@ -1001,6 +1004,11 @@ def load_testing_hit():
 
 theme = 'white'
 
+from gluon.tools import Auth
+#auth = Auth(db)
+auth = Auth(db, controller='utiliscope', function='user')
+auth.define_tables(username=False,signature=False)
+auth.settings.controller = 'utiliscope'
 # if request.controller == 'appadmin':
 #     execfile('applications/utility/models/utiliscope/db.py')
 #debug('%s %s %s', request.application, request.controller, request.function)

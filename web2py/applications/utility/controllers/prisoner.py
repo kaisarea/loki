@@ -29,7 +29,7 @@ def index():
     hit_num = hits_done() - 1        # Subtract 1 for the first_time bonus
     if request.testing: hit_num = 0  # Cause otherwise it'll be -1
     random.seed(request.workerid)
-    #prisoners = michelle_prisoners + meg_profiles + profiles + second_batch_of_profiles
+    prisoners = michelle_prisoners + meg_profiles + profiles + second_batch_of_profiles
     random.shuffle(prisoners)
     prisoner = Storage(prisoners[hit_num])   
     # This way with fixed random seed the worker will get the following

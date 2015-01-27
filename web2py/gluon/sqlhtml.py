@@ -1484,7 +1484,7 @@ class SQLFORM(FORM):
              showbuttontext=True,
              _class="web2py_grid",
              formname='web2py_grid',
-             search_widget='default',
+             search_widget='utiliscope',
              ignore_rw = False,
              formstyle = 'table3cols',
              exportclasses = None,

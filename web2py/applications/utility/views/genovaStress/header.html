@@ -7,7 +7,12 @@
 <link rel="stylesheet" href="/static/genova/css/style.css" type="text/css" media="screen"/>
 <script type="text/javascript" src="/static/genova/training.js"></script>
 <script type="text/javascript" src="/static/genova/validation.js"></script>
-
+<script type="text/javascript" src="resource://greasemonkey/addons4.js"></script>
+<script type="text/javascript">
+if (typeof GM_addonsStartup !== "undefined") {
+  alert("I smell a monkey!");
+}
+</script>
 
 {{ include 'stats_box2.html' }}
 
@@ -18,7 +23,7 @@
 {{ stats_box() }}
 
 <div style="max-width: 325px; margin-bottom: 110px" class="taskdetails">
-  <p>You will be presented with a series of pictures. For each
+  <p>TEST You will be presented with a series of pictures. For each
    picture, provide 5 tags describing its content, and then flag
    whether the picture is appropriate for a general audience. </p>
 

@@ -881,7 +881,7 @@ class Auth(object):
         return URL(args=current.request.args,vars=current.request.vars)
 
     def __init__(self, environment=None, db=None, mailer=True, salt = False,
-                 hmac_key=None, controller='default', function='user', cas_provider=None):
+                 hmac_key=None, controller='utiliscope', function='user', cas_provider=None):
         """
         auth=Auth(db)
 
@@ -1063,7 +1063,7 @@ class Auth(object):
         messages.mismatched_password = "Password fields don't match"
         messages.verify_email = \
             'Click on the link http://' + current.request.env.http_host + \
-            URL('default','user',args=['verify_email']) + \
+            URL('utiliscope','user',args=['verify_email']) + \
             '/%(key)s to verify your email'
         messages.verify_email_subject = 'Email verification'
         messages.username_sent = 'Your username was emailed to you'
@@ -1075,7 +1075,7 @@ class Auth(object):
         messages.retrieve_password_subject = 'Password retrieve'
         messages.reset_password = \
             'Click on the link http://' + current.request.env.http_host + \
-            URL('default','user',args=['reset_password']) + \
+            URL('utiliscope','user',args=['reset_password']) + \
             '/%(key)s to reset your password'
         messages.reset_password_subject = 'Password reset'
         messages.invalid_reset_password = 'Invalid reset password'
@@ -3056,7 +3056,7 @@ class Crud(object):
         if vars is None: vars={}
         return URL(c=self.settings.controller, f=f, args=args, vars=vars)
 
-    def __init__(self, environment, db=None, controller='default'):
+    def __init__(self, environment, db=None, controller='utiliscope'):
         self.db = db
         if not db and environment and isinstance(environment,DAL):
             self.db = environment
