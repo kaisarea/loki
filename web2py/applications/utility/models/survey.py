@@ -4,18 +4,28 @@ db.define_table('survey_results'
 		, db.Field('workerid', 'text')
 		, db.Field('task', 'text')
 		, db.Field('result', 'text')
-		#, db.Field('comment', 'text')
-		#, db.Field('age', 'text')
-		#, db.Field('state', 'text')
-		#, db.Field('sex', 'text')
-		#, db.Field('where', 'text')
-		#, db.Field('study', 'text')
-		#, db.Field('income', 'text')
-		#, db.Field('educ', 'text')
-		#, db.Field('employment', 'text')
-		#, db.Field('why', 'text')
-#		, migrate = True, fake_migrate = True
+		, db.Field('comment', 'text')
+		, db.Field('age', 'text')
+		, db.Field('state', 'text')
+		, db.Field('sex', 'text')
+		, db.Field('location', 'text')
+		, db.Field('study', 'text')
+		, db.Field('income', 'text')
+		, db.Field('educ', 'text')
+		, db.Field('employment', 'text')
+		, db.Field('why', 'text')
+		, db.Field('compensation', 'double')
 		)
+
+db.define_table('survey_invitations'
+  , db.Field('workerid', 'text')
+  , db.Field('compensation', 'double')
+  , db.Field('task', 'text')
+  , db.Field('created_at', 'text'))
+
+	
+
+
 
 
 def announce_survey(study):
