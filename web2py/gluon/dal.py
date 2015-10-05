@@ -1486,6 +1486,7 @@ class BaseAdapter(ConnectionPool):
         self.execute(query)
 
     def log_execute(self, *a, **b):
+        #print(self.db._dbname)
         command = a[0]
         if self.db._debug:
             logger.debug('SQL: %s' % command)

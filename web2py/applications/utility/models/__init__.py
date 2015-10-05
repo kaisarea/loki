@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 start_time = time.time()
 '''
 
@@ -18,7 +19,7 @@ It:
 
 # Create default settings
 defaults = '''
-sqlitep = True
+sqlitep = False
 sandboxp = True
 sandbox_serves_from_localhost_p = False
 migratep = True
@@ -93,7 +94,7 @@ def define_database():
                    ('sqlite://%s.db' % database_name)
         db = SQLDB(database)
     else:
-        database = 'postgres://%s:%s@localhost:5432/%s' % (database_login_pass
+        database = 'postgres://%s:%s@localhost:5434/%s' % (database_login_pass
                                                            + (database_name,))
         if sandboxp: database += '_sandbox'
         db = SQLDB(database, pool_size=0) # try to experiment with the pool size!!!!!
@@ -134,8 +135,26 @@ def define_database():
                     db.Field('condition', db.conditions),
                     db.Field('phase', 'integer'),
                     db.Field('other', 'text'),
+#                    db.Field('country_code', 'text'),
+#                    db.Field('country_name', 'text'),
+#                    db.Field('region_code', 'text'),
+#                    db.Field('city', 'text'),
+#                    db.Field(
                     #db.Field('cookieid', 'text'),
                     migrate=migratep, fake_migrate=fake_migratep)
+
+    db.define_table('ip_addresses',
+                    db.Field('ip', 'text'),
+                    db.Field('country_code', 'text'),
+                    db.Field('country_name', 'text'),
+                    db.Field('region_code', 'text'),
+                    db.Field('region_name', 'text'),
+                    db.Field('city', 'text'),
+                    db.Field('zip_code', 'text'),
+                    db.Field('time_zone', 'text'),
+                    db.Field('latitude', 'double'),
+                    db.Field('longitude', 'double'),
+                    db.Field('metro_code', 'integer'))
 
     db.define_table('dead_zones',
                     db.Field('study', db.studies),
@@ -254,6 +273,16 @@ def define_database():
     db.define_table('store',
                     db.Field('key', 'text', unique=True),
                     db.Field('value', 'text'))
+
+    db.define_table('side_payments',
+		    db.Field('payment_amount', 'double'),
+		    db.Field('purpose', 'text'),
+		    db.Field('associated_assid', 'text'),
+		    db.Field('associated_hitid', 'text'),
+		    db.Field('created_at', 'text'),
+                    db.Field('status', 'text'),
+                    db.Field('error_message', 'text'),
+		    db.Field('workerid', 'text'))
 
 define_database()
 
@@ -571,14 +600,9 @@ def enqueue_bonus(workerid, amount,
                   assid=None, hitid=None, study=None,
                   reason=None, delay=None):
     log('Adding %s to bonus queue for ass %s' % (amount, assid))
-    db.bonus_queue.insert(
-        worker = workerid,
-        assid = assid,
-        hitid = hitid,
-        amount = amount,
-        reason = reason,
-        study = study,
-        delay = delay or 0)
+    db.bonus_queue.insert(worker = workerid, assid = assid, hitid = hitid, amount = amount, reason = reason, study = study, delay = delay or 0)
+    db.commit()
+    
 
 response.generic_patterns = ['html']
 

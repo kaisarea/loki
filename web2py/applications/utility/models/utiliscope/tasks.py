@@ -1,3 +1,7 @@
+from datetime import datetime
+import sys
+import traceback
+
 # ============== Debugging the Scheduler =============
 def scheduler_errors(N=10):
     errors = db(db.scheduler_run.status=='FAILED').select(limitby=(0,N),
@@ -187,34 +191,153 @@ def lookup_recent_assignment(workerid, assid=None, hitid=None):
             .select(db.actions.assid, db.actions.hitid,
                     limitby=(0,1), orderby=~db.actions.time).first()
         if not row:
-            raise TurkAPIError("Failed to find a hitid/assid for worker %s."
-                               % workerid)
+            raise AssignmentNotFound("Failed to find a hitid/assid for worker %s in our PostgreSQL database." % workerid)
 
         return row.assid, row.hitid
-    
+
+
+
 def pay_worker(workerid, bonusamt, reason, assid=None, hitid=None):
     """ Finds a recent completed assignment and hit (if not specified), and
         pays the worker with it.
     """
+    try:
+        (assid, hitid) = lookup_recent_assignment(workerid, assid, hitid)
+    except:
+        except_type, except_class, tb = sys.exc_info()
+        exc_info = (except_type, except_class, traceback.extract_tb(tb))
+        #human_time_snapshot = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        error_type = str(exc_info[0])
+        error_message = exc_info[1].message
+        error_file = exc_info[2][0][0]
+        error_line_number = exc_info[2][0][1]
+        error_function = exc_info[2][0][2]
+        error_command = exc_info[2][0][3]
+        db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, 
+                                workerid=workerid, status='FAILED', error_message=error_type+error_command)
+        db.commit()
+        print("Assignment ID not found in the utiliscope database, this is a FAILED payment")
+        return
+    time_stamp = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+    try:
+        current_assignment_status = turk.assignment_status(assid, hitid)
+        # we are getting the assignment status, could be None, Approved, Submitted or Rejected
+        # in theory what could happen is that it's None or it could even happen that Turk does not recognized the HIT ID
+        # that is used to query the API, if we fail here I don't quite see why would we not be able to pay
+        # unless it's the case that we can bonus only Approved assignment
+    except:
+        except_type, except_class, tb = sys.exc_info()
+        exc_info = (except_type, except_class, traceback.extract_tb(tb))
+        #human_time_snapshot = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        error_type = str(exc_info[0])
+        error_message = exc_info[1].message
+        error_file = exc_info[2][0][0]
+        error_line_number = exc_info[2][0][1]
+        error_function = exc_info[2][0][2]
+        error_command = exc_info[2][0][3]
+        db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, 
+                                workerid=workerid, status='FAILED', error_message=error_type+error_message)
+        db.commit()
+        print("We were not able to ascertain the status of the latest available assignment, this thwarts our efforts to bonus it")
+        print((error_command, error_function, error_line_number, error_file, error_message, error_type))
+        return
 
-    (assid, hitid) = lookup_recent_assignment(workerid, assid, hitid)
-
-    if turk.assignment_status(assid, hitid) != u'Approved':
+    if current_assignment_status != u'Approved':
+        print("This assignment is not approved so I guess we're not able to bonus it?")
+        db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, 
+                                workerid=workerid, status='FAILED', error_message='Trying to bonus a hit that isn\'t ready!  it is %s'
+                           % turk.assignment_status(assid, hitid))
+        db.commit()
         raise TurkAPIError('Trying to bonus a hit that isn\'t ready!  it is %s'
                            % turk.assignment_status(assid, hitid))
 
     # Now let's give it a bonus
     if float(bonusamt) > 0.0:
-        turk.give_bonus(assid, workerid, float(bonusamt), reason)
+        try:
+            payment_respose = turk.give_bonus(assid, workerid, float(bonusamt), reason)
+            print(payment_response)
+            # Now how can we tell that this failed and how exactly did it fail?
+            # payment_response should some XML where there is either True when success and False when fail, so we need to extract that
+            # currently this is not being check at all but rather assignment is being updated and then total bonus of the worker
+            # are looked at but those could fail for different reasons and this would provide a false positive in terms 
+            # of looking for failed payments
+        except:
+            except_type, except_class, tb = sys.exc_info()
+            exc_info = (except_type, except_class, traceback.extract_tb(tb))
+            #human_time_snapshot = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+            error_type = str(exc_info[0])
+            error_message = exc_info[1].message
+            error_file = exc_info[2][0][0]
+            error_line_number = exc_info[2][0][1]
+            error_function = exc_info[2][0][2]
+            error_command = exc_info[2][0][3]
+            db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, 
+                                workerid=workerid, status='FAILED', error_message=error_type+error_message)
+            db.commit()
+            return
 
     # Update the assignment log and verify everything worked
-    update_ass_from_mturk(hitid)
-    if turk.assignment_status(assid, hitid) != u'Approved' \
-            or turk.bonus_total(assid) < float(bonusamt) - .001:
-        raise TurkAPIError('Bonus did\'t work! We have %s and %s<%s'
-                           % (turk.assignment_status(assid, hitid),
-                              turk.bonus_total(assid),
-                              float(bonusamt)))
+    try:
+        update_ass_from_mturk(hitid)
+    except:
+        except_type, except_class, tb = sys.exc_info()
+        exc_info = (except_type, except_class, traceback.extract_tb(tb))
+            #human_time_snapshot = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        error_type = str(exc_info[0])
+        error_message = exc_info[1].message
+        error_file = exc_info[2][0][0]
+        error_line_number = exc_info[2][0][1]
+        error_function = exc_info[2][0][2]
+        error_command = exc_info[2][0][3]
+        db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, 
+                                workerid=workerid, status='FAILED', error_message=error_type+error_message)
+        db.commit()
+        return
+
+    try:
+        total_bonus_given_to_worker = turk.bonus_total(assid)
+    except:
+        except_type, except_class, tb = sys.exc_info()
+        exc_info = (except_type, except_class, traceback.extract_tb(tb))
+            #human_time_snapshot = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        error_type = str(exc_info[0])
+        error_message = exc_info[1].message
+        error_file = exc_info[2][0][0]
+        error_line_number = exc_info[2][0][1]
+        error_function = exc_info[2][0][2]
+        error_command = exc_info[2][0][3]
+        db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, 
+                                workerid=workerid, status='FAILED', error_message=error_type+error_message)
+        db.commit()
+        print("There was an error during attempted payment, check the database for more info")
+        return
+
+    try:
+        this_assignment_status = turk.assignment_status(assid, hitid)
+    except:
+        except_type, except_class, tb = sys.exc_info()
+        exc_info = (except_type, except_class, traceback.extract_tb(tb))
+            #human_time_snapshot = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        error_type = str(exc_info[0])
+        error_message = exc_info[1].message
+        error_file = exc_info[2][0][0]
+        error_line_number = exc_info[2][0][1]
+        error_function = exc_info[2][0][2]
+        error_command = exc_info[2][0][3]
+        db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, 
+                                workerid=workerid, status='FAILED', error_message=error_type+error_message)
+        db.commit()
+        print("There was an error during attempted payment, check the database for more info")
+        return
+
+    if this_assignment_status != u'Approved' or total_bonus_given_to_worker < float(bonusamt) - .001:
+        db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, 
+                                workerid=workerid, status='FAILED', 
+                                error_message='Bonus did\'t work! We have %s and %s<%s' % (turk.assignment_status(assid, hitid), turk.bonus_total(assid), float(bonusamt)))
+        print('Bonus did\'t work! We have %s and %s<%s' % (turk.assignment_status(assid, hitid), turk.bonus_total(assid), float(bonusamt)))
+        return
+    db.side_payments.insert(payment_amount=bonusamt, purpose=reason, associated_assid=assid, associated_hitid=hitid, created_at=time_stamp, workerid=workerid, status='SUCCESS')
+    db.commit()
 
 def update_ass_from_mturk(hitid):
     # Get the assignments for this from mturk

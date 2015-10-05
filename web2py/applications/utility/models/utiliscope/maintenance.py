@@ -1,3 +1,5 @@
+import xml.etree.ElementTree as ET
+
 # ============== Setting up a Fresh DB =============
 def setup_db(study=None, force=False):
     log('Creating postgres indices')
@@ -230,10 +232,35 @@ def pay_worker_extra(workerid, amount, reason):
              &(db.actions.action=='finished')).select(orderby=~db.actions.time,
                                                       limitby=(0,1)).first()
     if not ass or not ass.assid:
+        print('No assignment for worker %s' % workerid)
         log('No assignment for worker %s' % workerid)
         return
 
     return turk.give_bonus(ass.assid, workerid, amount, reason)
+
+def pay_worker_direct(workerid, amount, reason):
+    #ass = db((db.actions.workerid==workerid) & (db.actions.action=='finished')).select(orderby=~db.actions.time, limitby=(0,1)).first()
+    ass = db((db.actions.workerid==workerid) & (db.actions.assid != None)).select(db.actions.assid, distinct=True)
+    for assignment in ass:
+        if not assignment or not assignment.assid:
+            print('No assignment for worker %s in the utiliscope database' % workerid)
+            continue
+        params = {'AssignmentId' : assignment.assid,
+              'WorkerId' : workerid,
+              'BonusAmount.1.Amount' : amount,
+              'BonusAmount.1.CurrencyCode' : 'USD',
+              'Reason' : reason}
+        payment_outcome = turk.ask_turk_raw('GrantBonus', params)
+        print(payment_outcome)
+        root = ET.fromstring(payment_outcome)
+        parsed_outcome = str(root.find('GrantBonusResult').find('Request').find('IsValid').text)
+        if parsed_outcome == "True":
+            print(assignment.assid)
+            print(payment_outcome)
+            return "SUCCESS"
+        else:
+            continue
+    return "FAIL"
 
 def amount_worker_paid(workerid, study):
     assignments = db((db.actions.workerid==workerid)
@@ -256,11 +283,14 @@ def parse_turk_datetime(string):
 
 
 def worker_payment_history(workerid, study):
-    assignments = db((db.actions.workerid==workerid)
-                     & (db.actions.study==study)).select(distinct=db.actions.assid)
+    assignments = db((db.actions.workerid==workerid) & (db.actions.study==study) & (db.actions.assid!=None)).select(distinct=db.actions.assid)
 
     for ass in assignments:
-        ass.pay = turk.get_bonus_payments(ass.assid)
+        try:
+            ass.pay = turk.get_bonus_payments(ass.assid)
+        except TurkAPIError:
+            print("Amazon does not remember %s anymore" % ass.assid)
+            continue
 
     assignments = sorted(assignments, key=lambda ass: turk.get(ass.pay, 'GrantTime'))
 
@@ -268,7 +298,8 @@ def worker_payment_history(workerid, study):
     for ass in assignments:    
         pay = ass.pay
         if turk.get(pay, 'NumResults') not in (u'1', u'0'):
-            raise 'Hey Mike fix this function! Found a bonus with more than 1 entry.'
+            print("Hey Mike fix this function! Found a bonus with more than 1 entry.")
+            #raise 'Hey Mike fix this function! Found a bonus with more than 1 entry.'
         amount = float(turk.get(pay, 'Amount'))
         reason = turk.get(pay, 'Reason')
         if not amount or float(amount) < .01: continue
@@ -282,6 +313,7 @@ def worker_payment_history(workerid, study):
                % (when, amount, worker, assignment))
 
     print 'Total paid: $%.2f' % total
+    return total
 
 
 def add_hits_log_creation_dates():

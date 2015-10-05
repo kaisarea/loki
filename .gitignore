@@ -1,0 +1,10 @@
+*.zip
+*.jpg
+*.jpeg
+*.gif
+*.png
+*.log
+*.db
+*.table
+*.csv
+*.pyc

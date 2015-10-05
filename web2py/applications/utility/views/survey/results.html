@@ -1,7 +1,16 @@
+{{ extend "layout.html" }}
+    <script> 
+    $(function(){
+      $("#includedContent").load("/static/survey/lines.html"); 
+    });
+    </script> 
+
+<div id="includedContent"></div>
+
 <h1>{{=proportion}}% response rate</h1>
 
 {{ for result in results: }}
-	<b>Results for workerid {{=result.workerid}}</b><br>
-	{{= result.result }}
+	<b>Verbal comment from workerid {{=result.workerid}}</b><br>
+	"{{= sj.loads(result.result)["comment"] }}"
 	<p>
 {{ pass }}

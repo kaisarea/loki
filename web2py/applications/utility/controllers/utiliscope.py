@@ -104,6 +104,7 @@ def prep_test(as_preview=False):
             # log('And now it\'s %s' % conditions[k])
 
     return locals()
+
 @auth.requires_login()
 def test():
     return prep_test(as_preview=False)
@@ -319,7 +320,7 @@ response.generic_patterns += ['worker_ids.json', 'worker_actions.json']
 ############################################################
 ####           Displaying Database and Queues           ####
 ############################################################
-#@auth.requires_login()
+@auth.requires_login()
 def dash():
     workers = db.scheduler_worker.all()
     tasks = db.scheduler_task.all()

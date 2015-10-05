@@ -86,6 +86,18 @@ class TurkAPIError(Exception):
     def __str__(self):
         return repr(self.value)
 
+class AssignmentNotFound(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
+
+class HitNotFound(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
+
 amazon_health_log = []
 def error_rate():
     amazon_health_log = store_get('amazon_health_log')
@@ -253,9 +265,9 @@ def get_reviewable_hit_ids ():
 
 def get_assignments_for_hit(hitid):
     data = ask_turk('GetAssignmentsForHIT', {
-        'HITId' : hitid,
-        'PageSize': 30
-    })
+               'HITId' : hitid,
+               'PageSize': 30
+               })
     return getsx(data, 'Assignment')
 
 def get_worker_answers(hitid):
@@ -296,7 +308,7 @@ def get_responses():
 
 def bonus_total(ass_id):
     bonus_sum = 0.0
-    bonuses = get_bonus_payments(ass_id)
+    bonuses = get_bonus_payments(ass_id)   # this appears to be an XML object
     if int(get(bonuses, 'NumResults')) > 0:
         for bonus in gets(bonuses, 'Amount'):
             #print ass_id + ' got a bonus of ' + str(float(bonus))

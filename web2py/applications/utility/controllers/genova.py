@@ -5,16 +5,10 @@ def index():
       request.testing = False
       request.assid = request.vars.assignmentid 
       logging_response = log_action(request.vars.action_desc, other=request.vars.logs)
-      #details = ",".join(request.vars.keys())
-      #more_details = ",".join(request.keys())
       import json
       this_response = json.dumps({
 	"logging_success": logging_response, 
-	#"b": details, 
 	"feedback_var_content": request.vars.feedback})
-	#"d": request.workerid, 
-	#"e": request.feedback, 
-	#"f": more_details})
       db.commit()
       return this_response
 
@@ -38,12 +32,6 @@ def index():
     
     # Choose 5 images from the 2 queues, depeding on how disagreeable we want it
     pics = []
-#from random import shuffle
-#x = [[i] for i in range(10)]
-#shuffle(x)
-
-# print x  gives  [[9], [2], [7], [0], [4], [5], [3], [1], [8], [6]]
-# of course your results will vary
     picture_positions = range(1, request.pics_per_task+1)
     random.shuffle(picture_positions)
     for i in picture_positions:
@@ -51,18 +39,10 @@ def index():
             pics.append(genova_pics[type][progress[type]])
             progress[type] += 1
 
-        #r = random.random()
-        #if r < request.disagreeable/100.0:
-        #    add_pic('treatment')
-        #else:
-        #    add_pic('control')
-	# how about this
 	if i <= request.disagreeable/20.0:
 		add_pic('treatment')
 	else: 
 	    	add_pic('control')
-
-	# how about this
 
     # If this is a hit submission, then let's finish!
     if request.vars.netprog != None:
@@ -75,9 +55,6 @@ def index():
         othervars = dict()
         othervars['pics'] = pics
 	othervars['disturbingness'] = request.vars.disturbingness
-	#othervars['complete_training'] = request.vars.complete_training_time
-	#othervars['leave_incomplete_training'] = request.vars.leave_training_time
-	#othervars['enter_training'] = request.vars.training_start_time_stamp
         othervars['request_vars'] = request.vars
 	othervars['activity_log'] = request.vars.activity_log
 
@@ -88,20 +65,10 @@ def index():
         othervars['approved_price'] = pay
         othervars['approved_tags'] = good_tags
 
-        bonus_message = '''
-Thank you for working on our HIT today. You earned $%.2f for this HIT.
-
-By paying in bonus, we are able to approve every honest HIT you submit, and increase your Approval Rating.
-
-We hope to see more of you in the ClearingHouse.''' % (request.price)
-
-#         bonus_message = '''
-# Thank you for working on our HIT today. We approved %d of your 25 tags, which earns you $%.2f of the possible $%.2f for this HIT.
-
-# By paying in bonus, we are able to approve every honest HIT you submit, and increase your Approval Rating.
-
-# We hope to see more of you in the ClearingHouse.''' % (good_tags, pay, request.price)
-
+        bonus_message = '''Thank you for working on our HIT today. 
+            You earned $%.2f for this HIT. By paying in bonus, we are 
+            able to approve every honest HIT you submit, and increase your 
+            Approval Rating. We hope to see more of you in the ClearingHouse.''' % (request.price)
         hit_finished(bonus_amount=pay,
                      bonus_message=bonus_message,
                      extra_data=othervars) # Automatically exits this function
@@ -134,9 +101,9 @@ We hope to see more of you in the ClearingHouse.''' % (request.price)
 
 
     # Ok, let's proceed with the regular task!
-
+    # it would appear that this is the beginning of the improbability code
     def random_offset(max_offset, seed):
-        random.seed(seed)
+        random.seed(seed) # this new seed nullifies the previoius seed
         result = (random.random() - .5) * max_offset * 2
         random.seed()
         return result
@@ -273,6 +240,7 @@ def results2():
 
 
 def preview(): return {}
+    
 def first_time():
     response.view = 'first_time.html'
     return {}
