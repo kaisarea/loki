@@ -1,1 +1,0 @@
-pg_dump -Fc nail_utility > nail_utility_`date +'%Y-%m-%d'`
