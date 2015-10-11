@@ -51,6 +51,5 @@ Copy (
    FROM actions a
    INNER JOIN conditions_modified c ON a.condition = c.id
    INNER JOIN letters ON letters.workerid = a.workerid AND letters.hitid = a.hitid AND letters.assid = a.assid
-   WHERE a.action = 'finished' AND a.study = 5 AND a.hitid IS NOT NULL AND a.assid IS NOT NULL
-) To '/tmp/data_extract_prisoner_quality.csv' With CSV HEADER;
+   WHERE a.action = 'submit' AND a.study = 5 AND a.hitid IS NOT NULL AND a.assid IS NOT NULL
 

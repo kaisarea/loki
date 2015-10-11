@@ -2,7 +2,7 @@
 	We are trying to match information from the with picture actions
 	with the information from the finished action. This is actually a very interesting
 	SQL problem. 
-
+dummy change
 First we need to collect all the finished actions:
 
 SELECT * FROM actions WHERE action = 'finished';
